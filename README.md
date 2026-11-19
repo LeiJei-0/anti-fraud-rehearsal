@@ -20,3 +20,16 @@
 - [三章完整流程与分镜](防骗预演%20三章完整流程与分镜.md)
 - [Qoder 执行任务书](Qoder执行任务书.md)
 - [变更记录](CHANGELOG.md)
+
+## 过程记录
+
+每轮开发按 [GitHub Issues](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues) 记需求 → 分支开发 → PR 关联 Issue 并附验收结果 → 合并进 `main` → 在 [CHANGELOG.md](CHANGELOG.md) 追加一轮记录。
+
+| 轮次 | 需求 | 开发分支 | 合并 PR | 状态 |
+| --- | --- | --- | --- | --- |
+| 第一章《一份周末兼职》样片 | [#1 需求与验收标准](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/1) | `feat/chapter-1-prototype` | [#2 样片与验收](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/2) | 合并后关闭 #1 |
+
+- [#1](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/1) 写清 A01–A10 镜头、四种结算、离线约束与七条验收路线。
+- [#2](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/2) 附验收对照表、仍需人工验收的项目与提交前审查结论。
+- 提交历史：[935a277 样片](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/935a277e6cd03aa0b148812ef6a2909af04b84ba) → [97c4a53 远端核对](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/97c4a53e4dea1123155171e6a8003da343c8baf5) → 9755e35 分支返回修正。
+
