@@ -1,0 +1,9 @@
+tmp/
+node_modules/
+验收证据/
+.env
+.env.*
+.codex/
+.qoder/
+*.log
+Thumbs.db
