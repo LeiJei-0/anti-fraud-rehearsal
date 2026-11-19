@@ -38,3 +38,13 @@
 - **变更文件**　仅本 `CHANGELOG.md`。
 - **Git 操作**　分支 `feat/chapter-1-prototype`（自 `main` 的 `d7606a8` 起）。提交前逐文件审查并扫描令牌、密钥、邮箱、手机号、身份证样式与本地绝对路径，公开文件均无命中；按文件暂存 `.gitignore`、`README.md`、`CHANGELOG.md`、`demo-chapter-1.html`、`assets/css/chapter-1.css`、`assets/js/chapter-1.js`、`项目文档.md`、`防骗预演 三章完整流程与分镜.md`、`Qoder执行任务书.md`；`tmp/`、`验收证据/`、`node_modules/`、`.env*`、`.codex/`、`.qoder/`、`*.log`、`Thumbs.db` 由 `.gitignore` 排除，浏览器缓存目录与本轮截图只留在工作区，未纳入提交。推送到 `origin` 的同名分支，不强推、不直接合入默认分支。
 - **待测与待补**　① 原生全屏在真实桌面浏览器允许时的实际观感（本轮无头环境 `document.fullscreenElement = HTML`，只证明请求路径与网页满屏回退）；② 现场投屏与真机、浏览器矩阵；③ 实际听感（自动化以 `--mute-audio` 运行，停声只验证到代码路径）；④ 人声配音与实拍或动画视频素材，A07 仍为原创静帧 + 字幕；⑤ 第二、三章内容。
+
+## 2026-11-19 · 首章样片远端留存核对
+
+- **执行工具**　Qoder CN 桌面版（本地模式 · Agent 会话）。用 `git ls-remote`、`git ls-tree` 与 `git hash-object` 做远端核对，用 `curl` 按提交号取回 GitHub 上的原样文件，再用无头 Chrome 断网冒烟。
+- **本轮定位**　上一条样片提交（含客厅引导与开场动画的实现）由 Codex 制作、Qoder 复验并推送。本条只记录远端核对与下载验证，未改动样片源码、样式与文档内容。
+- **远端核对**　`git ls-remote --heads origin` 返回 `refs/heads/feat/chapter-1-prototype = 935a277e6cd03aa0b148812ef6a2909af04b84ba`，`refs/heads/main = d7606a857d9dbb73354fcfadd7eb97b5eecf6c4b`，与本地 `HEAD` 及跟踪引用一致，默认分支未被改动。远端树共 9 个文件：`.gitignore`、`README.md`、`CHANGELOG.md`、`demo-chapter-1.html`、`assets/css/chapter-1.css`、`assets/js/chapter-1.js`、`项目文档.md`、`防骗预演 三章完整流程与分镜.md`、`Qoder执行任务书.md`，逐文件与本地工作区 `hash-object` 比对全部一致，无多余文件、无临时目录、无浏览器缓存、无本地配置。GitHub 侧为 LF 行尾（工作区 `core.autocrlf = true`，入库 blob 尺寸 1887／18306／75879 字节）。
+- **提交链接**　`935a277`：https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/935a277e6cd03aa0b148812ef6a2909af04b84ba ；分支页：https://github.com/LeiJei-0/anti-fraud-rehearsal/tree/feat/chapter-1-prototype ；上一条推送时网络中断，本次直连查询已恢复并复核通过。
+- **下载后离线冒烟**　按提交号从 `raw.githubusercontent.com` 取回入口 HTML 与两个 `assets` 文件，在断网（`offline=true`）的 `file://` 环境跑 13 项断言全部通过：打开即客厅引导；分离的 CSS 生效（正文背景色与按钮圆角）、分离的 JS 生效（引导按钮可点）；开场仍是一条 12 秒连续运镜（`cinema-camera / 12s`）；跳过进入第一条通知且选择项为 `end,go:A05,go:A08,end`；「找人商量 → 校园核实 → 结算」走到结尾并复盘，判定「及时核实」、已核实 2 项、待核实 0、找人商量与核实分开（help=1、verify=2）、确认动作 0 条、提醒星 3 条；整页文本无替换字符（乱码）；1366×768 与 390×844 均无横向滚动；资源请求 3 条全部来自本地文件，`http(s)` 请求 0 条，无失败子资源。脚本与报告：`tmp/qoder-recheck/gh-smoke.mjs`、`gh-smoke-report.json`（工作区临时目录，不入库）。
+- **变更文件**　仅本 `CHANGELOG.md`。
+- **待测**　与上一条相同：原生全屏的真实观感、现场投屏与真机、实际听感、人声与实拍或动画素材、第二三章内容。
