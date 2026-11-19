@@ -1091,7 +1091,6 @@ function renderModal(){
    8. 导航与动作
    ===================================================================== */
 /* ---- 导航 ---- */
-var PLAYABLE = { A04:1, A05:1, A06:1, A07:1, A08:1, A09:1, A10:1 };
 function go(scene, opts){
   opts = opts || {};
   var prev = R.scene;
@@ -1106,7 +1105,8 @@ function go(scene, opts){
     R.from = null;
   } else {
     var f = opts.from || prev;
-    R.from = PLAYABLE[f] ? f : R.origin;
+    // 分支页只记主线来处，避免 A08↔A09 互相回跳、回不到主线
+    R.from = MAIN[f] ? f : R.origin;
   }
   after(scene);
   render();
