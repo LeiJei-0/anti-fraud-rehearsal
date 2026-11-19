@@ -27,9 +27,10 @@
 
 | 轮次 | 需求 | 开发分支 | 合并 PR | 状态 |
 | --- | --- | --- | --- | --- |
-| 第一章《一份周末兼职》样片 | [#1 需求与验收标准](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/1) | `feat/chapter-1-prototype` | [#2 样片与验收](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/2) | 合并后关闭 #1 |
+| 第一章《一份周末兼职》样片 | [#1 需求与验收标准](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/1) | `feat/chapter-1-prototype` | [#2 样片与验收](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/2) | 已合并，[#1 已关闭](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/1) |
+| 合并结果补记（文档） | 沿用 #1 | `docs/merge-record-1` | [#3 合并结果补记](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/3) | 补写 #2 的合并提交号 |
 
 - [#1](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/1) 写清 A01–A10 镜头、四种结算、离线约束与七条验收路线。
-- [#2](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/2) 附验收对照表、仍需人工验收的项目与提交前审查结论。
-- 提交历史：[935a277 样片](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/935a277e6cd03aa0b148812ef6a2909af04b84ba) → [97c4a53 远端核对](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/97c4a53e4dea1123155171e6a8003da343c8baf5) → 9755e35 分支返回修正。
+- [#2](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/2) 附验收对照表、仍需人工验收的项目与提交前审查结论，合并提交为 [d768c79](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/d768c7903330667f8cc2edbe1a3ed689aa59a135)。
+- 提交历史：[935a277 样片](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/935a277e6cd03aa0b148812ef6a2909af04b84ba) → [97c4a53 远端核对](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/97c4a53e4dea1123155171e6a8003da343c8baf5) → [9755e35 分支返回修正](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/9755e35) → [b28280d 过程记录](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/b28280d) → [d768c79 合并进 main](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/d768c7903330667f8cc2edbe1a3ed689aa59a135)。
 
