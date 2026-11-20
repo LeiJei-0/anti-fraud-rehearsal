@@ -68,3 +68,10 @@
 - **核对结果**　[#2](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/2) `state = closed`、`merged = true`、`merged_at = 2026-11-19T07:44:51Z`（北京时间 15:44:51），合并提交 [`d768c79`](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/d768c7903330667f8cc2edbe1a3ed689aa59a135)（merge 方式，保留分支四个提交）。[#1](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/1) 由 `Closes #1` 自动关闭，`state = closed`、`closed_at = 2026-11-19T07:44:53Z`。远端 `refs/heads/main = d768c79`、`refs/heads/feat/chapter-1-prototype = b28280d`，分支未删除、未强推、默认分支此前只有 `d7606a8` 一个提交。
 - **变更文件**　`README.md`（过程记录表状态列与提交历史链接）、`CHANGELOG.md`（本条）。
 - **下一轮**　先建 Issue 写需求再开分支开发；A07 的人声与实拍或动画素材；原生全屏、现场投屏与真机、实际听感的人工验收；第二章《一通晚间来电》。
+
+## 2026-11-20 · 身份入口与桌面双画面
+
+- 试玩观察：原宿舍画面手机与手明显大于人物的头，即使文本越界检测为零也未解决构图问题。
+- Qoder 的两份改动先按原样留在开发分支（80d46a4）：宿舍版、无声角色字幕、分支来处与直接结算。
+- Codex 根据后续意见改为全幅引导 → 选择身份 → 左动画右手机；去掉引导副句与阅读模式按钮，动画上不显示内部镜头号。三章共十二条本地 MP4，保留离开、商量、独立核实与模拟损失四类操作路径。
+- 测试环境、结局与媒体断言记录在 docs/pc-review.json；人工验收留给真实电脑的播放观感与听感。本轮不将旧版手机尺寸测试计入新版结果。

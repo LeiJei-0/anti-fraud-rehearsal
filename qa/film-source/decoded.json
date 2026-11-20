@@ -1,0 +1,65 @@
+[
+  {
+    "file": "1-orient.mp4",
+    "frames": 174,
+    "seconds": 7.25,
+    "decoded": true,
+    "bytes": 1113078
+  },
+  {
+    "file": "1-evidence.mp4",
+    "frames": 144,
+    "seconds": 6.0,
+    "decoded": true,
+    "bytes": 721313
+  },
+  {
+    "file": "1-decision.mp4",
+    "frames": 144,
+    "seconds": 6.0,
+    "decoded": true,
+    "bytes": 823089
+  },
+  {
+    "file": "2-orient.mp4",
+    "frames": 174,
+    "seconds": 7.25,
+    "decoded": true,
+    "bytes": 483063
+  },
+  {
+    "file": "2-evidence.mp4",
+    "frames": 144,
+    "seconds": 6.0,
+    "decoded": true,
+    "bytes": 636380
+  },
+  {
+    "file": "2-decision.mp4",
+    "frames": 144,
+    "seconds": 6.0,
+    "decoded": true,
+    "bytes": 580853
+  },
+  {
+    "file": "3-orient.mp4",
+    "frames": 174,
+    "seconds": 7.25,
+    "decoded": true,
+    "bytes": 505905
+  },
+  {
+    "file": "3-evidence.mp4",
+    "frames": 144,
+    "seconds": 6.0,
+    "decoded": true,
+    "bytes": 634727
+  },
+  {
+    "file": "3-decision.mp4",
+    "frames": 144,
+    "seconds": 6.0,
+    "decoded": true,
+    "bytes": 662824
+  }
+]

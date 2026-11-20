@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2a251c"><title>防骗预演｜进入故事</title>
+  <link rel="icon" href="data:,"><link rel="stylesheet" href="assets/css/entrance.css">
+  <script src="assets/js/programme.js" defer></script>
+</head>
+<body>
+  <main class="cover">
+    <img class="cover-art" src="assets/art/ch1.webp" alt="午后阳光照进大学宿舍，白衣学生靠在床上看手机。">
+    <div class="opening">
+      <p class="notice">互动演练 <span aria-hidden="true">／</span> 无真实交易</p>
+      <h1>防骗预演</h1>
+      <button id="start" class="start" type="button" aria-haspopup="dialog">开始体验 <span aria-hidden="true">›</span></button>
+      <button id="guide" class="subtle" type="button" aria-haspopup="dialog">演练说明</button>
+    </div>
+  </main>
+  <dialog id="roles" aria-labelledby="roles-title">
+    <div class="menu-head"><h2 id="roles-title">选择身份</h2><form method="dialog"><button type="submit" class="close">返回</button></form></div>
+    <p class="menu-note">选好后播放剧情动画，可随时暂停。</p><nav class="casting" aria-label="以这个身份进入故事">
+      <a data-role="1" href="demo-chapter-1.html?play=1"><span class="portrait young"></span><span class="role-text"><b>青年人</b><small>一份周末兼职</small></span><i aria-hidden="true">›</i></a>
+      <a data-role="2" href="chapter.html?c=2&amp;play=1"><span class="portrait adult"></span><span class="role-text"><b>中年人</b><small>一通晚间来电</small></span><i aria-hidden="true">›</i></a>
+      <a data-role="3" href="chapter.html?c=3&amp;play=1"><span class="portrait elder"></span><span class="role-text"><b>老年人</b><small>群里的一场讲座</small></span><i aria-hidden="true">›</i></a>
+    </nav>
+  </dialog>
+  <dialog id="help" aria-labelledby="help-title"><h2 id="help-title">演练说明</h2><p>选一个身份进入故事。左侧看人物的动作，右侧点手机上的消息和回复。你可以随时停下、找人商量，或者离开。</p><p>这里不会真的拨号、转账或购买。结局只记录这一次的选择。</p><form method="dialog"><button class="start">知道了</button></form></dialog>
+  <noscript><p>请启用 JavaScript 后进行体验。</p></noscript>
+</body></html>

@@ -195,183 +195,17 @@ var ENDINGS = {
 /* =====================================================================
    3. 分层场景（SVG）
    ===================================================================== */
-/* 镜头预设：把用户坐标 (fx,fy) 居中到 viewBox 中心 (450,310)，
-   偏移量 = 中心 - 焦点 × 缩放。下面三个机位与 chapter-1.css 里的
-   --a02x/--a02y/--a02s、--a03x/--a03y/--a03s 必须一一对应，
-   开场 12 秒运镜收尾时正好落在 CAM.lock，切到 A04 不会跳。 */
-function camAt(s, fx, fy){ return "translate(" + (450 - fx*s).toFixed(1) + "px," + (310 - fy*s).toFixed(1) + "px) scale(" + s + ")"; }
-var CAM = {
-  wide:    camAt(1, 450, 310),     // A01 宿舍全景（引导页与开场起幅共用同一个舞台）
-  notify:  camAt(1.55, 545, 215),  // A02 通知亮起、拇指停下（人和手机同框）
-  lock:    camAt(2.7, 642, 184),   // A03 肩后靠近同一块屏幕 → A04 停稳
-  mid:     camAt(1.25, 520, 258),  // 主线中景：人还在上铺，手机亮着
-  help:    camAt(1.5, 505, 250),   // 找人商量
-  dim:     camAt(1.45, 560, 245)   // 视频 / 垫付：整体压暗
-};
-function stageSVG(mode){
-  var cam = CAM.wide;
-  if(mode === "opening2") cam = CAM.notify;
-  else if(mode === "opening3" || mode === "lock") cam = CAM.lock;
-  else if(mode === "play") cam = CAM.mid;
-  else if(mode === "help") cam = CAM.help;
-  else if(mode === "video" || mode === "pay") cam = CAM.dim;
-
-  var lit = (mode === "wide") ? 0 : 1;                                  // 屏幕是否亮着
-  var notif = (mode === "opening2" || mode === "opening3" || mode === "lock") ? 1 : 0;
-  var lift = (mode === "opening2" || mode === "opening3" || mode === "lock") ? 1 : 0; // 微微挑眉
-  var dim = (mode === "video" || mode === "pay") ? .42 : 0;
-
-  return '' +
-  '<svg id="stage" viewBox="0 0 900 620" preserveAspectRatio="xMidYMid slice" role="img" ' +
-  'aria-label="暖色大学宿舍：周末下午，学生穿白色上衣靠在宿舍上铺的枕头上用手机，上方有床栏，下方是书桌和椅子">' +
-  '<defs>' +
-    '<linearGradient id="gwall" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="#f2e3c9"/><stop offset="1" stop-color="#e0cdaa"/></linearGradient>' +
-    '<linearGradient id="gfloor" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="#9c7a52"/><stop offset="1" stop-color="#7a5c3c"/></linearGradient>' +
-    '<linearGradient id="gsky" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="#f6e6c0"/><stop offset="1" stop-color="#d8e5ea"/></linearGradient>' +
-    '<radialGradient id="glow" cx=".5" cy=".5" r=".6">' +
-      '<stop offset="0" stop-color="#ffe9a8" stop-opacity="' + (0.5*lit) + '"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>' +
-  '</defs>' +
-  '<g id="cam" style="transform:' + cam + ';transform-origin:0 0;transform-box:view-box;' +
-     'transition:transform 1.5s cubic-bezier(.36,0,.2,1)">' +
-
-    /* 墙面与地面 */
-    '<rect x="0" y="0" width="900" height="470" fill="url(#gwall)"/>' +
-    '<rect x="0" y="458" width="900" height="162" fill="url(#gfloor)"/>' +
-    '<g stroke="#6f5233" stroke-width="1" opacity=".4">' +
-      '<line x1="0" y1="500" x2="900" y2="486"/><line x1="0" y1="548" x2="900" y2="530"/>' +
-      '<line x1="0" y1="596" x2="900" y2="576"/></g>' +
-
-    /* 窗与下午的光（周末白天，不出现任何剧情信息） */
-    '<g opacity=".95"><rect x="40" y="86" width="200" height="208" fill="url(#gsky)" stroke="#7d6142" stroke-width="7"/>' +
-      '<g stroke="#7d6142" stroke-width="4"><line x1="140" y1="86" x2="140" y2="294"/>' +
-      '<line x1="40" y1="190" x2="240" y2="190"/></g>' +
-      '<circle cx="196" cy="132" r="24" fill="#ffe6ad" opacity=".85"/>' +
-      '<path d="M240 82 C 258 150, 254 232, 240 298 L 268 298 C 276 224, 274 152, 266 82 Z" fill="#c8a07a" opacity=".75"/></g>' +
-    '<polygon points="244,120 244,286 612,458 706,458" fill="#ffe9bd" opacity=".13"/>' +
-
-    /* 上床下桌：立柱、床架、床垫、被子 */
-    '<g><rect x="252" y="122" width="16" height="340" fill="#8a6a45"/>' +
-      '<rect x="852" y="122" width="16" height="340" fill="#8a6a45"/>' +
-      '<rect x="250" y="300" width="620" height="26" rx="6" fill="#9a7750"/>' +
-      '<rect x="258" y="272" width="604" height="30" rx="10" fill="#efe6d4"/>' +
-      '<path d="M646 272 C 672 240, 772 234, 858 254 L 858 272 Z" fill="#cbb89a"/>' +
-      '<path d="M660 262 C 700 250, 768 248, 852 258" stroke="#b3a184" stroke-width="2.5" fill="none"/>' +
-      /* 上床下桌的爬梯，交代「上面是床、下面是桌」 */
-      '<g stroke="#8a6a45" stroke-width="8" stroke-linecap="round" fill="none">' +
-        '<line x1="792" y1="326" x2="788" y2="466"/><line x1="846" y1="326" x2="848" y2="466"/>' +
-        '<line x1="792" y1="366" x2="846" y2="366"/><line x1="791" y1="408" x2="847" y2="408"/>' +
-        '<line x1="790" y1="450" x2="848" y2="450"/></g></g>' +
-
-    /* 人：白色上衣，半躺靠在上铺的枕头上，头在左、腿在右 */
-    '<g class="person">' +
-      '<path d="M330 240 C 330 214, 374 202, 434 210 C 468 215, 470 250, 442 268 L 348 272 C 334 264, 330 252, 330 240 Z" ' +
-        'fill="#f8f3e6" stroke="#ded2b8" stroke-width="2"/>' +
-      '<path d="M472 240 C 506 234, 556 248, 596 272 L 600 296 L 454 296 C 448 270, 454 248, 472 240 Z" ' +
-        'fill="#f4f6f8" stroke="#c6ccd3" stroke-width="2"/>' +
-      '<path d="M500 254 C 530 256, 564 266, 592 280 L 594 296 L 520 296 Z" fill="#e4e9ee" opacity=".55"/>' +
-      '<path d="M460 228 C 470 232, 478 238, 480 248 L 458 246 Z" fill="#dcae87"/>' +
-      '<ellipse cx="452" cy="208" rx="27" ry="29" fill="#e3bd97" stroke="#c99f76" stroke-width="1.6"/>' +
-      '<path d="M426 199 C 423 172, 442 160, 459 163 C 478 166, 487 181, 482 201 C 476 184, 462 177, 450 179 C 438 181, 430 189, 426 199 Z" fill="#2b2d33"/>' +
-      '<g class="face" fill="#2c2f35"><circle cx="442" cy="209" r="2.8"/><circle cx="466" cy="209" r="2.8"/></g>' +
-      '<g class="brow" stroke="#4a4048" stroke-width="2.2" fill="none" stroke-linecap="round" ' +
-        'style="transform:translateY(' + (lift ? -2.6 : 0) + 'px);transform-box:fill-box">' +
-        '<path d="M435 198 C 439 195, 446 195, 450 198"/><path d="M459 198 C 463 195, 470 195, 474 198"/></g>' +
-      '<path d="M447 221 C 454 224, 462 224, 469 221" stroke="#a8735c" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
-      /* 手臂从肩膀伸到手机下方，袖口单独一块，白色衣袖的浅灰阴影与枕头分开 */
-      '<path d="M520 264 C 554 260, 584 242, 604 220 C 616 230, 618 242, 610 252 C 588 274, 556 288, 526 290 Z" ' +
-        'fill="#f1f4f7" stroke="#c6ccd3" stroke-width="2"/>' +
-      '<path d="M598 216 C 610 212, 622 220, 620 232 L 606 248 C 598 240, 594 226, 598 216 Z" ' +
-        'fill="#e6ebf0" stroke="#c6ccd3" stroke-width="1.6"/></g>' +
-
-    /* 上铺床栏（在人的前面，交代空间高低） */
-    '<g><rect x="298" y="246" width="404" height="13" rx="6" fill="#a8845c"/>' +
-      '<g fill="#94764f"><rect x="330" y="258" width="10" height="44" rx="4"/>' +
-      '<rect x="430" y="258" width="10" height="44" rx="4"/><rect x="530" y="258" width="10" height="44" rx="4"/></g></g>' +
-
-    /* 下桌：书桌、椅子、合上的电脑、杯子 */
-    '<g><rect x="300" y="418" width="400" height="14" rx="4" fill="#9a7750"/>' +
-      '<rect x="306" y="432" width="12" height="42" fill="#7f6042"/><rect x="682" y="432" width="12" height="42" fill="#7f6042"/>' +
-      '<rect x="556" y="394" width="88" height="24" rx="3" fill="#3a3f47"/>' +
-      '<rect x="562" y="398" width="76" height="16" rx="2" fill="#8fa6b3" opacity=".55"/>' +
-      '<rect x="520" y="402" width="18" height="16" rx="3" fill="#a8503c"/>' +
-      '<path d="M538 405 C 548 405, 548 415, 538 415" stroke="#a8503c" stroke-width="3" fill="none"/>' +
-      '<rect x="428" y="440" width="80" height="12" rx="4" fill="#6d5537"/>' +
-      '<rect x="428" y="386" width="12" height="58" rx="5" fill="#6d5537"/>' +
-      '<g stroke="#5d4730" stroke-width="5"><line x1="434" y1="452" x2="432" y2="474"/><line x1="504" y1="452" x2="506" y2="474"/></g></g>' +
-
-    /* 手指从手机背后绕过右沿，只在右边露出一点指尖 */
-    '<g fill="#d3a67c" stroke="#b98d63" stroke-width="1.4">' +
-      '<rect x="662" y="146" width="38" height="15" rx="7.5"/>' +
-      '<rect x="664" y="168" width="38" height="15" rx="7.5"/>' +
-      '<rect x="662" y="190" width="36" height="15" rx="7.5"/></g>' +
-
-    /* 手机：始终握在手里，通知与 A04 用的是同一条内容 */
-    '<circle class="phone-glow" cx="642" cy="184" r="86" fill="url(#glow)" opacity="' + notif + '"/>' +
-    '<g class="stage-phone"><g transform="translate(596,96) rotate(-5)">' +
-      '<rect x="0" y="0" width="88" height="176" rx="13" fill="#1a1c21" stroke="#4c4f57" stroke-width="2"/>' +
-      '<rect class="stage-display" x="5" y="6" width="78" height="164" rx="8" fill="' + (lit ? "#eef2f7" : "#22242a") + '"/>' +
-      '<g class="stage-notice" opacity="' + notif + '">' +
-        '<rect x="8" y="16" width="72" height="66" rx="6" fill="#ffffff" stroke="#c4cad3" stroke-width="1.2"/>' +
-        '<text x="14" y="30" font-size="7" fill="#2f353d" font-family="serif">周末任务招募</text>' +
-        '<text x="14" y="42" font-size="5.2" fill="#5c6774" font-family="serif">商品资料整理 · 日结</text>' +
-        '<text x="14" y="53" font-size="4.6" fill="#8b93a0" font-family="serif">短信 · 陌生号码</text>' +
-        '<rect x="14" y="60" width="54" height="5" rx="2.5" fill="#dfe4ea"/>' +
-        '<rect x="14" y="70" width="36" height="5" rx="2.5" fill="#e7ebf0"/></g>' +
-      '<g opacity="' + (notif ? 0 : 1) + '" fill="#cfd6de">' +
-        '<rect x="12" y="16" width="56" height="6" rx="3"/><rect x="12" y="30" width="40" height="6" rx="3"/>' +
-        '<rect x="12" y="44" width="48" height="6" rx="3"/></g>' +
-    '</g></g>' +
-
-    /* 手：手掌在手机下沿后面托住，拇指在屏幕前方停在通知下方，
-       既不盖文字也不盖按钮。.thumb 外层只给 CSS 动画用，位移仍写在里层。 */
-    '<g class="hand" fill="#d8ac83" stroke="#b98d63" stroke-width="1.8">' +
-      '<path d="M598 262 C 630 250, 686 252, 704 268 C 710 288, 692 306, 654 308 C 620 308, 600 290, 594 272 Z"/>' +
-      '<g class="thumb"><g transform="translate(614,226) rotate(-8)"><rect x="0" y="0" width="15" height="52" rx="7.5"/></g></g></g>' +
-
-    /* 整体压暗（看视频 / 垫付确认时） */
-    '<rect x="-900" y="-620" width="2700" height="1860" fill="#140f0a" opacity="' + dim + '" pointer-events="none"/>' +
-  '</g></svg>';
-}
-
-/* A07 视频画面：原创绘制的人物正面出镜。他说的话不写在画面里，
-   而是由下方 .dm 列表带说话人标识逐条出现——没有声音也能读全。 */
 function callerSVG(){
-  return '<svg id="vchar" viewBox="0 0 410 250" role="img" ' +
-    'aria-label="原创绘制的视频画面：一个自称辅导员的人正面出镜，画面没有声音">' +
-    '<defs><linearGradient id="vbg" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="#4d5f6d"/><stop offset="1" stop-color="#2c3a45"/></linearGradient></defs>' +
-    '<rect width="410" height="250" fill="url(#vbg)"/>' +
-    '<rect x="24" y="34" width="92" height="112" fill="#cfe0e6" opacity=".3" rx="4"/>' +
-    '<g stroke="#22303a" stroke-width="3" opacity=".45"><line x1="70" y1="34" x2="70" y2="146"/>' +
-      '<line x1="24" y1="90" x2="116" y2="90"/></g>' +
-    '<rect x="250" y="150" width="150" height="12" fill="#8a6b47" opacity=".5" rx="4"/>' +
-    '<path d="M148 250 C 146 202, 172 178, 212 176 C 254 178, 280 204, 278 250 Z" fill="#eef1f4" stroke="#c6ccd3" stroke-width="2"/>' +
-    '<path d="M196 180 L 212 212 L 228 180 Z" fill="#d5dbe1"/>' +
-    '<ellipse class="face" cx="212" cy="122" rx="38" ry="42" fill="#e3bd97" stroke="#c99f76" stroke-width="2"/>' +
-    '<path d="M174 112 C 172 82, 198 70, 216 72 C 240 74, 256 90, 252 116 C 244 100, 232 92, 212 92 C 194 92, 182 98, 174 112 Z" fill="#2a2f36"/>' +
-    '<g fill="#2c333b"><circle cx="198" cy="122" r="3.6"/><circle cx="228" cy="122" r="3.6"/></g>' +
-    '<g stroke="#4a4048" stroke-width="2.4" fill="none" stroke-linecap="round">' +
-      '<path d="M190 110 C 195 106, 203 106, 208 110"/><path d="M218 110 C 223 106, 231 106, 236 110"/></g>' +
-    '<path d="M201 142 C 209 147, 219 147, 227 142" stroke="#8c5b46" stroke-width="3" fill="none" stroke-linecap="round"/>' +
-    '<rect x="0" y="0" width="410" height="26" fill="rgb(12 10 8 / 72%)"/>' +
-    '<text x="10" y="18" fill="#f6ecd8" font-size="13">视频通话 · 陌生账号</text>' +
-    '<text x="400" y="18" text-anchor="end" fill="#f6ecd8" font-size="12">原创绘制 · 无人声</text>' +
-  '</svg>';
+  return '<svg id="vchar" viewBox="0 0 410 240" role="img" aria-label="模拟视频中的陌生人戴着眼镜，穿着米白衬衫。没有声音。"><image href="assets/art/caller.svg" width="410" height="240"/></svg>';
 }
 
 /* =====================================================================
    4. 手机内的页面片段
    ===================================================================== */
-function statusbar(t){
-  return '<div class="statusbar"><span>' + (t || "周六 15:12") + '</span><span>演练网络 · 无真实连接</span></div>';
-}
-function phoneShell(inner, title){
-  return '<div class="phone" role="group" aria-label="模拟手机">' +
-    '<div class="notch"></div>' + statusbar() +
-    '<div class="screen" id="screen">' + (title ? '<div class="appbar"><b>' + title + '</b><span class="tag">演练</span></div>' : '') + inner + '</div></div>';
+function statusbar(){return '<div class="statusbar"><span>15:12</span>'+Theatre.symbols+'</div>';}
+function phoneShell(inner,title){
+  return '<div class="phone" role="group" aria-label="模拟手机" data-page="'+(R.scene==="A04"?"lock":"app")+'"><div class="notch" aria-hidden="true"></div>'+statusbar()+
+    '<div class="phone-flow"><div class="screen" id="screen">'+(title?'<div class="appbar"><b>'+esc(title)+'</b></div>':'')+inner+'</div><div class="reply-tray"></div></div><div class="home-indicator" aria-hidden="true"></div></div>';
 }
 function bubble(who, text, out){
   return '<div class="msg ' + (out ? "out" : "in") + '"><div class="who">' + esc(who) + '</div><p>' + esc(text) + '</p></div>';
@@ -433,14 +267,6 @@ function dmLines(upto){
 /* =====================================================================
    5. 镜头内容
    ===================================================================== */
-function sceneName(){
-  var m = {
-    opening:"开场 A01–A03", A04:"A04 · 第一条通知", A05:"A05 · 看到试做返利", A06:"A06 · 连续任务",
-    A07:"A07 · 自称辅导员的视频", A08:"A08 · 找同学商量", A09:"A09 · 校园渠道核实",
-    A10:"A10 · 垫付确认（演练）", review:"本局复盘"
-  };
-  return m[R.scene] || "演练";
-}
 function currentSpec(){
   switch(R.scene){
     case "A04": return specA04();
@@ -457,18 +283,17 @@ function currentSpec(){
 function specA04(){
   return {
     stage: "lock",
-    cap: { who:"旁白", txt:"周末下午。你想找一份兼职补贴生活费，屏幕上停着一条通知。",
+    cap: { who:"旁白", txt:"手机亮了。陌生号码发来一份按日结算的兼职。",
            cue:"两个选择都可以，慢慢读。什么都不点也会一直停在这里。" },
     phone: phoneShell(
-      notifCard() +
-      '<div class="note"><b>锁屏预览</b><div class="kv"><span>短信</span><b>收到 1 条</b></div>' +
-      '<div class="hint">演练提示：现在还没有打开聊天，也没有任何付款动作。</div></div>',
+      '<div class="lockface"><div class="lock-day">周六　下午</div><div class="lock-hour">15:12</div>' +
+      '<button type="button" class="lock-note note notification-tap" data-act="go:A05" aria-label="查看兼职短信"><span class="lock-meta"><span>信息</span><span>现在</span></span><strong>周末任务招募</strong><span>商品资料整理，按日结算。</span><small>陌生号码</small></button></div>',
       "第一条通知"),
     actions: [
       { label:"先放一放", sub:"不打开，直接看本局结果", cls:"leave", act:"end" },
       { label:"查看", sub:"打开这条通知里的聊天", cls:"stay", act:"go:A05" }
     ],
-    aside: [ { label:"找人商量", act:"go:A08" }, { label:"结束本章", act:"end" } ]
+    aside: [ { label:"找人商量", act:"go:A08" } ]
   };
 }
 
@@ -752,16 +577,13 @@ function specA10(){
    6. 渲染
    ===================================================================== */
 function render(){
-  document.body.classList.toggle("cinema-active", R.scene === "home" || R.scene === "opening");
   var spec = currentSpec();
-  if(R.scene === "home") renderHome();
-  else if(R.scene === "select") renderSelect();
-  else if(R.scene === "opening") renderOpening();
+  if(R.scene === "select") renderSelect();
   else if(R.scene === "review") renderReview();
   else if(spec) renderScene(spec);
   else { R.scene = "select"; renderSelect(); return; }
-  btnPause.hidden = !(R.scene === "opening" || R.scene === "A07");
-  btnPause.textContent = (SEQ && SEQ.paused) ? "继续" : "暂停";
+  btnPause.hidden = R.scene !== "A07" || !SEQ;
+  btnPause.textContent = (SEQ && SEQ.paused) ? "继续对白" : "暂停对白";
   var sc = document.getElementById("screen");
   if(sc){
     sc.scrollTop = 0;
@@ -773,147 +595,20 @@ function render(){
 }
 
 var motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
-var forceFullMotion = false;
-
-function renderHome(){
-  V.innerHTML = '<section id="cinema" class="cinema cinema-guide" aria-label="体验引导">' +
-    stageSVG("wide") + '<div class="cinema-ui"><div class="guide-copy">' +
-    '<p class="guide-label">反诈演练 · 无真实交易</p>' +
-    '<h1>防骗预演</h1><p>周末下午，宿舍里来了一条新消息。</p>' +
-    '<div class="guide-actions"><button type="button" class="btn primary" data-act="start">开始体验</button>' +
-    '<button type="button" class="btn cinema-secondary" data-act="chooseChapter">选章节</button></div>' +
-    '<div class="guide-links"><button type="button" class="cinema-text" data-act="toggleSound" data-cinema-sound>声音：开</button>' +
-    '<button type="button" class="cinema-text" data-act="toggleMotion" aria-pressed="false" hidden>完整动画</button>' +
-    '<button type="button" class="cinema-text" data-act="info">演练说明</button></div></div></div></section>';
-  paintGuideMotion();
-  paintCinemaSound();
-}
-
-function paintGuideMotion(){
-  var button = V.querySelector('[data-act="toggleMotion"]');
-  button.hidden = !motionPreference.matches;
-  button.setAttribute('aria-pressed', String(forceFullMotion));
-  var stage = V.querySelector('#stage');
-  if(motionPreference.matches && !forceFullMotion) stage.pauseAnimations();
-  else stage.unpauseAnimations();
-}
-
-function renderSelect(){
-  var cover = function(txt){
-    return '<svg class="ch-cover" viewBox="0 0 300 90" preserveAspectRatio="none" aria-hidden="true">' +
-      '<rect width="300" height="90" fill="#ded0b3"/><rect x="14" y="16" width="86" height="58" rx="6" fill="#8d6b45"/>' +
-      '<rect x="22" y="24" width="70" height="42" rx="4" fill="#f3ead6"/>' +
-      '<circle cx="200" cy="46" r="24" fill="#4b5f6b"/><rect x="176" y="60" width="48" height="24" rx="10" fill="#3c4c56"/>' +
-      '<text x="252" y="56" font-size="34" fill="#9d2f26">' + txt + '</text></svg>';
-  };
-  V.innerHTML =
-  '<div class="card"><div class="eyebrow">选择案件 · 演练中只显示生活化的标题</div>' +
-    '<h2 class="title-xl" style="font-size:1.5rem">选择一章开始</h2>' +
-    '<p class="lede">开场和演练画面只给当事人此刻能看到的信息，具体骗术名称留到复盘揭示。</p></div>' +
-  '<div class="card"><div class="chapters">' +
-    '<button type="button" class="chapter" data-act="openCh1">' + cover("兼") +
-      '<h3>《一份周末兼职》</h3><span class="who">大学生 · 周末下午在宿舍刷手机，收到一条兼职通知</span>' +
-      '<span class="who">主线：试做返利与连续任务 · 短分支：自称辅导员的视频</span>' +
-      '<span class="flag">可试玩</span></button>' +
-    '<button type="button" class="chapter" disabled aria-disabled="true">' + cover("电") +
-      '<h3>《一通晚间来电》</h3><span class="who">中年人 · 晚饭后接到常联系的网友来电</span>' +
-      '<span class="who">沿用同一套手机演练模板</span>' +
-      '<span class="flag">待开放</span></button>' +
-    '<button type="button" class="chapter" disabled aria-disabled="true">' + cover("讲") +
-      '<h3>《群里的一场讲座》</h3><span class="who">老年人 · 群里发来的生活活动邀请</span>' +
-      '<span class="who">沿用同一套手机演练模板</span>' +
-      '<span class="flag">待开放</span></button>' +
-  '</div>' +
-  '<div class="row" style="margin-top:.8rem">' +
-    '<button type="button" class="btn" data-act="home">返回首页</button>' +
-    '<button type="button" class="btn ghost" data-act="info">真实求助信息</button>' +
-  '</div>' +
-  '<p class="privacy">第一章样片：A01–A10 全部镜头、四种结算与复盘。第二、三章尚未制作。</p></div>';
-}
-
-function renderOpening(){
-  var film = document.getElementById("cinema");
-  if(!film){
-    V.innerHTML = '<section id="cinema" class="cinema" aria-label="开场动画">' + stageSVG("wide") + '<div class="cinema-ui"></div></section>';
-    film = document.getElementById("cinema");
-  }
-  if(!film.classList.contains("cinema-playing")){
-    film.setAttribute("aria-label", "开场动画");
-    film.classList.remove("cinema-guide");
-    film.querySelector(".cinema-ui").innerHTML =
-      '<span class="watermark">演练 · 开场 A01–A03</span>' +
-      '<p class="film-caption" id="cap-txt" aria-live="polite">' + openingLine() + '</p>' +
-      '<div class="film-controls" aria-label="开场控制">' +
-      '<button type="button" class="btn cinema-secondary" data-act="pauseSeq">暂停</button>' +
-      '<button type="button" class="btn cinema-secondary" data-act="toggleSound" data-cinema-sound>声音：开</button>' +
-      '<button type="button" class="btn cinema-secondary" data-act="skipOpening">跳过开场</button>' +
-      '<button type="button" class="btn cinema-secondary" data-act="exit">退出到选章</button></div>';
-    film.classList.toggle("cinema-motion-on", forceFullMotion);
-    film.classList.add("cinema-playing");
-    film.querySelector('[data-act="pauseSeq"]').focus({ preventScroll:true });
-  }
-  var isPaused = Boolean(SEQ && SEQ.paused);
-  film.classList.toggle("cinema-paused", isPaused);
-  var stage = film.querySelector('svg');
-  if(isPaused || (motionPreference.matches && !forceFullMotion)) stage.pauseAnimations();
-  else stage.unpauseAnimations();
-  film.querySelector('[data-act="pauseSeq"]').textContent = isPaused ? "继续" : "暂停";
-  paintCinemaSound();
-}
-
-function showOpeningBeat(beat){
-  R.openingStage = beat;
-  V.querySelector('.cinema').dataset.beat = beat;
-  updateCaption(openingLine());
-}
-
-function paintCinemaSound(){
-  var button = V.querySelector('[data-cinema-sound]');
-  if(button) button.textContent = btnSound.textContent;
-}
-
-function openingLine(){
-  var s = R.openingStage || "opening1";
-  if(s === "opening2") return "拇指停了一下：来了一条短信通知——「周末任务招募 · 商品资料整理」。";
-  if(s === "opening3") return "屏幕上的字一点点清楚起来，还是同一条通知。";
-  return "周末下午，你靠在宿舍上铺刷手机，下面书桌空着。";
-}
-
+function renderSelect(){ location.assign("index.html"); }
 function renderScene(spec){
-  var acts = spec.actions || [];
-  var extra = spec.extra || [];
-  var n = 0;
-  function btn(a){
-    n++;
-    return '<button type="button" class="act ' + (a.cls||"") + '" data-act="' + esc(a.act) + '"' +
-      (a.act === "noop" ? ' disabled aria-disabled="true"' : '') + '>' +
-      '<span>' + n + '. ' + esc(a.label) + '</span>' +
-      (a.sub ? '<span class="sub">' + esc(a.sub) + '</span>' : '') + '</button>';
-  }
-  V.innerHTML =
-  '<div class="card" style="padding:.5rem .8rem;box-shadow:none;background:transparent;border:0">' +
-    '<span class="eyebrow" style="margin:0">第一章《一份周末兼职》 · ' + esc(sceneName()) + ' · 反诈演练，无真实交易</span></div>' +
-  '<div class="layout">' +
-    '<div class="stage-wrap" id="stage-wrap">' + stageSVG(spec.stage) +
-      '<span class="watermark">演练 · ' + esc(sceneName()) + '</span>' +
-      (SEQ && SEQ.paused ? '<span class="paused-flag">已暂停</span>' : '') + '</div>' +
-    '<div class="rightcol">' +
-      spec.phone +
-      '<div class="actions ' + (acts.length === 1 ? "one" : "") + '" id="actions" role="group" aria-label="本幕操作">' +
-        acts.map(btn).join("") + '</div>' +
-      (extra.length ? '<div class="actions one">' + extra.map(btn).join("") + '</div>' : '') +
-      '<div class="aside">' + (spec.aside || []).map(function(a){
-          return '<button type="button" class="btn" data-act="' + esc(a.act) + '">' + esc(a.label) + '</button>';
-        }).join("") + '</div>' +
-    '</div>' +
-    '<div class="caption" id="caption" role="region" aria-live="polite">' +
-      '<div class="who">' + esc(spec.cap.who) + '</div>' +
-      '<div class="txt" id="cap-txt">' + esc(spec.cap.txt) + '</div>' +
-      '<div class="cue">' + esc(spec.cap.cue) + '</div></div>' +
-  '</div>';
+  var scene=R.scene, kind=scene==="A10"?"decision":scene==="A07"?"insert":scene==="A04"?"orient":"evidence";
+  var names={A04:"一份周末兼职",A05:"试做的回信",A06:"一组连续任务",A07:"屏幕那头的人",A08:"找同学商量",A09:"换条路问一问",A10:"确认之前"};
+  V.innerHTML='<div class="pc-set pc-ch1">'+Theatre.scene(names[scene]||"一份周末兼职",esc(spec.cap.txt))+spec.phone+'</div>';
+  function btn(a){return '<button type="button" class="act '+(a.cls||'')+'" data-act="'+esc(a.act)+'"'+(a.act==="noop"?' disabled':'')+'>'+esc(a.label)+'</button>'}
+  var acts=spec.actions||[],extra=spec.extra||[]; if(scene==="A04")acts=acts.filter(function(a){return a.act!=="go:A05"});
+  V.querySelector(".reply-tray").innerHTML='<div id="actions" class="actions" role="group" aria-label="选择回复或行动">'+acts.map(btn).join("")+'</div>'+
+    (extra.length?'<div class="actions">'+extra.map(btn).join("")+'</div>':'')+
+    '<div class="aside">'+(spec.aside||[]).map(btn).join("")+'</div>';
+  Theatre.bind("1-"+kind,"assets/art/ch1.webp");
 }
-
 function renderReview(){
+  Theatre.stop();
   var k = endingKey(), e = ENDINGS[k], meta = REVIEW_TEXT[k];
   var done = verifiedItems(), todo = pendingItems();
   var stars = starsFor(k);
@@ -961,7 +656,7 @@ function renderReview(){
       '<button type="button" class="btn primary" data-act="copyStars">复制本局提醒</button>' +
       '<button type="button" class="btn" data-act="replay">从头重玩本章</button>' +
       '<button type="button" class="btn" data-act="select">选择其他章</button>' +
-      '<button type="button" class="btn ghost" data-act="home">返回首页</button>' +
+      '<button type="button" class="btn ghost" data-act="home">返回首页</button><a class="btn pact-link" href="pact.html">带走家庭约定卡</a>' +
     '</div>' +
     '<p class="privacy" id="copy-note">复制只在当前网页内进行，不会联网。真实求助信息见顶栏「真实求助」。</p></div>';
 }
@@ -1016,6 +711,7 @@ function altBranches(){
    7. 弹窗
    ===================================================================== */
 function renderModal(){
+  if(R.modal) Theatre.suspend();
   if(!R.modal){ OVER.hidden = true; MODAL.innerHTML = ""; return; }
   OVER.hidden = false;
   if(R.modal === "info"){
@@ -1029,12 +725,6 @@ function renderModal(){
         '<li>需要反诈咨询与劝阻：<b>96110</b>（全国反诈劝阻专线）。</li>' +
         '<li>校园内的事：先找<b>原本的</b>辅导员、院系办公室或学校保卫处，用你手机里存着的号码，不用对方给的联系方式。</li>' +
         '<li>把消息、通话、任务页和付款记录留好，不删除。</li>' +
-      '</ul>' +
-      '<div class="eyebrow">本样片的素材状态</div>' +
-      '<ul>' +
-        '<li>提示音、亮屏反馈：本地实时生成，无外部音频文件。</li>' +
-        '<li>A07 视频分支：<b>无配音、无语音合成</b>。画面为原创绘制，对方说的话以带说话人标识的短句逐条显示，静音也能读全。</li>' +
-        '<li>A09 入口图案：全部本地 SVG 绘制，图案下保留文字名。</li>' +
       '</ul>' +
       '<div class="row"><button type="button" class="btn primary" data-act="closeModal">知道了</button></div>';
     return;
@@ -1119,7 +809,7 @@ function after(scene){
 function focusFirst(){
   var b = V.querySelector(".actions .act:not([disabled])") || V.querySelector(".btn");
   if(b && document.activeElement !== b){
-    // 不抢走用户在页面别处的焦点，只在本幕切换后可聚焦
+    { var title=V.querySelector(".lock-day")||V.querySelector(".appbar b"); if(title){ title.setAttribute("tabindex","-1"); title.focus({preventScroll:true}); var phone=title.closest(".phone"); if(phone && matchMedia("(max-width:920px)").matches && (phone.getBoundingClientRect().top<0 || phone.getBoundingClientRect().top>innerHeight*.42)) phone.scrollIntoView({block:"start"}); return; } }
     try{ b.focus({ preventScroll:false }); }catch(e){ b.focus(); }
   }
 }
@@ -1150,7 +840,7 @@ function updateCaption(txt){
    系统要求减少动态效果时，一次把整段对白静态列出来。 */
 function startVideo(){
   var lines = videoLines();
-  if(motionPreference.matches && !forceFullMotion){
+  if(motionPreference.matches){
     R.videoFrame = lines.length - 1;
     R.seen.A07_video_done = true;
     logVideo("看完了这段无人声的视频：短句逐条列出，画面里的人自称辅导员");
@@ -1203,34 +893,21 @@ function paintVideo(){
 function doAct(act, node){
   if(!act) return;
   Sfx.tap();
-  if(act === "noop") return;
+  if(act === "noop") return; if(act === "fullscreen"){ if(document.fullscreenElement)leaveBrowserFullscreen();else requestCinemaFullscreen(); return; }
 
   if(act === "start" || act === "openCh1" || act === "replay"){
-    if(R.scene === "opening") return;
     requestCinemaFullscreen();
     startChapter(act === "replay");
     return;
   }
-  if(act === "chooseChapter"){ go("select"); return; }
-  if(act === "toggleMotion" && R.scene === "home"){
-    forceFullMotion = !forceFullMotion;
-    paintGuideMotion();
-    return;
-  }
+  if(act === "chooseChapter"){ exitToSelect(); return; }
   if(act === "toggleSound"){ btnSound.click(); return; }
 
-  if(act === "home"){ R.modal = null; killSeq(); Sfx.stopAll(); R.scene = "home"; GEN++; render(); return; }
+  if(act === "home"){ exitToSelect(); return; }
   if(act === "select"){ exitToSelect(); return; }
   if(act === "exit"){ exitToSelect(); return; }
   if(act === "info"){ R.modal = "info"; renderModal(); return; }
-  if(act === "closeModal"){ R.modal = null; renderModal(); return; }
-  if(act === "skipOpening" && R.scene === "opening"){
-    R.openingStage = "opening3";
-    go("A04");
-    say("已跳过开场，与播完落到同一个画面，只创建这一条通知。");
-    return;
-  }
-  if(act === "pauseSeq"){ togglePause(); return; }
+  if(act === "closeModal"){ R.modal = null; renderModal(); Theatre.resume(); return; }
   if(act === "toResult"){ R.modal = null; settle(); return; }
   if(act === "end"){ settle(); return; }
   if(act === "back"){
@@ -1401,20 +1078,9 @@ function leaveCinemaFullscreen(){
 }
 
 function startChapter(announceReplay){
-  killSeq(); Sfx.stopAll();
-  GEN++;
-  R = freshRound();
-  R.scene = "opening";
-  R.openingStage = "opening1";
-  var gen = GEN;
-  Sfx.unlock();
-  runSeq([
-    { ms:3000, fn:function(){ showOpeningBeat("opening2"); Sfx.ping(gen); } },
-    { ms:3000, fn:function(){ showOpeningBeat("opening3"); } },
-    { ms:6000, fn:function(){ if(R.scene === "opening") go("A04"); } }
-  ], null);
-  render();
-  say(announceReplay ? "已重开一局，上一局记录已清空。" : "新的一局开始，所有交互均为演练。");
+  Theatre.stop(); killSeq(); Sfx.stopAll(); R=freshRound(); GEN++;
+  go("A04");
+  say(announceReplay?"已重新开始。":"已进入大学生的故事。");
 }
 
 /* 复制提醒 */
@@ -1461,26 +1127,16 @@ document.addEventListener("keydown", function(ev){
     btnSound.click();
   }
 });
-document.querySelectorAll(".seg [data-mode]").forEach(function(b){
-  b.addEventListener("click", function(){
-    document.querySelectorAll(".seg [data-mode]").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
-    b.setAttribute("aria-pressed","true");
-    var m = b.getAttribute("data-mode");
-    document.documentElement.className = "mode-" + m;
-    say("阅读方式：" + ({comfort:"舒适", large:"大字", cast:"投屏"})[m]);
-  });
-});
 btnSound.addEventListener("click", function(){
   var on = btnSound.getAttribute("data-on") === "true";
   btnSound.setAttribute("data-on", on ? "false" : "true");
   btnSound.textContent = on ? "声音：关（静音）" : "声音：开";
   Sfx.setMuted(on);
   if(!on) Sfx.unlock();
-  paintCinemaSound();
 });
 btnPause.addEventListener("click", function(){ togglePause(); });
 document.getElementById("btn-exit").addEventListener("click", function(){ exitToSelect(); });
-document.getElementById("btn-info").addEventListener("click", function(){ R.modal = "info"; renderModal(); });
+document.getElementById("btn-info").addEventListener("click", function(){ R.modal = "info"; renderModal(); Theatre.suspend(); });
 
 /* 首次交互解锁音频 */
 ["pointerdown","keydown"].forEach(function(t){
@@ -1489,6 +1145,6 @@ document.getElementById("btn-info").addEventListener("click", function(){ R.moda
 window.addEventListener("pagehide", function(){ killSeq(); Sfx.stopAll(); });
 
 R.scene = "home";
-render();
+if(new URLSearchParams(location.search).get("play") === "1"){ startChapter(false); } else { location.replace("index.html"); }
 say("防骗预演 · 第一章样片。双击即可离线打开，演练中不会发生任何真实交易。");
 })();
