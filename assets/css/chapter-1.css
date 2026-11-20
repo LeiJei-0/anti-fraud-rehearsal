@@ -140,8 +140,10 @@ html.mode-cast .caption .txt{font-size:1.34rem;font-weight:600}
 .act{
   min-height:56px;padding:.42em .6em;border-radius:.42rem;cursor:pointer;text-align:left;
   border:1px solid var(--line);background:var(--paper);font-size:1.02rem;line-height:1.42;
-  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.1rem;justify-content:center
+  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.1rem;justify-content:center;
+  overflow-wrap:anywhere
 }
+.act > span:first-child{min-width:0}
 .act .sub{font-size:.78rem;color:var(--ink2);font-weight:400}
 .act.leave{border-left:.3rem solid var(--jade)}
 .act.stay{border-left:.3rem solid var(--cinnabar)}
@@ -156,45 +158,77 @@ html.mode-cast .caption .txt{font-size:1.34rem;font-weight:600}
   color:#f2f2f4
 }
 .phone .notch{width:34%;height:.5rem;background:#000;border-radius:0 0 .5rem .5rem;margin:0 auto .3rem}
-.phone .statusbar{display:flex;justify-content:space-between;font-size:.68rem;color:#c9c9cf;padding:0 .5rem .2rem}
+.phone .statusbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.1rem .6rem;
+  font-size:.68rem;color:#c9c9cf;padding:0 .5rem .2rem}
 .screen{
-  background:#f2f4f7;color:#1d1f24;border-radius:.7rem;min-height:19rem;max-height:min(48vh,25rem);
-  overflow-y:auto;padding:.55rem .55rem 1rem;display:flex;flex-direction:column;gap:.45rem
+  background:#f2f4f7;color:#1d1f24;border-radius:.7rem;min-height:19rem;max-height:min(52vh,26rem);
+  overflow-y:auto;overscroll-behavior:contain;
+  padding:.6rem .6rem 1rem;display:flex;flex-direction:column;gap:.5rem
 }
-html.mode-large .screen{min-height:21rem}
-html.mode-cast .screen{min-height:22rem}
+/* 字号变大时先把文字区域撑高；还放不下就只允许手机屏内纵向滚动，不裁句尾 */
+html.mode-large .screen{min-height:23rem;max-height:min(58vh,30rem)}
+html.mode-cast .screen{min-height:25rem;max-height:min(62vh,34rem)}
+/* 手机上下重排后纵向空间更充裕，先把文字区域加高，再考虑屏内滚动 */
+@media (max-width:920px){
+  .screen{max-height:min(70vh,32rem)}
+  html.mode-large .screen{max-height:min(74vh,34rem)}
+  html.mode-cast .screen{max-height:min(78vh,38rem)}
+}
 .screen > *{flex:0 0 auto}
-.appbar{display:flex;align-items:center;gap:.4rem;font-size:.86rem;border-bottom:1px solid #dcdfe4;
-  padding-bottom:.3rem;color:#3a3f47}
+.phone.scrollable::after{content:"屏内还可以继续向下滑 · 演练";display:block;text-align:center;
+  font-size:.7rem;color:#b9bcc4;padding:.3rem 0 0;letter-spacing:.04em}
+.screen p,.screen .note,.screen .kv,.screen .listrow,.screen .hint,.screen .msg,
+.screen .tl,.screen .tb,.screen .dm-line{min-width:0;overflow-wrap:anywhere}
+.appbar{display:flex;flex-wrap:wrap;align-items:center;gap:.3rem .4rem;font-size:.86rem;
+  border-bottom:1px solid #dcdfe4;padding-bottom:.3rem;color:#3a3f47}
 .appbar b{font-size:.95rem}
 .tag{font-size:.68rem;border:1px solid var(--jade);color:#2e5648;border-radius:2px;padding:0 .3em;white-space:nowrap}
 .tag.warn{border-color:#b4552f;color:#8c3d1f}
 .thread{display:flex;flex-direction:column;gap:.4rem}
-.msg{max-width:88%;padding:.35rem .55rem;border-radius:.45rem;font-size:.9rem;line-height:1.5}
+.msg{max-width:88%;padding:.4rem .6rem;border-radius:.45rem;font-size:.9rem;line-height:1.55}
 .msg.in{background:#fff;border:1px solid #e0e3e8;align-self:flex-start}
 .msg.out{background:#cfe6d4;align-self:flex-end}
 .msg .who{font-size:.7rem;color:#7a8089}
-.note{background:#fff;border:1px dashed #c8ccd2;border-radius:.4rem;padding:.4rem .55rem;font-size:.84rem}
+.note{background:#fff;border:1px dashed #c8ccd2;border-radius:.4rem;padding:.45rem .6rem;font-size:.84rem}
 .note h4{margin:0 0 .2rem;font-size:.86rem}
-.kv{display:flex;justify-content:space-between;gap:.6rem;font-size:.86rem;border-bottom:1px solid #eef0f3;padding:.16rem 0}
+.kv{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.15rem .6rem;font-size:.86rem;
+  border-bottom:1px solid #eef0f3;padding:.16rem 0}
 .kv:last-child{border-bottom:0}
-.kv b{font-variant-numeric:tabular-nums}
+.kv b{font-variant-numeric:tabular-nums;text-align:right}
 .kv .plus{color:#1c6b40}
 .kv .minus{color:#a03428}
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin-top:.2rem}
-.tile{aspect-ratio:1/1;border-radius:.55rem;border:0;cursor:pointer;color:#fff;font-size:.7rem;
-  display:flex;align-items:flex-end;padding:.25rem;line-height:1.2;text-align:left;min-height:44px}
-.tile.a{background:#4a6fa5}.tile.b{background:#3a6152}.tile.c{background:#8b5a2b}.tile.d{background:#6a5a8c}
-.listrow{display:flex;align-items:center;justify-content:space-between;gap:.4rem;background:#fff;
-  border:1px solid #e2e5ea;border-radius:.4rem;padding:.35rem .5rem;font-size:.86rem}
+/* A09 主屏图块：图案在上、文字名在下，整块是一个按钮；校内入口与对方入口用边色和徽标区分。
+   列宽用 px 下限，字号调大时也不会塌成一列把画面撑得过长。 */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,168px),1fr));gap:.45rem;margin-top:.2rem}
+.tile{width:100%;min-height:44px;display:flex;flex-direction:column;align-items:flex-start;gap:.12rem;
+  padding:.45rem .5rem;border:1px solid #d7dbe1;border-radius:.55rem;background:#fff;color:#22262c;
+  font:inherit;font-size:.9rem;line-height:1.35;text-align:left;cursor:pointer}
+.tile .ticon{width:2rem;height:2rem;flex:0 0 auto;color:#3a3f47}
+.tile .tl{font-weight:700}
+.tile .tb{font-size:.74rem;color:#5d6672;font-weight:400}
+.tile[data-kind="campus"]{background:#f2f7f2;border-color:#a8c4b4;border-left:.25rem solid var(--jade)}
+.tile[data-kind="campus"] .ticon{color:var(--jade)}
+.tile[data-kind="other"]{background:#faf3ee;border-color:#d8b79c;border-left:.25rem solid #b4552f}
+.tile[data-kind="other"] .ticon{color:#a34a26}
+.tile:hover:not(.off){background:#fffdf6}
+/* 没看过 A07 时，回看入口保持不可用的样子，不伪装成能点的按钮 */
+.tile.off{background:#efeae2;border-style:dashed;border-color:#c3bbad;color:#6b6558;cursor:not-allowed}
+.tile.off .ticon{color:#9b9284}
+.listrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.15rem .5rem;
+  background:#fff;border:1px solid #e2e5ea;border-radius:.4rem;padding:.35rem .5rem;font-size:.86rem}
 .listrow .r{color:#6d7480;font-size:.76rem}
 .callbtns{display:grid;grid-template-columns:repeat(2,1fr);gap:.4rem;margin-top:auto}
 .media{background:#111;border-radius:.45rem;overflow:hidden;border:1px solid #333}
-.media svg{display:block;width:100%;height:auto;aspect-ratio:4/3}
-.media .bar{display:flex;align-items:center;gap:.35rem;padding:.3rem .4rem;background:#1c1d20;color:#e8e8ea;font-size:.74rem}
-.media .track{flex:1;height:.35rem;background:#3a3b40;border-radius:9px;overflow:hidden}
-.media .track i{display:block;height:100%;width:0;background:var(--gold)}
-.subline{font-size:.86rem;background:#1c1d20;color:#f4ecd8;padding:.35rem .45rem;border-radius:.3rem}
+.media svg{display:block;width:100%;height:auto}
+/* A07 弹幕：人物画面单独一块，说的话在下面的列表里逐条出现，不压脸也不压按钮 */
+.callframe svg{aspect-ratio:41/25}
+.dm{display:flex;flex-direction:column;gap:.3rem;background:#fff;border:1px solid #e0e3e8;
+  border-radius:.45rem;padding:.45rem .55rem}
+.dm-note{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.15rem .5rem;
+  font-size:.74rem;color:#6d7480;border-bottom:1px dashed #e3e6ea;padding-bottom:.25rem}
+.dm-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:.1rem .45rem;margin:0;
+  font-size:.92rem;line-height:1.5;border-left:.2rem solid #b4552f;padding-left:.45rem}
+.dm-line .who{font-size:.72rem;font-weight:700;color:#8c3d1f;letter-spacing:.02em}
 .strike{color:#9aa1ab;text-decoration:line-through}
 .hint{font-size:.76rem;color:#767d87}
 
@@ -217,6 +251,7 @@ html.mode-cast .screen{min-height:22rem}
 .timeline li::before{content:"";position:absolute;left:-.42rem;top:.62rem;width:.72rem;height:.72rem;
   border-radius:50%;background:var(--paper);border:2px solid var(--gold)}
 .timeline li.pay::before{background:var(--cinnabar);border-color:var(--cinnabar-d)}
+.timeline li.follow::before{background:#f6e2d2;border-color:#b4552f}
 .timeline li.verify::before{background:#dcebe0;border-color:var(--jade)}
 .timeline li.help::before{background:#e2e9f3;border-color:#4a6fa5}
 .timeline .k{font-size:.74rem;letter-spacing:.1em;color:var(--ink2);display:block}
@@ -238,7 +273,7 @@ footer.foot{max-width:1320px;margin:0 auto;padding:0 .9rem 2.2rem;font-size:.85r
   *:not(.cinema-motion-on *){animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
 }
 
-/* 客厅预告和开场共用一个舞台。镜头推进时无需替换 SVG。 */
+/* 宿舍引导页与开场共用一个舞台，镜头推进时不替换 SVG。 */
 .cinema-active { overflow: hidden; background: #201a15; }
 .cinema-active > header.bar, .cinema-active > footer.foot { display: none; }
 .cinema-active > main { max-width: none; padding: 0; }
@@ -246,8 +281,11 @@ footer.foot{max-width:1320px;margin:0 auto;padding:0 .9rem 2.2rem;font-size:.85r
   --cinema-ink: #fcf0d9;
   --cinema-deep: #211912;
   --cinema-border: #ab9477;
-  --room-offset: 0px;
-  --table-offset: -116px;
+  /* A01 全景 → A02 通知亮起 → A03/A04 停在同一条通知上。
+     这三组数与 chapter-1.js 里的 CAM.notify / CAM.lock 一一对应。 */
+  --room-x: 0px;   --room-y: 0px;   --room-s: 1;
+  --a02-x: -394.8px; --a02-y: -23.3px; --a02-s: 1.55;
+  --a03-x: -1283.4px; --a03-y: -186.8px; --a03-s: 2.7;
   position: fixed;
   inset: 0;
   color: var(--cinema-ink);
@@ -277,7 +315,7 @@ footer.foot{max-width:1320px;margin:0 auto;padding:0 .9rem 2.2rem;font-size:.85r
 .cinema-text { min-height: 44px; padding: 0 .55rem; border: 0; background: transparent; cursor: pointer; }
 .cinema-text[aria-pressed="true"] { text-decoration: underline; text-underline-offset: .3em; }
 .cinema :focus-visible { outline-color: #f2cc82; }
-.cinema-guide #cam { transform: translateX(var(--room-offset)) !important; }
+.cinema-guide #cam { transform: translate(var(--room-x), var(--room-y)) scale(var(--room-s)) !important; }
 .cinema-playing .cinema-ui { pointer-events: none; }
 .cinema-playing .film-controls { pointer-events: auto; }
 .cinema-playing .watermark { top: max(12px, env(safe-area-inset-top)); left: max(12px, env(safe-area-inset-left)); bottom: auto; }
@@ -300,42 +338,84 @@ footer.foot{max-width:1320px;margin:0 auto;padding:0 .9rem 2.2rem;font-size:.85r
   justify-content: center;
 }
 .film-controls .btn { padding-inline: .65rem; font-size: .88rem; }
-.cinema-playing #cam { animation: cinema-camera 12s linear both; }
-.cinema-playing .stage-phone { animation: cinema-phone 12s linear both; }
-.cinema-playing .stage-display { animation: cinema-display 12s linear both; }
-.cinema-playing .stage-notice, .cinema-playing .phone-glow { animation: cinema-notice 12s linear both; }
-.cinema-playing .hand { animation: cinema-hand 12s linear both; }
-.cinema-paused #cam, .cinema-paused .stage-phone, .cinema-paused .stage-display,
-.cinema-paused .stage-notice, .cinema-paused .phone-glow, .cinema-paused .hand { animation-play-state: paused; }
 
-@keyframes cinema-camera {
-  0% { transform: translate(var(--room-offset), 0px) scale(1); animation-timing-function: ease-in; }
-  25% { transform: translate(var(--table-offset), -83px) scale(1.19); animation-timing-function: cubic-bezier(.25,.15,.32,1); }
-  52% { transform: translate(-1135px, -603px) scale(2.24); animation-timing-function: ease-in-out; }
-  100% { transform: translate(-1378px, -590px) scale(2.58); }
+/* Chapter one: painted plates use the same 3:2 gate in every shot. No
+   independent scale on x or y, even in a portrait viewport. */
+:root{--bg:#e6e3d7;--paper:#fbf8ed;--paper2:#eceadd;--ink:#25362f;--ink2:#4d5e55;--line:#b9bcac;--jade:#295044;--gold:#a68c55;--shadow:0 4px 15px rgb(31 47 39 / 6%);--phone-bg:#253a34;--cinnabar:#924831;--cinnabar-d:#673422;--ui:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif}
+body{font-family:var(--ui);background:var(--bg)}
+h1,h2,h3,.caption .txt,.brand b,.film-time strong{font-family:"STSong","Songti SC","SimSun",serif}
+header.bar{background:#24382f;border-bottom:1px solid #657366;padding-inline:clamp(14px,3vw,48px);position:relative}
+.bar .seg,.bar .tool{border-color:#738072}.seg button,.tool{background:#283e34}.seg button[aria-pressed=true]{background:#e9e6d8;color:#25362f}.tool[data-on=true]{background:#345748}.drill{border:0;color:#d0d1b7;letter-spacing:.03em}
+main{max-width:1460px;padding:clamp(12px,2.5vw,32px) clamp(12px,3vw,48px) 40px}.stage-wrap{background:#344639;border:0;aspect-ratio:1.6;max-height:none;border-radius:4px}.stage-wrap svg{position:absolute;inset:0}.watermark{background:#22352cd9;color:#f8f4df;letter-spacing:.035em}
+.layout{column-gap:clamp(15px,2.5vw,38px);row-gap:0;grid-template-columns:minmax(0,1.55fr) minmax(340px,1fr);grid-template-areas:"stage phone" "caption phone";grid-template-rows:auto 1fr;align-items:start}
+.caption{border:0;background:transparent;padding:1rem 0 1.3rem;border-bottom:1px solid var(--line);border-radius:0}.caption .txt{font-size:clamp(22px,1.7vw,34px);font-weight:600;line-height:1.48;margin:.2em 0}.caption .who{color:var(--jade)}.caption .cue{font-size:.84rem}.eyebrow{font-family:var(--ui);letter-spacing:.04em;color:var(--ink2)}
+.phone{max-width:100%;border-radius:1.35rem;padding:.54rem .42rem .48rem;box-shadow:0 6px 16px #1c33271a;scroll-margin-top:12px}
+.phone .notch{width:2.1rem;height:4px;border-radius:10px;background:#101e1b}
+.phone .statusbar{color:#dfe6dc;padding-inline:.6rem}
+.screen{background:#edf2eb;border-radius:.75rem;min-height:clamp(280px,43vh,430px);max-height:min(56vh,520px)}
+.appbar{color:#2d443a;font-weight:600}.note,.dm{border:1px solid #cbd5c9}.note h4{color:var(--jade)}.act{box-shadow:none;border-radius:3px;border-color:#a5b4a7}.act.leave,.act.stay{border-left:1px solid #a5b4a7}.act:hover,.act:focus-visible{background:#f4efdb;border-color:var(--jade)}.aside .btn{font-size:.85rem;min-height:44px}.pact-link{display:inline-flex;align-items:center;color:var(--jade)}
+.guide-copy h1{font-size:clamp(2.8rem,6.4vw,6.4rem);letter-spacing:-.035em}.guide-copy .guide-label{font:600 .82rem var(--ui);color:#f2dfba}
+.cinema-guide .cinema-ui{background:linear-gradient(90deg,#162b24c7,transparent 73%),linear-gradient(0deg,#15271ed9,transparent 60%)}.cinema .guide-copy{max-width:none}.cinema{--room-x:0px;--room-y:0px;--room-s:1}
+#cam{transform-box:view-box;transform-origin:77% 24%}
+.cinema-playing #cam{animation:cinema-camera 12s cubic-bezier(.42,0,.3,1) both}
+@keyframes cinema-camera{0%{transform:scale(1)}27%{transform:scale(1.07)}62%{transform:scale(1.34)}100%{transform:scale(1.44)}}
+.dorm-motes{opacity:.25}.cinema-playing .dorm-motes{animation:dust-drift 12s ease-in-out both}.cinema-playing .light-blade{animation:passing-sun 12s ease-in-out both}.stage-wrap .light-blade{opacity:.28}
+@keyframes dust-drift{from{opacity:.07;transform:translate(-8px,4px)}45%{opacity:.51}to{opacity:.12;transform:translate(19px,-17px)}}@keyframes passing-sun{from{opacity:.4;transform:translateX(0)}40%{opacity:.65}to{opacity:.2;transform:translateX(165px)}}
+.film-time,.film-notification{position:absolute;left:clamp(24px,8vw,160px);z-index:1}.film-time{top:32%;color:#fff5dd;text-shadow:0 1px 14px #263320a8;animation:time-cut 12s both}.film-time small{display:block;font-size:1.15rem;letter-spacing:.18em}.film-time strong{display:block;font-weight:normal;font-size:clamp(62px,9vw,160px);line-height:1}
+@keyframes time-cut{0%{opacity:0;transform:translateY(8px)}8%,18%{opacity:1;transform:none}27%,100%{opacity:0;transform:translateY(-5px)}}
+.film-notification{top:38%;width:min(19rem,78vw);border-left:4px solid #d4a865;background:#fcf5e4;color:#253c31;border-radius:0 8px 8px 0;padding:.85rem 1.05rem;animation:notification-cut 12s both}.film-notification span,.film-notification strong{display:block}.film-notification span{font-size:.78rem;color:#586454}.film-notification strong{font-size:1.25rem;margin:.22em 0}.film-notification p{font-size:.92rem;margin:0}
+@keyframes notification-cut{0%,26%{opacity:0;transform:translateY(10px)}33%,90%{opacity:.98;transform:none}100%{opacity:0;transform:none}}
+.film-controls{gap:6px}.film-controls .btn{border:1px solid #ced0ba59;background:#22382fe8}.film-caption{background:#20342beb;line-height:1.5}
+.cinema-playing .dorm-face{animation:dorm-glance 12s ease-in-out both;transform-origin:990px 154px}
+.cinema-playing .dorm-hand{animation:dorm-swipe 12s ease-in-out both;transform-origin:932px 232px}
+@keyframes dorm-glance{0%,21%{transform:none}29%{transform:rotate(-1deg) translateY(-1.5px)}43%,100%{transform:rotate(.15deg)}}
+@keyframes dorm-swipe{0%,12%,24%,100%{transform:none}6%,18%{transform:rotate(-1.25deg)}}
+.cinema-paused *{animation-play-state:paused!important}
+@media(max-width:920px){
+  .layout{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "caption" "phone";grid-template-rows:auto}
+  .stage-wrap{width:100%;aspect-ratio:2.3}.stage-wrap svg{height:140%!important;top:0}
+  .rightcol{margin-top:.65rem}.caption{padding:.6rem 0}
+  main{padding-top:.45rem}.bar .tools{margin-left:0;gap:4px}.bar{row-gap:.15rem}
+  .bar .tool,.seg button{font-size:clamp(14px,.8rem,21px);padding-inline:.45em}
 }
-@keyframes cinema-display { 0%, 25% { fill: #22242a; } 30%, 100% { fill: #eef2f7; } }
-@keyframes cinema-notice { 0%, 25% { opacity: 0; } 31%, 100% { opacity: 1; } }
-@keyframes cinema-phone { 0%, 57% { transform: translateY(0); } 90%, 100% { transform: translateY(-46px); } }
-@keyframes cinema-hand {
-  0%, 47% { opacity: 0; transform: translate(60px, 32px); }
-  57% { opacity: 1; transform: translate(0px, 0px); }
-  90%, 100% { opacity: 1; transform: translate(0px, -46px); }
+@media(max-width:640px){
+  .cinema svg#stage{width:150%;left:-50%}
+  .cinema-guide .cinema-ui{background:linear-gradient(0deg,#173029fa 0%,#1f3528ac 39%,transparent 72%);padding:1.3rem}
+  .cinema .film-time{top:12%;left:5%}.cinema .film-notification{left:6%;top:auto;bottom:32%}
+  .film-caption{font-size:.92rem;bottom:6.3rem}.film-controls{bottom:.5rem}.film-controls .btn{min-height:44px;font-size:14px;padding:5px 10px}
+  html.mode-cast .screen,html.mode-large .screen{min-height:min(62vh,27rem);max-height:72vh}
 }
-@media (max-width: 640px) {
-  .cinema { --room-offset: -205px; --table-offset: -340px; }
-  .cinema-guide .cinema-ui { background: linear-gradient(0deg, var(--cinema-deep), rgb(33 25 18 / 81%) 27%, transparent 66%); }
-  .film-caption { bottom: max(6.6rem, calc(env(safe-area-inset-bottom) + 6rem)); }
+@media(prefers-reduced-motion:reduce){
+  .cinema-playing:not(.cinema-motion-on) :is(#cam,.dorm-face,.dorm-hand,.dorm-motes,.light-blade,.film-time,.film-notification){animation:none!important}
+  .cinema-playing:not(.cinema-motion-on) .film-notification{opacity:0}
+  .cinema-playing[data-beat]:not(.cinema-motion-on) .film-time{opacity:0}
+  .cinema-playing[data-beat]:not(.cinema-motion-on) .film-notification{opacity:1}
 }
-@media (prefers-reduced-motion: reduce) {
-  .cinema-playing:not(.cinema-motion-on) {
-    & :is(#cam, .stage-phone, .stage-display, .stage-notice, .phone-glow, .hand) { animation: none; }
-    & #cam { transform: translateX(var(--room-offset)) !important; }
-    &[data-beat="opening2"] #cam { transform: translate(-1135px, -603px) scale(2.24) !important; }
-    &[data-beat="opening3"] #cam { transform: translate(-1378px, -590px) scale(2.58) !important; }
-    &[data-beat] .stage-display { fill: #eef2f7; }
-    &[data-beat] :is(.stage-notice, .phone-glow) { opacity: 1; }
-    &[data-beat="opening3"] :is(.stage-phone, .hand) { transform: translateY(-46px); }
-    &[data-beat="opening3"] .hand { opacity: 1; }
-  }
+.screen-wake{opacity:0;mix-blend-mode:screen}
+.cinema-playing .screen-wake{animation:screen-wakes 12s both}
+@keyframes screen-wakes{0%,23%{opacity:0}26%{opacity:1}34%{opacity:.64}100%{opacity:.22}}
+@media(prefers-reduced-motion:reduce){.cinema-playing:not(.cinema-motion-on) .screen-wake{animation:none}.cinema-playing[data-beat]:not(.cinema-motion-on) .screen-wake{opacity:.55}}
+.cam-lock{transform:scale(1.38);transform-origin:80% 12%!important}
+@media(min-width:921px){
+ .phone{max-width:min(100%,max(300px,17rem))}
+ .screen{min-height:clamp(348px,52vh,510px);max-height:min(57vh,600px)}
+ .rightcol{align-items:stretch}.actions,.aside{width:100%;max-width:30rem;margin-inline:auto}
+}
+.lockface{min-height:100%;flex:1!important;padding:.15rem .25rem .5rem;color:#304b41}
+.lock-day{text-align:center;font-weight:500;font-size:.84rem;margin-top:.25rem}
+.lock-hour{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.8rem,7vh,4.5rem);font-variant-numeric:tabular-nums;line-height:1.15;letter-spacing:-.045em;text-align:center;margin-bottom:.65rem}
+.screen:has(.lockface){background:linear-gradient(151deg,#dae2d6 1%,#b7c8b4 62%,#90aa9a)}
+.screen:has(.lockface) .appbar{justify-content:space-between;border:0}
+.lock-note.note{background:#fcfbf0f5;border:0;border-radius:12px;padding:.6rem .7rem;color:#233e33}
+.lock-meta{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;color:#52695b}
+.lock-note.note h4{font-size:.98rem;line-height:1.5;margin:.37em 0 .12em}.lock-note p{margin:0 0 .12em;font-size:.86rem}.lock-note small{color:#56675b;font-size:.72rem}
+
+/* During a phone decision on a small display, put the device and its response
+   controls together. The dorm scene has just played and remains below. */
+@media(max-width:640px){
+  .layout{grid-template-areas:"phone" "caption" "stage"}
+  .rightcol{margin-top:0}
+  .layout .stage-wrap{margin-top:12px}
+  html .layout .screen,html.mode-large .layout .screen,html.mode-cast .layout .screen{min-height:min(220px,33svh);max-height:46svh;overflow-y:auto}
+  .screen:focus-visible{outline-offset:-3px}
 }

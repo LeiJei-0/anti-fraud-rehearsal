@@ -71,7 +71,7 @@ function runSeq(items, onDone){ killSeq(); SEQ = new Seq(items, onDone); SEQ.pla
    1. 本地生成的提示音（无外部音频文件、无人声素材）
    ===================================================================== */
 var Sfx = (function(){
-  var ctx = null, master = null, noise = null, muted = false, alive = 0;
+  var ctx = null, master = null, muted = false, alive = 0;
   function ensure(){
     if(ctx) return ctx;
     var AC = window.AudioContext || window.webkitAudioContext;
@@ -103,31 +103,6 @@ var Sfx = (function(){
     env(o, t0, dur, peak || 0.14);
     o.start(t0); o.stop(t0 + dur + 0.02);
   }
-  function noiseLoop(kind, peak, gen){
-    var c = ensure(); if(!c || muted) return;
-    if(!noise){
-      noise = c.createBuffer(1, c.sampleRate * 2, c.sampleRate);
-      var d = noise.getChannelData(0);
-      for(var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * 0.5;
-    }
-    var src = c.createBufferSource();
-    src.buffer = noise; src.loop = true;
-    var f = c.createBiquadFilter();
-    f.type = kind === "tv" ? "lowpass" : "bandpass";
-    f.frequency.value = kind === "tv" ? 620 : 1400;
-    var g = c.createGain(); g.gain.value = 0;
-    g.gain.linearRampToValueAtTime(peak, c.currentTime + 0.4);
-    src.connect(f); f.connect(g); g.connect(master);
-    src.start();
-    var tok = ++alive;
-    (function guard(){
-      if(gen !== GEN || tok !== alive || muted){
-        try{ g.gain.linearRampToValueAtTime(0, c.currentTime + 0.12); src.stop(c.currentTime + 0.2); }catch(e){}
-        return;
-      }
-      setTimeout(guard, 250);
-    })();
-  }
   return {
     unlock: unlock,
     isMuted: function(){ return muted; },
@@ -136,13 +111,10 @@ var Sfx = (function(){
       if(master) master.gain.value = m ? 0 : 0.85;
       if(m) this.stopAll();
     },
-    /* 亮屏提示音：只响一次 */
+    /* 亮屏提示音：只在通知出现时响一次 */
     ping: function(gen){ if(gen !== GEN) return; beep(1180, 880, 0.16, "triangle", 0.16); beep(880, 660, 0.2, "sine", 0.1, 0.14); },
-    tick: function(gen){ if(gen !== GEN) return; beep(2400, 1500, 0.06, "triangle", 0.05); },
     tap: function(){ beep(520, 620, 0.05, "square", 0.05); },
-    soft: function(){ beep(320, 240, 0.22, "sine", 0.09); },
     alert: function(){ beep(300, 180, 0.5, "sawtooth", 0.1); },
-    tv: function(gen){ noiseLoop("tv", 0.022, gen); },
     /* 来电铃声：只在等待时循环；接听/挂断/暂停/退出即停 */
     ring: function(gen){
       if(gen !== GEN) return;
@@ -180,11 +152,11 @@ function freshRound(){
     videoFrame: 0,
     verify: { taskList:false, teacherReply:false, videoCheck:false, onlyDialed:false },
     log: [],
+    choices: [],  // Only deliberate player decisions, in the order they occurred.
     modal: null,       // 'loss' | 'info'
     payView: "form",   // form | readonly
     sub: "hub",        // A09 子页
-    openingStage: "opening1",
-    endingSkipped: false
+    openingStage: "opening1"
   };
 }
 R = freshRound();
@@ -215,238 +187,87 @@ function endingKey(){
   return "safe";
 }
 var ENDINGS = {
-  loss:     { name:"出现模拟损失", cue:"你确认了演练中的垫付", tone:"bad" },
-  close:    { name:"有惊无险", cue:"你在确认前停下", tone:"mid" },
-  verified: { name:"及时核实", cue:"你用校园渠道取得了答复", tone:"ok" },
-  safe:     { name:"安全离开", cue:"你停止了这次接触", tone:"mid" }
+  loss:     { name:"出现模拟损失" },
+  close:    { name:"有惊无险" },
+  verified: { name:"及时核实" },
+  safe:     { name:"安全离开" }
 };
 
 /* =====================================================================
    3. 分层场景（SVG）
    ===================================================================== */
-/* 镜头预设：把用户坐标 (fx,fy) 居中到 viewBox 中心 (450,310)，
-   偏移量 = 中心 - 焦点 × 缩放 */
-function camAt(s, fx, fy){ return "translate(" + (450 - fx*s).toFixed(1) + "px," + (310 - fy*s).toFixed(1) + "px) scale(" + s + ")"; }
-var CAM = {
-  wide:    camAt(1, 450, 310),
-  table:   camAt(2.15, 712, 426),   // A02 茶几上的手机亮起
-  pickup:  camAt(2.5, 716, 424),    // A03 手拿起手机
-  mid:     camAt(1.32, 448, 380),   // 主线中景：人物 + 沙发 + 茶几
-  close:   camAt(1.5, 330, 356),    // 求助：两个人物
-  dim:     camAt(1.28, 404, 356)    // 看视频 / 垫付：人物压暗
-};
-function stageSVG(mode){
-  var cam = CAM.wide;
-  if(mode === "opening2") cam = CAM.table;
-  else if(mode === "opening3") cam = CAM.pickup;
-  else if(mode === "play") cam = CAM.mid;
-  else if(mode === "help") cam = CAM.close;
-  else if(mode === "video") cam = CAM.dim;
-  else if(mode === "pay") cam = CAM.dim;
-  else if(mode === "end-safe") cam = CAM.table;
-  else if(mode === "end-verified") cam = CAM.close;
-  else if(mode === "end-close") cam = CAM.pickup;
-  else if(mode === "end-loss") cam = CAM.mid;
-
-  var lit = (mode === "opening2" || mode === "opening3") ? 1 : (mode === "play" || mode === "help" ? .85 : 0);
-  var notif = (mode === "opening2" || mode === "opening3") ? 1 : 0;
-  var hand = (mode === "opening3" || mode === "end-close") ? 1 : 0;
-  var mate = (mode === "help") ? 1 : 0;
-  var dim = (mode === "video" || mode === "pay" || mode === "end-loss") ? .45 : 0;
-  var tv = (mode === "end-loss") ? .1 : .8;
-
-  return '' +
-  '<svg id="stage" viewBox="0 0 900 620" preserveAspectRatio="xMidYMid slice" role="img" ' +
-  'aria-label="现代中式客厅：学生坐在沙发上看电视，茶几上有翻开的课表和一部手机">' +
-  '<defs>' +
-    '<linearGradient id="gwall" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="#efe4cf"/><stop offset="1" stop-color="#ddceae"/></linearGradient>' +
-    '<linearGradient id="gfloor" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="#8b6b45"/><stop offset="1" stop-color="#6d5133"/></linearGradient>' +
-    '<radialGradient id="gtv" cx=".5" cy=".5" r=".75">' +
-      '<stop offset="0" stop-color="#cfe6f2" stop-opacity=".95"/><stop offset="1" stop-color="#5c7f92" stop-opacity=".25"/></radialGradient>' +
-    '<radialGradient id="glow" cx=".5" cy=".5" r=".6">' +
-      '<stop offset="0" stop-color="#ffe9a8" stop-opacity="' + (0.55*(mode === 'wide' ? 1 : lit)) + '"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>' +
-  '</defs>' +
-  '<g id="cam" style="transform:' + cam + ';transform-origin:0 0;transform-box:view-box;' +
-     'transition:transform 1.5s cubic-bezier(.36,0,.2,1)">' +
-
-    /* 墙、地面 */
-    '<rect x="0" y="0" width="900" height="430" fill="url(#gwall)"/>' +
-    '<rect x="0" y="418" width="900" height="202" fill="url(#gfloor)"/>' +
-    '<g stroke="#7d5f3d" stroke-width="1" opacity=".45">' +
-      '<line x1="0" y1="470" x2="900" y2="452"/><line x1="0" y1="520" x2="900" y2="492"/>' +
-      '<line x1="0" y1="575" x2="900" y2="540"/></g>' +
-
-    /* 中式格栅窗 */
-    '<g opacity=".9"><rect x="46" y="60" width="188" height="210" fill="#cfe0e4" stroke="#6e5335" stroke-width="7"/>' +
-    '<g stroke="#6e5335" stroke-width="4">' +
-      '<line x1="109" y1="60" x2="109" y2="270"/><line x1="172" y1="60" x2="172" y2="270"/>' +
-      '<line x1="46" y1="130" x2="234" y2="130"/><line x1="46" y1="200" x2="234" y2="200"/></g>' +
-    '<rect x="46" y="60" width="188" height="210" fill="none" stroke="#a98b5e" stroke-width="2"/></g>' +
-
-    /* 挂轴 + 兰草 */
-    '<g><rect x="300" y="42" width="112" height="212" fill="#f7f1e2" stroke="#b8a681" stroke-width="2"/>' +
-    '<rect x="296" y="36" width="120" height="12" fill="#6e5335" rx="3"/>' +
-    '<rect x="296" y="248" width="120" height="12" fill="#6e5335" rx="3"/>' +
-    '<g stroke="#3f5f4c" stroke-width="3" fill="none" stroke-linecap="round">' +
-      '<path d="M342 214 C 336 176, 348 148, 366 122"/><path d="M342 214 C 350 182, 340 158, 322 136"/>' +
-      '<path d="M344 212 C 356 196, 376 190, 392 192"/></g>' +
-    '<circle cx="384" cy="70" r="12" fill="#9d2f26" opacity=".85"/></g>' +
-
-    /* 电视与矮柜 */
-    '<g><rect x="470" y="252" width="360" height="96" fill="#7a5a38" rx="6"/>' +
-      '<rect x="486" y="270" width="150" height="60" fill="#6a4c2e" rx="4"/>' +
-      '<rect x="660" y="270" width="150" height="60" fill="#6a4c2e" rx="4"/>' +
-      '<rect x="536" y="106" width="252" height="148" fill="#15171b" rx="7"/>' +
-      '<rect x="546" y="115" width="232" height="130" fill="url(#gtv)" opacity="' + tv + '">' +
-        '<animate attributeName="opacity" values="' + tv + ';' + (tv*0.82) + ';' + tv + ';' + (tv*0.9) + ';' + tv +
-        '" dur="3.4s" repeatCount="indefinite"/></rect>' +
-      '<g opacity="' + (tv*0.7) + '"><rect x="574" y="150" width="176" height="10" fill="#eef6fa" rx="5"/>' +
-        '<rect x="574" y="176" width="120" height="10" fill="#eef6fa" rx="5"/></g>' +
-      '<rect x="646" y="254" width="32" height="10" fill="#2a2b30"/></g>' +
-
-    /* 沙发 */
-    '<g><rect x="196" y="326" width="330" height="126" fill="#4b5f6b" rx="18"/>' +
-      '<rect x="176" y="368" width="370" height="92" fill="#5b7280" rx="18"/>' +
-      '<rect x="196" y="336" width="120" height="56" fill="#6d8794" rx="12" opacity=".7"/>' +
-      '<rect x="320" y="336" width="120" height="56" fill="#617c8a" rx="12" opacity=".7"/>' +
-      '<rect x="188" y="452" width="22" height="26" fill="#3b2a1b" rx="4"/>' +
-      '<rect x="512" y="452" width="22" height="26" fill="#3b2a1b" rx="4"/></g>' +
-
-    /* 人物剪影（坐着，膝旁课表） */
-    '<g class="person" fill="#2b2f38">' +
-      '<ellipse cx="404" cy="288" rx="30" ry="32"/>' +
-      '<path d="M362 400 C 358 342, 372 320, 404 318 C 438 320, 452 344, 450 400 Z"/>' +
-      '<path d="M444 350 C 470 356, 482 378, 480 402 L 452 404 Z" opacity=".95"/>' +
-      '<rect x="356" y="396" width="106" height="26" rx="12" fill="#232730"/>' +
-      '<path d="M348 300 C 336 274, 352 254, 372 258 C 368 272, 372 288, 380 300 Z" fill="#20242b"/></g>' +
-    /* 课表 */
-    '<g><rect x="452" y="404" width="76" height="52" fill="#f6f0df" stroke="#c3b48f" stroke-width="2" transform="rotate(-7 490 430)"/>' +
-      '<g stroke="#a99a76" stroke-width="2" transform="rotate(-7 490 430)">' +
-        '<line x1="460" y1="418" x2="520" y2="418"/><line x1="460" y1="430" x2="520" y2="430"/>' +
-        '<line x1="460" y1="442" x2="506" y2="442"/></g></g>' +
-
-    /* 同学（求助时出现） */
-    '<g class="mate" opacity="' + mate + '" fill="#3a4750">' +
-      '<ellipse cx="248" cy="300" rx="27" ry="29"/>' +
-      '<path d="M210 404 C 208 350, 220 330, 248 328 C 278 330, 290 352, 288 404 Z"/>' +
-      '<rect x="206" y="400" width="88" height="24" rx="11"/></g>' +
-
-    /* 茶几 + 手机 */
-    '<g><rect x="588" y="392" width="272" height="26" fill="#8a6640" rx="7"/>' +
-      '<rect x="606" y="418" width="18" height="86" fill="#6f5131"/>' +
-      '<rect x="824" y="418" width="18" height="86" fill="#6f5131"/>' +
-      '<ellipse cx="742" cy="404" rx="132" ry="16" fill="#a37d4f" opacity=".55"/>' +
-      /* 手机 */
-      '<circle class="phone-glow" opacity="' + lit + '" cx="712" cy="378" r="86" fill="url(#glow)"/>' +
-      '<g class="stage-phone"><g transform="translate(668,338) rotate(-4)">' +
-        '<rect x="0" y="0" width="88" height="176" rx="14" fill="#1a1c21" stroke="#4c4f57" stroke-width="2"/>' +
-        '<rect class="stage-display" x="5" y="6" width="78" height="164" rx="9" fill="' + (lit ? "#eef2f7" : "#22242a") + '"/>' +
-        '<g class="stage-notice" opacity="' + (lit ? 1 : 0) + '"><rect x="12" y="14" width="64" height="7" rx="3.5" fill="#b9c0cb" opacity=".85"/>' +
-               '<rect x="10" y="28" width="68" height="52" rx="6" fill="#ffffff" stroke="#c4cad3"/>' +
-               '<text x="15" y="41" font-size="8.5" fill="#2f353d" font-family="serif">周末任务招募</text>' +
-               '<text x="15" y="52" font-size="6.4" fill="#5c6774" font-family="serif">商品资料整理 · 日结</text>' +
-               '<text x="15" y="62" font-size="5.6" fill="#8b93a0" font-family="serif">短信 · 陌生号码 · 15:12</text>' +
-               '<rect x="10" y="86" width="68" height="9" rx="4.5" fill="#dfe4ea"/>' +
-               '<rect x="10" y="99" width="46" height="9" rx="4.5" fill="#e7ebf0"/></g>' +
-      '</g></g></g>' +
-
-    /* 手（拿起手机 / 结尾放下） */
-    '<g class="hand" opacity="' + hand + '" fill="#d8ac83" stroke="#b98d63" stroke-width="2">' +
-      '<path d="M900 560 C 830 520, 790 470, 762 420 C 750 398, 762 384, 778 396 C 792 408, 806 428, 820 448 ' +
-      'C 850 492, 880 520, 900 534 Z"/>' +
-      '<g transform="translate(750,379) rotate(-10)">' +
-        '<rect x="0" y="0" width="17" height="58" rx="8"/>' +
-        '<rect x="16" y="-6" width="16" height="60" rx="8"/>' +
-        '<rect x="32" y="0" width="15" height="56" rx="8"/>' +
-        '<rect x="46" y="10" width="14" height="46" rx="7"/></g></g>' +
-
-    /* 绿植 */
-    '<g><rect x="828" y="330" width="46" height="62" fill="#9c5b34" rx="5"/>' +
-      '<g stroke="#3f6b52" stroke-width="6" fill="none" stroke-linecap="round">' +
-        '<path d="M851 330 C 838 300, 842 274, 858 254"/><path d="M851 330 C 866 306, 884 296, 896 296"/>' +
-        '<path d="M851 330 C 836 316, 818 314, 806 320"/></g></g>' +
-
-    /* 整体压暗（看视频 / 垫付时） */
-    '<rect x="-900" y="-620" width="2700" height="1860" fill="#140f0a" opacity="' + dim + '" pointer-events="none"/>' +
-  '</g></svg>';
-}
-
-/* 视频分支用：原创角色静帧（无实拍、无人声，素材待补） */
-function frameSVG(i){
-  var shots = [
-    { bg1:"#4a5f6e", bg2:"#2b3a45", zoom:1,    x:0,   y:0,  label:"中景 · 办公室里的人" },
-    { bg1:"#54687a", bg2:"#2f3f4a", zoom:1.25, x:-40, y:-25, label:"近景 · 对方开口" },
-    { bg1:"#3f505c", bg2:"#26333c", zoom:1.05, x:20,  y:-10, label:"特写 · 屏幕上的转账说法" },
-    { bg1:"#4d5f6b", bg2:"#2a3740", zoom:1.15, x:-15, y:5,   label:"中景 · 对方催促" }
-  ];
-  var s = shots[i % 4];
-  return '<svg viewBox="0 0 410 300" role="img" aria-label="原创角色静帧：画面中的人自称辅导员">' +
-    '<defs><linearGradient id="vbg' + i + '" x1="0" y1="0" x2="0" y2="1">' +
-      '<stop offset="0" stop-color="' + s.bg1 + '"/><stop offset="1" stop-color="' + s.bg2 + '"/></linearGradient></defs>' +
-    '<rect width="410" height="300" fill="url(#vbg' + i + ')"/>' +
-    '<g transform="translate(' + s.x + ',' + s.y + ') scale(' + s.zoom + ')" style="transform-origin:205px 170px">' +
-      '<rect x="26" y="40" width="96" height="120" fill="#cfe0e6" opacity=".35" rx="4"/>' +
-      '<g stroke="#22303a" stroke-width="3" opacity=".5"><line x1="74" y1="40" x2="74" y2="160"/><line x1="26" y1="100" x2="122" y2="100"/></g>' +
-      '<rect x="250" y="150" width="150" height="12" fill="#8a6b47" opacity=".6" rx="4"/>' +
-      '<ellipse cx="212" cy="128" rx="40" ry="44" fill="#e0c3a0"/>' +
-      '<path d="M172 118 C 170 88, 196 78, 214 80 C 236 82, 254 96, 252 122 C 244 108, 232 100, 212 100 C 194 100, 180 106, 172 118 Z" fill="#242a31"/>' +
-      '<g fill="#2c333b"><circle cx="198" cy="128" r="4"/><circle cx="228" cy="128" r="4"/></g>' +
-      '<path d="M200 148 C 208 154, 220 154, 228 148" stroke="#8c5b46" stroke-width="3" fill="none" stroke-linecap="round"/>' +
-      '<path d="M148 300 C 146 226, 172 196, 212 194 C 254 196, 280 226, 278 300 Z" fill="#9fb4c4"/>' +
-      '<path d="M212 194 L 196 236 L 212 300 L 228 236 Z" fill="#8aa2b3" opacity=".8"/>' +
-      '<rect x="150" y="252" width="128" height="34" fill="#7c5c3c" opacity=".55" rx="4"/>' +
-    '</g>' +
-    '<rect x="0" y="0" width="410" height="26" fill="rgba(12,10,8,.72)"/>' +
-    '<text x="10" y="19" fill="#f6ecd8" font-size="14">视频通话 · 陌生账号</text>' +
-    '<text x="400" y="19" text-anchor="end" fill="#f6ecd8" font-size="12">' + esc(s.label) + '</text>' +
-    '<rect x="0" y="274" width="410" height="26" fill="rgba(12,10,8,.72)"/>' +
-    '<text x="10" y="292" fill="#f6ecd8" font-size="12">原创角色静帧 ' + (i+1) + '/4 · 人声配音待补 · 字幕可独立阅读</text>' +
-  '</svg>';
+function callerSVG(){
+  return '<svg id="vchar" viewBox="0 0 410 240" role="img" aria-label="模拟视频中的陌生人戴着眼镜，穿着米白衬衫。没有声音。"><image href="assets/art/caller.svg" width="410" height="240"/></svg>';
 }
 
 /* =====================================================================
    4. 手机内的页面片段
    ===================================================================== */
-function statusbar(t){
-  return '<div class="statusbar"><span>' + (t || "周六 15:12") + '</span><span>演练网络 · 无真实连接</span></div>';
-}
-function phoneShell(inner, title){
-  return '<div class="phone" role="group" aria-label="模拟手机">' +
-    '<div class="notch"></div>' + statusbar() +
-    '<div class="screen" id="screen">' + (title ? '<div class="appbar"><b>' + title + '</b><span class="tag">演练</span></div>' : '') + inner + '</div></div>';
+function statusbar(){return '<div class="statusbar"><span>15:12</span>'+Theatre.symbols+'</div>';}
+function phoneShell(inner,title){
+  return '<div class="phone" role="group" aria-label="模拟手机" data-page="'+(R.scene==="A04"?"lock":"app")+'"><div class="notch" aria-hidden="true"></div>'+statusbar()+
+    '<div class="phone-flow"><div class="screen" id="screen">'+(title?'<div class="appbar"><b>'+esc(title)+'</b></div>':'')+inner+'</div><div class="reply-tray"></div></div><div class="home-indicator" aria-hidden="true"></div></div>';
 }
 function bubble(who, text, out){
   return '<div class="msg ' + (out ? "out" : "in") + '"><div class="who">' + esc(who) + '</div><p>' + esc(text) + '</p></div>';
 }
 function notifCard(){
-  return '<div class="note"><h4>周末任务招募 · 商品资料整理</h4>' +
-    '<div class="kv"><span>来源</span><b>陌生号码 · 短信</b></div>' +
-    '<div class="kv"><span>说明</span><b>日结 · 线上可做</b></div>' +
+  return '<div class="note"><h4>周末任务招募</h4>' +
+    '<div class="kv"><span>说明</span><b>商品资料整理 · 日结</b></div>' +
+    '<div class="kv"><span>来源</span><b>短信 · 陌生号码</b></div>' +
     '<div class="kv"><span>时间</span><b>周六 15:12</b></div></div>';
 }
 function ledgerRow(label, val, cls, note){
   return '<div class="kv"><span>' + esc(label) + (note ? '<span class="r"> · ' + esc(note) + '</span>' : '') +
     '</span><b class="' + (cls||"") + '">' + esc(val) + '</b></div>';
 }
+/* A09 主屏图块：本地绘制的图案 + 图案下的文字名，整块是一个按钮可用键盘进入。
+   没看过 A07 时回看入口不是可用按钮，不伪装成能点的样子。 */
+function iconSVG(name){
+  var p = {
+    gate: '<path d="M4 20h16M6 20v-9h12v9M3 11 12 4l9 7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>' +
+          '<path d="M10 20v-5h4v5" fill="none" stroke="currentColor" stroke-width="2"/>',
+    book: '<rect x="4" y="4" width="14" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>' +
+          '<path d="M6.5 8h3M6.5 12h3M6.5 16h3" stroke="currentColor" stroke-width="2"/>' +
+          '<circle cx="14" cy="10.5" r="2.3" fill="currentColor"/>' +
+          '<path d="M10.6 16.5c.8-2.2 6-2.2 6.8 0z" fill="currentColor"/>',
+    chat: '<path d="M4 5h16v11h-6l-4 3v-3H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>' +
+          '<path d="M7.5 9h9M7.5 12h6" stroke="currentColor" stroke-width="2"/>',
+    play: '<rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>' +
+          '<path d="M10.5 9.2 15.5 12l-5 2.8z" fill="currentColor"/>'
+  }[name] || "";
+  return '<svg class="ticon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + p + '</svg>';
+}
 function tiles(list){
   return '<div class="tiles">' + list.map(function(t){
-    return '<button type="button" class="tile ' + (t.cls||"a") + '" data-act="' + esc(t.act) + '">' + esc(t.label) + '</button>';
+    var inner = iconSVG(t.icon) + '<span class="tl">' + esc(t.label) + '</span><span class="tb">' + esc(t.badge) + '</span>';
+    if(t.off) return '<div class="tile off" data-kind="off" aria-disabled="true">' + inner + '</div>';
+    return '<button type="button" class="tile" data-kind="' + esc(t.kind) + '" data-act="' + esc(t.act) + '">' + inner + '</button>';
   }).join("") + '</div>';
+}
+/* A07 弹幕：画面中的人说的话，一条一句，都带说话人标识；不做观众评论样式，也不放任何语音。 */
+function videoLines(){
+  return [
+    { who:"自称辅导员", txt:"喂，是我。" },
+    { who:"自称辅导员", txt:"我是你们辅导员。" },
+    { who:"自称辅导员", txt:"这个周末任务学校知道。" },
+    { who:"自称辅导员", txt:"你先看一下对方的通知。" },
+    { who:"自称辅导员", txt:"跟着做完就行。" },
+    { who:"自称辅导员", txt:"钱的事不用怕，做完一起退给你。" }
+  ];
+}
+function dmLines(upto){
+  var lines = videoLines(), n = Math.max(1, Math.min(upto, lines.length)), out = "";
+  for(var i = 0; i < n; i++){
+    out += '<p class="dm-line" data-i="' + i + '"><b class="who">' + esc(lines[i].who) + '</b>' +
+      '<span>' + esc(lines[i].txt) + '</span></p>';
+  }
+  return out;
 }
 
 /* =====================================================================
    5. 镜头内容
    ===================================================================== */
-function sceneName(){
-  var m = {
-    opening:"开场 A01–A03", A04:"A04 · 第一条通知", A05:"A05 · 看到试做返利", A06:"A06 · 连续任务",
-    A07:"A07 · 自称辅导员的视频", A08:"A08 · 找同学商量", A09:"A09 · 校园渠道核实",
-    A10:"A10 · 垫付确认（演练）", ending:"结尾", review:"本局复盘"
-  };
-  return m[R.scene] || "演练";
-}
 function currentSpec(){
   switch(R.scene){
     case "A04": return specA04();
@@ -456,26 +277,24 @@ function currentSpec(){
     case "A08": return specA08();
     case "A09": return specA09();
     case "A10": return specA10();
-    case "ending": return specEnding();
     default: return null;
   }
 }
 
 function specA04(){
   return {
-    stage: "opening3",
-    cap: { who:"旁白", txt:"周末下午。你正想找一份兼职补贴生活费，手机里来了一条通知。",
-           cue:"两个选择都可以，慢慢读。随时能退出。" },
+    stage: "lock",
+    cap: { who:"旁白", txt:"手机亮了。陌生号码发来一份按日结算的兼职。",
+           cue:"两个选择都可以，慢慢读。什么都不点也会一直停在这里。" },
     phone: phoneShell(
-      notifCard() +
-      '<div class="note"><b>锁屏预览</b><div class="kv"><span>短信</span><b>收到 1 条</b></div>' +
-      '<div class="hint">演练提示：现在还没有打开聊天，也没有任何付款动作。</div></div>',
+      '<div class="lockface"><div class="lock-day">周六　下午</div><div class="lock-hour">15:12</div>' +
+      '<button type="button" class="lock-note note notification-tap" data-act="go:A05" aria-label="查看兼职短信"><span class="lock-meta"><span>信息</span><span>现在</span></span><strong>周末任务招募</strong><span>商品资料整理，按日结算。</span><small>陌生号码</small></button></div>',
       "第一条通知"),
     actions: [
-      { label:"先放一放", sub:"不打开，结束这次接触", cls:"leave", act:"end" },
-      { label:"打开看看", sub:"进入任务聊天", cls:"stay", act:"go:A05" }
+      { label:"先放一放", sub:"不打开，直接看本局结果", cls:"leave", act:"end" },
+      { label:"查看", sub:"打开这条通知里的聊天", cls:"stay", act:"go:A05" }
     ],
-    aside: [ { label:"找人商量", act:"go:A08" }, { label:"结束本章", act:"end" } ]
+    aside: [ { label:"找人商量", act:"go:A08" } ]
   };
 }
 
@@ -531,26 +350,28 @@ function specA06(){
 }
 
 function specA07(){
+  var lines = videoLines();
+  var shown = Math.max(1, Math.min((R.videoFrame||0) + 1, lines.length));
   var done = R.seen.A07_video_done;
-  var vi = Math.max(0, Math.min(R.videoFrame || 0, 3));
   var body =
-    '<div class="media"><div id="vframe">' + frameSVG(vi) + '</div>' +
-      '<div class="subline" id="vsub">' + esc(videoLines()[vi]) + '</div>' +
-      '<div class="bar"><span id="vtime">00:' + ("0" + (3*(vi+1))).slice(-2) + ' / 00:11</span>' +
-      '<span class="track"><i id="vbar" style="width:' + (25*(vi+1)) + '%"></i></span>' +
-      '<span>' + (done ? "播放结束" : "静帧分镜") + '</span></div></div>' +
+    '<div class="media callframe">' + callerSVG() + '</div>' +
+    '<div class="dm" id="vlines" role="log" aria-live="polite">' +
+      '<div class="dm-note"><span>' + (done ? "他说的话都留在这里，可以再读一遍。" : "画面里的人说的话（没有声音，一句一句出现）") + '</span>' +
+      '<span class="dm-count" id="vcount">第 ' + shown + ' 条 / 共 ' + lines.length + ' 条</span></div>' +
+      dmLines(shown) +
+    '</div>' +
     '<div class="note"><b>这是陌生账号发来的视频邀请</b>' +
       '<div class="kv"><span>显示名称</span><b>王老师（新添加）</b></div>' +
       '<div class="kv"><span>号码</span><b>不是校园通讯录里的号码</b></div>' +
-      '<div class="hint">字幕是画面中人的自称，不代表身份已经确认。人声配音与实拍素材待补。</div></div>';
+      '<div class="hint">短句是画面中人的自称，不代表身份已经确认。看过这一段只算接收信息。</div></div>';
   if(!done){
     return {
       stage: "video",
-      cap: { who:"自称辅导员的人", txt: videoLines()[R.videoFrame || 0],
-             cue:"看完或跳过之后再选下一步。视频播放中也可以暂停或退出。" },
+      cap: { who:"画面中的人（自称辅导员）", txt: lines[Math.min(shown,lines.length)-1].txt,
+             cue:"看完或者跳过之后再选下一步。过程中随时可以暂停，也可以退出。" },
       phone: phoneShell(body, "视频通话"),
       actions: [
-        { label:"跳过视频", sub:"直接看这一步能做什么", cls:"stay", act:"videoSkip" }
+        { label:"跳过视频", sub:"直接看这一段的全部短句", cls:"stay", act:"videoSkip" }
       ],
       extra: [ { label:"暂停 / 继续播放", act:"videoPause" } ],
       aside: [ { label:"这局先到这里", act:"end" }, { label:"退出", act:"exit" } ]
@@ -558,8 +379,8 @@ function specA07(){
   }
   return {
     stage: "video",
-    cap: { who:"字幕（该账号自称）", txt:"「我是你们辅导员。这个周末任务学校知道，你先看一下对方的通知。」",
-           cue:"以上是对方的说法。这一段只算你看到了信息，没有跟进任何付款。" },
+    cap: { who:"画面中的人（自称辅导员）", txt:"「我是你们辅导员。这个周末任务学校知道。」",
+           cue:"以上是对方的说法。这一段只算你看到了信息，没有跟任何付款动作。" },
     phone: phoneShell(body, "视频通话 · 已结束"),
     actions: [
       { label:"回到任务聊天", sub:"回到看视频之前", cls:"leave", act:"back" },
@@ -567,14 +388,6 @@ function specA07(){
     ],
     aside: [ { label:"这局先到这里", act:"end" }, { label:"找人商量", act:"go:A08" } ]
   };
-}
-function videoLines(){
-  return [
-    "喂，是我。你那个周末任务我看到了。",
-    "我是你们辅导员。这个周末任务学校知道。",
-    "你先看一下对方的通知，跟着做完就行。",
-    "钱的事不用怕，做完一起退给你。"
-  ];
 }
 
 function specA08(){
@@ -608,7 +421,7 @@ function specA08(){
   };
   if(post){
     spec.actions = [
-      { label:"回到结尾", sub:"保留出现模拟损失的结果", cls:"stay", act:"lossModal" },
+      { label:"回到结算提示", sub:"保留出现模拟损失的结果", cls:"stay", act:"lossModal" },
       { label:"整理这一局的记录", sub:"只展示已发生的动作", act:"showLog" }
     ];
     spec.extra = [ { label:"从头重玩（清空本局记录）", act:"replay" } ];
@@ -624,12 +437,14 @@ function specA08(){
 
 function specA09(){
   var hub =
-    '<div class="hint">手机主屏。下面两个都是学校自己的入口，不是对方给的链接。</div>' +
+    '<div class="hint">手机主屏。前两个图案是学校自己的入口，第三个是对方发来的聊天；点图案本身还不算核实。</div>' +
     tiles([
-      { label:"校园服务", cls:"b", act:"sub:jobs" },
-      { label:"学校通讯录", cls:"a", act:"sub:contacts" },
-      { label:"任务聊天", cls:"c", act:"back" },
-      { label:"回看那段视频", cls:"d", act: R.seen.A07 ? "go:A07" : "noop" }
+      { icon:"gate", label:"校园服务", badge:"校内 · 原有", kind:"campus", act:"sub:jobs" },
+      { icon:"book", label:"学校通讯录", badge:"校内 · 原有", kind:"campus", act:"sub:contacts" },
+      { icon:"chat", label:"任务聊天", badge:"对方发来", kind:"other", act:"back" },
+      R.seen.A07
+        ? { icon:"play", label:"回看那段视频", badge:"本局看过", kind:"other", act:"go:A07" }
+        : { icon:"play", label:"回看那段视频", badge:"本局没看过", kind:"off", off:true }
     ]);
   var body, title, cap, actions;
 
@@ -759,264 +574,54 @@ function specA10(){
   return spec;
 }
 
-function specEnding(){
-  var k = endingKey();
-  var e = ENDING_META[k];
-  return {
-    stage: e.stage,
-    cap: { who:"结尾", txt: e.lines[e.line || 0], cue: R.endingSkipped ? "已跳过结尾动画，进入复盘。" : "结尾可以暂停、跳过或退出。" },
-    phone: phoneShell(e.phone, "本局结果"),
-    actions: [
-      { label:"跳过结尾", sub:"直接进入复盘", cls:"stay", act:"toReview" }
-    ],
-    aside: [ { label:"暂停 / 继续", act:"pauseSeq" }, { label:"退出", act:"exit" } ]
-  };
-}
-var ENDING_META = {
-  safe: { stage:"end-safe", line:0, lines:[
-      "手机返回主屏，客厅的电视还开着。",
-      "你把课表翻回原处，这条通知没有再点开。",
-      "你停止了这次接触。任务来源仍待核实。"],
-    phone:'<div class="note"><b>本局做过的关键动作</b><div class="hint">没有进入垫付确认页，也没有完成核实。</div></div>' },
-  verified: { stage:"end-verified", line:0, lines:[
-      "手机里留着校园渠道的答复。",
-      "你给同学林嘉回了一条消息。",
-      "你用学校的联系方式核实了任务。"],
-    phone:'<div class="note"><b>已核实</b><div class="hint">答复来自校园通讯录里原有的号码与学校就业平台。</div></div>' },
-  close: { stage:"end-close", line:0, lines:[
-      "垫付页面收起来了。",
-      "手把手机放回桌面，屏幕还亮着。",
-      "你看过垫付要求，在确认前停下。"],
-    phone:'<div class="note"><b>停下在哪一步</b><div class="hint">进入了标注演练的确认页，没有点确认。</div></div>' },
-  loss: { stage:"end-loss", line:0, lines:[
-      "确认之后，任务页还挂在屏幕上。",
-      "你打开了和同学、老师的对话。",
-      "本局出现模拟损失。没有发生真实扣款。"],
-    phone:'<div class="note"><b>保留下来的记录</b><div class="hint">任务消息、视频、垫付确认都记在本局里。</div></div>' }
-};
-
 /* =====================================================================
    6. 渲染
    ===================================================================== */
 function render(){
-  document.body.classList.toggle("cinema-active", R.scene === "home" || R.scene === "opening");
   var spec = currentSpec();
-  if(R.scene === "home") renderHome();
-  else if(R.scene === "select") renderSelect();
-  else if(R.scene === "opening") renderOpening();
+  if(R.scene === "select") renderSelect();
   else if(R.scene === "review") renderReview();
   else if(spec) renderScene(spec);
   else { R.scene = "select"; renderSelect(); return; }
-  btnPause.hidden = !(R.scene === "opening" || R.scene === "A07" || R.scene === "ending");
-  btnPause.textContent = (SEQ && SEQ.paused) ? "继续" : "暂停";
+  btnPause.hidden = R.scene !== "A07" || !SEQ;
+  btnPause.textContent = (SEQ && SEQ.paused) ? "继续对白" : "暂停对白";
   var sc = document.getElementById("screen");
-  if(sc) sc.scrollTop = 0;
+  if(sc){
+    sc.scrollTop = 0;
+    /* 内容高出可见区时，明确告诉玩家屏内还能继续滚，不是句子被裁掉了 */
+    var shell = sc.closest ? sc.closest(".phone") : null;
+    if(shell) shell.classList.toggle("scrollable", sc.scrollHeight > sc.clientHeight + 8);
+  }
   renderModal();
 }
 
 var motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
-var forceFullMotion = false;
-
-function renderHome(){
-  V.innerHTML = '<section id="cinema" class="cinema cinema-guide" aria-label="体验引导">' +
-    stageSVG("wide") + '<div class="cinema-ui"><div class="guide-copy">' +
-    '<p class="guide-label">反诈演练 · 无真实交易</p>' +
-    '<h1>防骗预演</h1><p>一个普通的周末，一条新消息。</p>' +
-    '<div class="guide-actions"><button type="button" class="btn primary" data-act="start">开始体验</button>' +
-    '<button type="button" class="btn cinema-secondary" data-act="chooseChapter">选章节</button></div>' +
-    '<div class="guide-links"><button type="button" class="cinema-text" data-act="toggleSound" data-cinema-sound>声音：开</button>' +
-    '<button type="button" class="cinema-text" data-act="toggleMotion" aria-pressed="false" hidden>完整动画</button>' +
-    '<button type="button" class="cinema-text" data-act="info">演练说明</button></div></div></div></section>';
-  paintGuideMotion();
-  paintCinemaSound();
-}
-
-function paintGuideMotion(){
-  var button = V.querySelector('[data-act="toggleMotion"]');
-  button.hidden = !motionPreference.matches;
-  button.setAttribute('aria-pressed', String(forceFullMotion));
-  var stage = V.querySelector('#stage');
-  if(motionPreference.matches && !forceFullMotion) stage.pauseAnimations();
-  else stage.unpauseAnimations();
-}
-
-function renderSelect(){
-  var cover = function(txt){
-    return '<svg class="ch-cover" viewBox="0 0 300 90" preserveAspectRatio="none" aria-hidden="true">' +
-      '<rect width="300" height="90" fill="#ded0b3"/><rect x="14" y="16" width="86" height="58" rx="6" fill="#8d6b45"/>' +
-      '<rect x="22" y="24" width="70" height="42" rx="4" fill="#f3ead6"/>' +
-      '<circle cx="200" cy="46" r="24" fill="#4b5f6b"/><rect x="176" y="60" width="48" height="24" rx="10" fill="#3c4c56"/>' +
-      '<text x="252" y="56" font-size="34" fill="#9d2f26">' + txt + '</text></svg>';
-  };
-  V.innerHTML =
-  '<div class="card"><div class="eyebrow">选择案件 · 演练中只显示生活化的标题</div>' +
-    '<h2 class="title-xl" style="font-size:1.5rem">选择一章开始</h2>' +
-    '<p class="lede">开场和演练画面只给当事人此刻能看到的信息，具体骗术名称留到复盘揭示。</p></div>' +
-  '<div class="card"><div class="chapters">' +
-    '<button type="button" class="chapter" data-act="openCh1">' + cover("兼") +
-      '<h3>《一份周末兼职》</h3><span class="who">大学生 · 周末想补贴生活费，收到一条兼职通知</span>' +
-      '<span class="who">主线：试做返利与连续任务 · 短分支：自称辅导员的视频</span>' +
-      '<span class="flag">可试玩</span></button>' +
-    '<button type="button" class="chapter" disabled aria-disabled="true">' + cover("电") +
-      '<h3>《一通晚间来电》</h3><span class="who">中年人 · 晚饭后接到常联系的网友来电</span>' +
-      '<span class="who">沿用同一套客厅与手机模板</span>' +
-      '<span class="flag">待开放</span></button>' +
-    '<button type="button" class="chapter" disabled aria-disabled="true">' + cover("讲") +
-      '<h3>《群里的一场讲座》</h3><span class="who">老年人 · 群里发来的生活活动邀请</span>' +
-      '<span class="who">沿用同一套客厅与手机模板</span>' +
-      '<span class="flag">待开放</span></button>' +
-  '</div>' +
-  '<div class="row" style="margin-top:.8rem">' +
-    '<button type="button" class="btn" data-act="home">返回首页</button>' +
-    '<button type="button" class="btn ghost" data-act="info">真实求助信息</button>' +
-  '</div>' +
-  '<p class="privacy">第一章样片：A01–A10 全部镜头、四种结算与复盘。第二、三章尚未制作。</p></div>';
-}
-
-function renderOpening(){
-  var film = document.getElementById("cinema");
-  if(!film){
-    V.innerHTML = '<section id="cinema" class="cinema" aria-label="开场动画">' + stageSVG("wide") + '<div class="cinema-ui"></div></section>';
-    film = document.getElementById("cinema");
-  }
-  if(!film.classList.contains("cinema-playing")){
-    film.setAttribute("aria-label", "开场动画");
-    film.classList.remove("cinema-guide");
-    film.querySelector(".cinema-ui").innerHTML =
-      '<span class="watermark">演练 · 开场 A01–A03</span>' +
-      '<p class="film-caption" id="cap-txt" aria-live="polite">' + openingLine() + '</p>' +
-      '<div class="film-controls" aria-label="开场控制">' +
-      '<button type="button" class="btn cinema-secondary" data-act="pauseSeq">暂停</button>' +
-      '<button type="button" class="btn cinema-secondary" data-act="toggleSound" data-cinema-sound>声音：开</button>' +
-      '<button type="button" class="btn cinema-secondary" data-act="skipOpening">跳过开场</button>' +
-      '<button type="button" class="btn cinema-secondary" data-act="exit">退出到选章</button></div>';
-    film.classList.toggle("cinema-motion-on", forceFullMotion);
-    film.classList.add("cinema-playing");
-    film.querySelector('[data-act="pauseSeq"]').focus({ preventScroll:true });
-  }
-  var isPaused = Boolean(SEQ && SEQ.paused);
-  film.classList.toggle("cinema-paused", isPaused);
-  var stage = film.querySelector('svg');
-  if(isPaused || (motionPreference.matches && !forceFullMotion)) stage.pauseAnimations();
-  else stage.unpauseAnimations();
-  film.querySelector('[data-act="pauseSeq"]').textContent = isPaused ? "继续" : "暂停";
-  paintCinemaSound();
-}
-
-function showOpeningBeat(beat){
-  R.openingStage = beat;
-  V.querySelector('.cinema').dataset.beat = beat;
-  updateCaption(openingLine());
-}
-
-function paintCinemaSound(){
-  var button = V.querySelector('[data-cinema-sound]');
-  if(button) button.textContent = btnSound.textContent;
-}
-
-function openingLine(){
-  var s = R.openingStage || "opening1";
-  if(s === "opening2") return "手机亮了一下。短信提示音响过一次：「周末任务招募 · 商品资料整理」。";
-  if(s === "opening3") return "你伸手拿起手机，镜头推近，锁屏上还是同一条通知。";
-  return "周末下午的客厅。电视开着，你坐在沙发上，膝旁是翻开的课表。";
-}
-
+function renderSelect(){ location.assign("index.html"); }
 function renderScene(spec){
-  var acts = spec.actions || [];
-  var extra = spec.extra || [];
-  var n = 0;
-  function btn(a){
-    n++;
-    return '<button type="button" class="act ' + (a.cls||"") + '" data-act="' + esc(a.act) + '"' +
-      (a.act === "noop" ? ' disabled aria-disabled="true"' : '') + '>' +
-      '<span>' + n + '. ' + esc(a.label) + '</span>' +
-      (a.sub ? '<span class="sub">' + esc(a.sub) + '</span>' : '') + '</button>';
-  }
-  V.innerHTML =
-  '<div class="card" style="padding:.5rem .8rem;box-shadow:none;background:transparent;border:0">' +
-    '<span class="eyebrow" style="margin:0">第一章《一份周末兼职》 · ' + esc(sceneName()) + ' · 反诈演练，无真实交易</span></div>' +
-  '<div class="layout">' +
-    '<div class="stage-wrap" id="stage-wrap">' + stageSVG(spec.stage) +
-      '<span class="watermark">演练 · ' + esc(sceneName()) + '</span>' +
-      (SEQ && SEQ.paused ? '<span class="paused-flag">已暂停</span>' : '') + '</div>' +
-    '<div class="rightcol">' +
-      spec.phone +
-      '<div class="actions ' + (acts.length === 1 ? "one" : "") + '" id="actions" role="group" aria-label="本幕操作">' +
-        acts.map(btn).join("") + '</div>' +
-      (extra.length ? '<div class="actions one">' + extra.map(btn).join("") + '</div>' : '') +
-      '<div class="aside">' + (spec.aside || []).map(function(a){
-          return '<button type="button" class="btn" data-act="' + esc(a.act) + '">' + esc(a.label) + '</button>';
-        }).join("") + '</div>' +
-    '</div>' +
-    '<div class="caption" id="caption" role="region" aria-live="polite">' +
-      '<div class="who">' + esc(spec.cap.who) + '</div>' +
-      '<div class="txt" id="cap-txt">' + esc(spec.cap.txt) + '</div>' +
-      '<div class="cue">' + esc(spec.cap.cue) + '</div></div>' +
-  '</div>';
+  var scene=R.scene, kind=scene==="A10"?"decision":scene==="A07"?"insert":scene==="A04"?"orient":"evidence";
+  var names={A04:"一份周末兼职",A05:"试做的回信",A06:"一组连续任务",A07:"屏幕那头的人",A08:"找同学商量",A09:"换条路问一问",A10:"确认之前"};
+  V.innerHTML='<div class="pc-set pc-ch1">'+Theatre.scene(names[scene]||"一份周末兼职",esc(spec.cap.txt))+spec.phone+'</div>';
+  function btn(a){return '<button type="button" class="act '+(a.cls||'')+'" data-act="'+esc(a.act)+'"'+(a.act==="noop"?' disabled':'')+'>'+esc(a.label)+'</button>'}
+  var acts=spec.actions||[],extra=spec.extra||[]; if(scene==="A04")acts=acts.filter(function(a){return a.act!=="go:A05"});
+  V.querySelector(".reply-tray").innerHTML='<div id="actions" class="actions" role="group" aria-label="选择回复或行动">'+acts.map(btn).join("")+'</div>'+
+    (extra.length?'<div class="actions">'+extra.map(btn).join("")+'</div>':'')+
+    '<div class="aside">'+(spec.aside||[]).map(btn).join("")+'</div>';
+  Theatre.bind("1-"+kind,"assets/art/ch1.webp");
 }
-
 function renderReview(){
-  var k = endingKey(), e = ENDINGS[k], meta = REVIEW_TEXT[k];
-  var done = verifiedItems(), todo = pendingItems();
-  var stars = starsFor(k);
-  var alts = altBranches();
-  var t = (R.log.length ? R.log : [{kind:"info", text:"（本局没有留下操作记录）"}]);
-  V.innerHTML =
-  '<div class="card"><div class="eyebrow">结束 · 本局复盘</div>' +
-    '<div class="result"><h2 class="title-xl" style="font-size:1.5rem">《一份周末兼职》</h2>' +
-    '<span class="pill ' + (k==="verified"?"ok":(k==="loss"?"":"mid")) + '">本局结果 · ' + e.name + '</span></div>' +
-    '<p class="lede">' + e.cue + '。</p></div>' +
-
-  '<div class="card reveal"><div class="eyebrow">复盘里第一次说明</div>' +
-    '<p style="margin:0">' + esc(meta.reveal) + '</p></div>' +
-
-  '<div class="card"><div class="eyebrow">本局实际走过的镜头</div>' +
-    '<ul class="timeline">' + t.map(function(x){
-      var cls = x.kind === "pay" ? "pay" : (x.kind === "verify" ? "verify" : (x.kind === "help" ? "help" : ""));
-      var label = { info:"接收信息", follow:"已跟随", help:"找人商量", verify:"核实", pay:"确认动作", end:"结束" }[x.kind] || x.kind;
-      return '<li class="' + cls + '"><span class="k">' + esc(label) + (x.scene ? " · " + esc(x.scene) : "") + '</span>' +
-        esc(x.text) + '</li>';
-    }).join("") + '</ul></div>' +
-
-  '<div class="card"><div class="grid2">' +
-    '<div><div class="eyebrow">已经核实</div><ul class="checklist">' +
-      (done.length ? done.map(function(x){ return '<li class="done">' + esc(x) + '</li>'; }).join("")
-                   : '<li class="todo">本局没有完成校园渠道核实</li>') + '</ul></div>' +
-    '<div><div class="eyebrow">仍待核实</div><ul class="checklist">' +
-      (todo.length ? todo.map(function(x){ return '<li class="todo">' + esc(x) + '</li>'; }).join("")
-                   : '<li class="done">两条线都查过了</li>') + '</ul></div>' +
-  '</div>' +
-  '<p class="privacy">「找人商量」和「已核实」分开记录：本局' + (R.talked ? "找过同学商量" : "没有找可信的人商量") +
-  '；' + (done.length ? "从校园渠道取得 " + done.length + " 项答复" : "没有取得校园答复") + '。</p></div>' +
-
-  '<div class="card"><div class="eyebrow">本局提醒星 · 每颗对应一个能记住的动作</div>' +
-    '<ul class="stars" id="stars">' + stars.map(function(s){
-      return '<li><span class="s">★</span>' + esc(s) + '</li>'; }).join("") + '</ul></div>' +
-
-  '<div class="card"><div class="eyebrow">另一个可尝试的分支</div>' +
-    '<div class="alt">' + (alts.length
-      ? "这一局没有走到的镜头：" + alts.map(esc).join("；") + "。它们只作为可选分支列出，本局结算不使用里面的结论。"
-      : "这一局把主要镜头都走了一遍。") + '</div></div>' +
-
-  '<div class="card"><div class="eyebrow">继续</div>' +
-    '<div class="row">' +
-      '<button type="button" class="btn primary" data-act="copyStars">复制本局提醒</button>' +
-      '<button type="button" class="btn" data-act="replay">从头重玩本章</button>' +
-      '<button type="button" class="btn" data-act="select">选择其他章</button>' +
-      '<button type="button" class="btn ghost" data-act="home">返回首页</button>' +
-    '</div>' +
-    '<p class="privacy" id="copy-note">复制只在当前网页内进行，不会联网。真实求助信息见顶栏「真实求助」。</p></div>';
+  Theatre.stop();
+  const k = endingKey();
+  const why = {
+    loss:"你确认了 380 元的模拟垫付，没有发生真实扣款。",
+    close:"到了要垫付 380 元的时候，你停在了确认之前。",
+    verified:"你查过学校发布记录，也打给了原有号码。两边的答复都不支持这份兼职。",
+    safe:R.seen.A05?"你看过这条消息，决定先不继续，没有垫钱。":"你结束了这次接触，没有垫钱。"
+  }[k];
+  const notes = verifiedItems().concat(pendingItems());
+  if(R.talked) notes.push("你找同学林嘉商量过。商量和独立核实是两件不同的事。");
+  Ending.mount(V, {chapter:1, title:"一份周末兼职", picture:"assets/art/ch1.webp",
+    result:ENDINGS[k].name, why, loss:k==="loss", actions:R.choices, notes});
 }
-var REVIEW_TEXT = {
-  safe: { reveal:"这一局对应的是「刷单返利」手法的前半段：先用一条看起来像校内兼职的通知接触人。" +
-    "你停在打开之前或只看了消息，没有进入标注演练的确认页。" },
-  verified: { reveal:"这一局涉及两种手法：用小额返利建立信任的「刷单返利」，以及冒充师长的身份冒充。" +
-    "你在跟着要求走之前，用了学校自己的渠道取得答复。" },
-  close: { reveal:"这一局你走到了「联单垫付」的确认页。要求先垫钱、整组做完才结算，是刷单返利里让金额加码的一步。" +
-    "你在点确认之前停住了。" },
-  loss: { reveal:"这一局你确认了演练中的垫付。刷单返利在真实案件里通常是：小额返利到账 → 联单要求加码 → 以「不做完不退」为理由继续收钱。" +
-    "本局没有出现真实扣款，损失只是演练记录。" }
-};
 function starsFor(k){
   var base = {
     safe: ["想继续时，从学校自己的渠道查一次。"],
@@ -1028,19 +633,11 @@ function starsFor(k){
   if(base.length < 2 && !R.verify.taskList) base.push("任务有没有发布，去学校就业平台搜一次。");
   return base.slice(0,3);
 }
-function altBranches(){
-  var out = [];
-  if(!R.seen.A07) out.push("自称辅导员的视频（A07）· 从任务聊天里问「这是谁发布的」进入");
-  if(!R.seen.A08) out.push("找同学商量（A08）· 任何一幕点「找人商量」");
-  if(!R.seen.A09) out.push("校园渠道核实（A09）· 从「一起查学校渠道」或「用平时的号码问老师」进入");
-  if(!R.seen.A10) out.push("垫付确认页（A10）· 在连续任务那一步点「看看垫付要求」");
-  return out;
-}
-
 /* =====================================================================
    7. 弹窗
    ===================================================================== */
 function renderModal(){
+  if(R.modal) Theatre.suspend();
   if(!R.modal){ OVER.hidden = true; MODAL.innerHTML = ""; return; }
   OVER.hidden = false;
   if(R.modal === "info"){
@@ -1054,11 +651,6 @@ function renderModal(){
         '<li>需要反诈咨询与劝阻：<b>96110</b>（全国反诈劝阻专线）。</li>' +
         '<li>校园内的事：先找<b>原本的</b>辅导员、院系办公室或学校保卫处，用你手机里存着的号码，不用对方给的联系方式。</li>' +
         '<li>把消息、通话、任务页和付款记录留好，不删除。</li>' +
-      '</ul>' +
-      '<div class="eyebrow">本样片的素材状态</div>' +
-      '<ul>' +
-        '<li>提示音、亮屏反馈：本地实时生成，无外部音频文件。</li>' +
-        '<li>人声配音与实拍视频：<b>待补</b>。视频分支目前使用原创角色静帧 + 字幕。</li>' +
       '</ul>' +
       '<div class="row"><button type="button" class="btn primary" data-act="closeModal">知道了</button></div>';
     return;
@@ -1081,9 +673,10 @@ function renderModal(){
       '<div class="row" style="margin-top:.7rem">' +
         '<button type="button" class="btn" data-act="reviewPay">回看这一步</button>' +
         '<button type="button" class="btn" data-act="helpPost">找人求助</button>' +
-        '<button type="button" class="btn primary" data-act="toEnding">继续到结尾</button>' +
+        '<button type="button" class="btn primary" data-act="toResult">直接查看本局结果</button>' +
         '<button type="button" class="btn ghost" data-act="exit">退出</button>' +
-      '</div>';
+      '</div>' +
+      '<p class="privacy">这一步之后可以直接看结算，不需要再等一段尾声动画。</p>';
   }
 }
 
@@ -1142,123 +735,132 @@ function after(scene){
 function focusFirst(){
   var b = V.querySelector(".actions .act:not([disabled])") || V.querySelector(".btn");
   if(b && document.activeElement !== b){
-    // 不抢走用户在页面别处的焦点，只在本幕切换后可聚焦
+    { var title=V.querySelector(".lock-day")||V.querySelector(".appbar b"); if(title){ title.setAttribute("tabindex","-1"); title.focus({preventScroll:true}); var phone=title.closest(".phone"); if(phone && matchMedia("(max-width:920px)").matches && (phone.getBoundingClientRect().top<0 || phone.getBoundingClientRect().top>innerHeight*.42)) phone.scrollIntoView({block:"start"}); return; } }
     try{ b.focus({ preventScroll:false }); }catch(e){ b.focus(); }
   }
 }
 
+/* 结算：进入时立刻停掉动画、声音与所有定时器，直接写结果，
+   把键盘焦点放到结果标题上；没有强制播放的尾声，也没有第二个计时器。 */
 function settle(){
   if(R.enteredPay && R.confirmCount === 0 && !R.seen._cancelled){
     R.seen._cancelled = true;
     rec("info","A10","进入过确认垫付页面，最后退回或结束，没有点确认");
   }
-  var k = endingKey();
+  rec("end", null, "结束本章 · 立即按本局记录判定为「" + ENDINGS[endingKey()].name + "」");
   killSeq(); Sfx.stopAll();
   GEN++;
   R.modal = null;
-  R.scene = "ending";
-  rec("end", null, "结束本章 · 按本局记录判定为「" + ENDINGS[k].name + "」");
-  playEnding();
-}
-function playEnding(){
-  var k = endingKey(), meta = ENDING_META[k];
-  meta.line = 0;
-  R.endingSkipped = false;
+  R.scene = "review";
   render();
-  updateCaption(meta.lines[0]);
-  var items = [
-    { ms: 2600, fn: function(){ meta.line = 1; updateCaption(meta.lines[1]); } },
-    { ms: 2600, fn: function(){ meta.line = 2; updateCaption(meta.lines[2]); } },
-    { ms: 2400, fn: function(){ SEQ = null; toReview(); } }
-  ];
-  runSeq(items, null);
-  if(k === "loss") Sfx.alert();
+  var h = document.getElementById("result-title");
+  if(h){ try{ h.focus({ preventScroll:false }); }catch(e){ h.focus(); } }
+  say("本局结果已经算好，写在页面最上面。演练中不会发生任何真实交易。");
 }
 function updateCaption(txt){
   var el = document.getElementById("cap-txt");
   if(el) el.textContent = txt;
 }
-function toReview(){
-  killSeq(); Sfx.stopAll();
-  GEN++;
-  R.scene = "review";
-  R.modal = null;
-  render();
-  focusFirst();
-  say("已进入本局复盘。");
-}
 
+/* A07：短句逐条出现，没有人声也没有语音合成。
+   系统要求减少动态效果时，一次把整段对白静态列出来。 */
 function startVideo(){
+  var lines = videoLines();
+  if(motionPreference.matches){
+    R.videoFrame = lines.length - 1;
+    R.seen.A07_video_done = true;
+    logVideo("看完了这段无人声的视频：短句逐条列出，画面里的人自称辅导员");
+    return;
+  }
   R.videoFrame = 0;
   R.seen.A07_video_done = false;
-  var items = videoLines().slice(1).map(function(_, i){
-    return { ms: 3400, fn: function(){
+  var items = lines.slice(1).map(function(_, i){
+    return { ms: 2200, fn: function(){
       if(R.scene !== "A07" || R.seen.A07_video_done) return;
-      R.videoFrame = Math.min(i + 1, 3);
+      R.videoFrame = Math.min(i + 1, lines.length - 1);
       paintVideo();
     }};
   });
-  items.push({ ms: 600, fn: function(){
+  items.push({ ms: 800, fn: function(){
     if(R.scene !== "A07") return;
     R.seen.A07_video_done = true;
-    if(!R.seen._A07log){ R.seen._A07log = true; rec("info","A07","看了陌生账号发来的视频：画面中的人自称辅导员（只算接收信息，不算跟随）"); }
-    R.videoFrame = 3;
+    logVideo("看完了这段无人声的视频：画面中的人自称辅导员（只算接收信息，不算已核实）");
     render();
-    say("视频播放结束，字幕与选择仍然保留，等你自己推进。");
+    say("短句已经全部留在画面上，可以再读一遍，然后自己决定下一步。");
   }});
   runSeq(items, null);
   paintVideo();
 }
+function logVideo(text){
+  if(!R.seen._A07log){ R.seen._A07log = true; rec("info","A07",text); }
+}
+/* 只往列表里追加新的一句，不整页重绘，避免读到的句子被滚回顶部。 */
 function paintVideo(){
-  var f = document.getElementById("vframe"), s = document.getElementById("vsub"),
-      bar = document.getElementById("vbar"), t = document.getElementById("vtime");
-  var i = Math.max(0, Math.min(R.videoFrame || 0, 3));
-  if(f) f.innerHTML = frameSVG(i);
-  if(s) s.textContent = videoLines()[i];
-  if(bar) bar.style.width = (25*(i+1)) + "%";
-  if(t) t.textContent = "00:" + ("0" + (3*(i+1))).slice(-2) + " / 00:11";
-  if(R.scene === "A07") updateCaption(videoLines()[i]);
+  if(R.scene !== "A07") return;
+  var box = document.getElementById("vlines");
+  var lines = videoLines();
+  var shown = Math.max(1, Math.min((R.videoFrame||0) + 1, lines.length));
+  if(!box){ updateCaption(lines[shown-1].txt); return; }
+  var have = box.querySelectorAll(".dm-line").length;
+  while(have < shown){
+    var p = document.createElement("p");
+    p.className = "dm-line"; p.setAttribute("data-i", String(have));
+    var b = document.createElement("b"); b.className = "who"; b.textContent = lines[have].who;
+    var s = document.createElement("span"); s.textContent = lines[have].txt;
+    p.appendChild(b); p.appendChild(s); box.appendChild(p);
+    have++;
+  }
+  var c = document.getElementById("vcount");
+  if(c) c.textContent = "第 " + shown + " 条 / 共 " + lines.length + " 条";
+  updateCaption(lines[shown-1].txt);
 }
 
+/* Use receipts of actions, not the menu labels or events from unvisited branches. */
+function choiceReceipt(act) {
+  const src=R.scene;
+  const mainReturn={A04:"回到了兼职通知",A05:"回到了试做任务的聊天",A06:"回到了连续任务的聊天",A10:"回到了垫付确认页"};
+  const receipts={
+    "go:A05":"打开了兼职短信，查看试做任务",
+    "go:A06":src==="A05"?"查看了下一组连续任务":"回到了连续任务的聊天",
+    "go:A07":R.seen.A07?"重新打开了自称辅导员的视频":"打开了对方发来的视频",
+    "go:A08":"找同学林嘉商量了这件事",
+    "go:A09":"打开了学校自己的渠道，准备核实",
+    "go:A10":"查看了需要先垫付 380 元的确认页",
+    "sub:jobs":"打开了学校就业平台","sub:contacts":"打开了原有校园通讯录",
+    back:mainReturn[R.from||"A04"]||"回到了先前的画面",
+    callTeacher:"拨打了通讯录里原有的老师号码",hangup:"在取得答复前挂断了电话",
+    answer:"接到了老师的答复",askVideo:"向老师核对了那段视频的来源",
+    checkTaskList:"在学校就业平台查过任务发布记录",
+    confirmPay:"确认了 380 元的模拟垫付",helpPost:"在模拟付款后找同学商量了后续处理",
+    reviewPay:"回看了本局的垫付记录",
+    end:src==="A10"&&!R.confirmedPay?"在 380 元确认页取消了垫付":src==="A04"?"放下了这条兼职通知":"决定先停下来，结束了这次接触"
+  };
+  return receipts[act];
+}
 /* ---- 动作处理 ---- */
 function doAct(act, node){
   if(!act) return;
+  if(node && /^A[0-9]{2}$/.test(R.scene) && !(act==="confirmPay" && R.confirmCount>0)){
+    const step=choiceReceipt(act);
+    if(step) R.choices.push(step);
+  }
   Sfx.tap();
-  if(act === "noop") return;
+  if(act === "noop") return; if(act === "fullscreen"){ if(document.fullscreenElement)leaveBrowserFullscreen();else requestCinemaFullscreen(); return; }
 
   if(act === "start" || act === "openCh1" || act === "replay"){
-    if(R.scene === "opening") return;
     requestCinemaFullscreen();
     startChapter(act === "replay");
     return;
   }
-  if(act === "chooseChapter"){ go("select"); return; }
-  if(act === "toggleMotion" && R.scene === "home"){
-    forceFullMotion = !forceFullMotion;
-    paintGuideMotion();
-    return;
-  }
+  if(act === "chooseChapter"){ exitToSelect(); return; }
   if(act === "toggleSound"){ btnSound.click(); return; }
 
-  if(act === "home"){ R.modal = null; killSeq(); Sfx.stopAll(); R.scene = "home"; GEN++; render(); return; }
+  if(act === "home"){ exitToSelect(); return; }
   if(act === "select"){ exitToSelect(); return; }
   if(act === "exit"){ exitToSelect(); return; }
   if(act === "info"){ R.modal = "info"; renderModal(); return; }
-  if(act === "closeModal"){ R.modal = null; renderModal(); return; }
-  if(act === "skipOpening" && R.scene === "opening"){
-    R.openingStage = "opening3";
-    R.endingSkipped = false;
-    go("A04");
-    say("已跳过开场，与播完落到同一个画面，只创建这一条通知。");
-    return;
-  }
-  if(act === "pauseSeq"){ togglePause(); return; }
-  if(act === "toEnding"){ R.modal = null; render(); settle(); return; }
-  if(act === "toReview"){
-    if(SEQ){ SEQ.stop(); SEQ = null; }
-    R.endingSkipped = true;
-    toReview(); return;
-  }
+  if(act === "closeModal"){ R.modal = null; renderModal(); Theatre.resume(); return; }
+  if(act === "toResult"){ R.modal = null; settle(); return; }
   if(act === "end"){ settle(); return; }
   if(act === "back"){
     var f = R.from || "A04";
@@ -1318,10 +920,10 @@ function doAct(act, node){
   if(act === "videoSkip"){
     if(SEQ){ SEQ.stop(); SEQ = null; }
     R.seen.A07_video_done = true;
-    R.videoFrame = 3;
-    if(!R.seen._A07log){ R.seen._A07log = true; rec("info","A07","跳过了视频，只看了账号来源信息（陌生账号）"); }
+    R.videoFrame = videoLines().length - 1;
+    logVideo("跳过了视频，只读了账号来源与全部短句（无人声）");
     GEN++; render(); focusFirst();
-    say("已跳过视频，选择项与播完时相同。");
+    say("已跳过，短句全部列出，与看完时一样。");
     return;
   }
   if(act === "videoPause"){
@@ -1391,7 +993,6 @@ function togglePause(){
   if(SEQ.paused){
     SEQ.resume();
     Sfx.unlock();
-    if(R.scene === "opening") Sfx.tv(GEN);
     render();
     say("已从原处继续。");
   } else {
@@ -1429,21 +1030,9 @@ function leaveCinemaFullscreen(){
 }
 
 function startChapter(announceReplay){
-  killSeq(); Sfx.stopAll();
-  GEN++;
-  R = freshRound();
-  R.scene = "opening";
-  R.openingStage = "opening1";
-  var gen = GEN;
-  Sfx.unlock();
-  Sfx.tv(gen);
-  runSeq([
-    { ms:3000, fn:function(){ showOpeningBeat("opening2"); Sfx.ping(gen); } },
-    { ms:3000, fn:function(){ showOpeningBeat("opening3"); Sfx.tick(gen); } },
-    { ms:6000, fn:function(){ if(R.scene === "opening") go("A04"); } }
-  ], null);
-  render();
-  say(announceReplay ? "已重开一局，上一局记录已清空。" : "新的一局开始，所有交互均为演练。");
+  Theatre.stop(); killSeq(); Sfx.stopAll(); R=freshRound(); GEN++;
+  go("A04");
+  say(announceReplay?"已重新开始。":"已进入大学生的故事。");
 }
 
 /* 复制提醒 */
@@ -1490,26 +1079,16 @@ document.addEventListener("keydown", function(ev){
     btnSound.click();
   }
 });
-document.querySelectorAll(".seg [data-mode]").forEach(function(b){
-  b.addEventListener("click", function(){
-    document.querySelectorAll(".seg [data-mode]").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
-    b.setAttribute("aria-pressed","true");
-    var m = b.getAttribute("data-mode");
-    document.documentElement.className = "mode-" + m;
-    say("阅读方式：" + ({comfort:"舒适", large:"大字", cast:"投屏"})[m]);
-  });
-});
 btnSound.addEventListener("click", function(){
   var on = btnSound.getAttribute("data-on") === "true";
   btnSound.setAttribute("data-on", on ? "false" : "true");
   btnSound.textContent = on ? "声音：关（静音）" : "声音：开";
   Sfx.setMuted(on);
   if(!on) Sfx.unlock();
-  paintCinemaSound();
 });
 btnPause.addEventListener("click", function(){ togglePause(); });
 document.getElementById("btn-exit").addEventListener("click", function(){ exitToSelect(); });
-document.getElementById("btn-info").addEventListener("click", function(){ R.modal = "info"; renderModal(); });
+document.getElementById("btn-info").addEventListener("click", function(){ R.modal = "info"; renderModal(); Theatre.suspend(); });
 
 /* 首次交互解锁音频 */
 ["pointerdown","keydown"].forEach(function(t){
@@ -1518,6 +1097,6 @@ document.getElementById("btn-info").addEventListener("click", function(){ R.moda
 window.addEventListener("pagehide", function(){ killSeq(); Sfx.stopAll(); });
 
 R.scene = "home";
-render();
+if(new URLSearchParams(location.search).get("play") === "1"){ startChapter(false); } else { location.replace("index.html"); }
 say("防骗预演 · 第一章样片。双击即可离线打开，演练中不会发生任何真实交易。");
 })();
