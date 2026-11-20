@@ -15,6 +15,21 @@ function noteArt(){
 const guilloche=(cx,cy,sx,sy)=>Array.from({length:10},(_,k)=>{let d='';for(let i=0;i<=380;i++){const a=i/380*2*Math.PI, r=1+.12*Math.sin(17*a+k*.58)+.04*Math.cos(25*a-k*.71);d+=(i?'L':'M')+(cx+sx*r*Math.cos(a)).toFixed(2)+' '+(cy+sy*r*Math.sin(a)).toFixed(2)}return '<path d="'+d+'z" fill="none" stroke="#667766" stroke-width=".85"/>'}).join('');
 return '<rect x="148" y="148" width="656" height="287" rx="4" fill="url(#paper)" stroke="#787762" stroke-width="3"/><rect x="160" y="160" width="632" height="263" fill="none" stroke="#6f8070" stroke-width="4"/><rect x="168" y="168" width="616" height="247" fill="none" stroke="#8a8871"/>'+guilloche(285,292,84,86)+guilloche(652,286,70,82)+guilloche(467,293,56,51)+Array.from({length:23},(_,i)=>'<path d="M176 '+(184+i*9)+'q93 18 185 -1t198 0 216 0" fill="none" opacity=".33" stroke="#687e6f" stroke-width=".8"/>').join('')+'<path d="m491 151-8 104 7 70-9 103" stroke="#8d8470" opacity=".45" fill="none"/>'}
 const paper=noteArt();
+// Project the room light onto the object, then break it up with transparent
+// pigment and dry brush marks. Texture is fixed in object space between frames.
+const insertPigment=(() => {
+ let seed=6197;const r=()=>((seed=Math.imul(seed,1664525)+1013904223|0)>>>0)/4294967296;
+ let marks='';
+ for(let i=0;i<1750;i++){
+   const x=(r()*985-12).toFixed(1), y=(r()*570-15).toFixed(1),len=(3+r()*19).toFixed(1);
+   marks+='<path d="M'+x+' '+y+'q'+len+' -4 '+len+' -5" stroke="'+(i%3===0?'#4c4333':'#fff4c9')+'" stroke-width="'+(.6+r()*1.7).toFixed(1)+'" stroke-opacity="'+(.025+r()*.047).toFixed(3)+'"/>';
+ }
+ return '<g fill="none">'+marks+'</g>';
+})();
+function roomLight(n){
+ const lamp=n===2;
+ return '<defs><linearGradient id="roomLight" x1="0" y1="0" x2="1" y2=".83"><stop stop-color="'+(lamp?'#fac579':'#fff3bc')+'" stop-opacity=".48"/><stop offset=".58" stop-color="#debd85" stop-opacity=".04"/><stop offset="1" stop-color="'+(lamp?'#102f37':'#3e574e')+'" stop-opacity=".44"/></linearGradient><filter id="roughen" x="-1%" y="-1%" width="102%" height="102%"><feTurbulence type="fractalNoise" baseFrequency=".065 .12" numOctaves="2" seed="7" result="f"/><feDisplacementMap in="SourceGraphic" in2="f" scale="2.4"/></filter></defs>';
+}
 function bank(t){const p=ease(R(.15,2.9,t)),x=232+340*p+8*Math.sin(t*1.3),y=208+55*Math.sin(p*2.8)+24*p;return '<rect width="960" height="540" fill="#ae987b"/><path d="M0 60 530 0 138 540H0z" fill="#e6d4a9"/><g transform="rotate(-5 480 280)">'+paper+'</g><g transform="translate('+x+' '+y+') rotate(-22)"><path d="m0 90 8 204" stroke="#473c31" stroke-width="31" stroke-linecap="round"/><path d="m0 93 7 183" stroke="url(#brass)" stroke-width="18" stroke-linecap="round"/></g><clipPath id="magnify"><circle cx="'+x+'" cy="'+y+'" r="88"/></clipPath><g clip-path="url(#magnify)"><g transform="translate('+x+' '+y+') scale(1.48) translate('+(-x)+' '+(-y)+') rotate(-5 480 280)">'+paper+'</g><circle cx="'+x+'" cy="'+y+'" r="89" fill="#d4e3ca" opacity=".14"/></g><circle cx="'+x+'" cy="'+y+'" r="93" fill="none" stroke="#5c5140" stroke-width="10"/><circle cx="'+x+'" cy="'+y+'" r="92" fill="none" stroke="url(#brass)" stroke-width="6"/><path d="M'+(x-58)+' '+(y-48)+'q20-31 54-32" stroke="#fff2d1" stroke-width="7" stroke-linecap="round" opacity=".52" fill="none"/>'}
 window.paint=(chapter,t,caller)=>{
  if(chapter===1){
@@ -24,5 +39,5 @@ window.paint=(chapter,t,caller)=>{
    const img=caller.slice(0,s)+'<g transform="rotate('+nod+' 210 159)">'+head+'</g>'+caller.slice(e);
    plate.innerHTML=img.replace('viewBox="0 0 410 240"','viewBox="0 0 410 240" preserveAspectRatio="xMidYMid slice"');return;
  }
- plate.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540"><defs>'+defs+'<clipPath id="lens"><circle cx="463" cy="291" r="91"/></clipPath></defs>'+(chapter===2?camera(t):bank(t))+'<rect width="960" height="540" fill="url(#grain)" opacity=".45"/></svg>';
+ plate.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540"><defs>'+defs+'<clipPath id="lens"><circle cx="463" cy="291" r="91"/></clipPath></defs>'+roomLight(chapter)+'<g filter="url(#roughen)">'+(chapter===2?camera(t):bank(t))+'</g><rect width="960" height="540" fill="url(#roomLight)"/>'+insertPigment+'<rect width="960" height="540" fill="url(#grain)" opacity=".28"/></svg>';
 };

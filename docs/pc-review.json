@@ -29,7 +29,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0275,
+        "time": 0.0401,
         "frames": 4
       }
     },
@@ -85,7 +85,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.004,
+        "time": 0.0092,
         "frames": 4
       }
     },
@@ -145,7 +145,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0197,
+        "time": 0.0238,
         "frames": 4
       }
     },
@@ -196,6 +196,22 @@
     },
     {
       "step": "1366 chapter 1 放下兼职通知",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 1 放下兼职通知",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 1 放下兼职通知",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 1 放下兼职通知",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1366 chapter 1 放下兼职通知",
       "check": "card opens from chapter"
     },
     {
@@ -210,7 +226,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0027,
+        "time": 0.0382,
         "frames": 4
       }
     },
@@ -220,6 +236,22 @@
       "detail": "及时核实"
     },
     {
+      "step": "1366 chapter 1 听老师回复与搜索记录",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 1 听老师回复与搜索记录",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 1 听老师回复与搜索记录",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 1 听老师回复与搜索记录",
+      "check": "back preserves original result"
+    },
+    {
       "step": "1366 chapter 1 仅拨号不能完成核实",
       "check": "chapter-specific decoded evidence film",
       "detail": {
@@ -227,7 +259,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0082,
+        "time": 0.0265,
         "frames": 4
       }
     },
@@ -237,6 +269,22 @@
       "detail": "安全离开"
     },
     {
+      "step": "1366 chapter 1 仅拨号不能完成核实",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 1 仅拨号不能完成核实",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 1 仅拨号不能完成核实",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 1 仅拨号不能完成核实",
+      "check": "back preserves original result"
+    },
+    {
       "step": "1366 chapter 1 从家人核实返回招聘主线",
       "check": "chapter-specific decoded evidence film",
       "detail": {
@@ -244,7 +292,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0274,
+        "time": 0.0321,
         "frames": 4
       }
     },
@@ -256,7 +304,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0327,
+        "time": 0.0446,
         "frames": 5
       }
     },
@@ -264,6 +312,22 @@
       "step": "1366 chapter 1 从家人核实返回招聘主线",
       "check": "ending 有惊无险",
       "detail": "有惊无险"
+    },
+    {
+      "step": "1366 chapter 1 从家人核实返回招聘主线",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 1 从家人核实返回招聘主线",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 1 从家人核实返回招聘主线",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 1 从家人核实返回招聘主线",
+      "check": "back preserves original result"
     },
     {
       "step": "1366 chapter 1 看过辅导员视频后模拟付款、再只读回看",
@@ -273,7 +337,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0456,
+        "time": 0.0394,
         "frames": 5
       }
     },
@@ -285,7 +349,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0226,
+        "time": 0.0337,
         "frames": 5
       }
     },
@@ -295,9 +359,49 @@
       "detail": "出现模拟损失"
     },
     {
+      "step": "1366 chapter 1 看过辅导员视频后模拟付款、再只读回看",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 1 看过辅导员视频后模拟付款、再只读回看",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 1 看过辅导员视频后模拟付款、再只读回看",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1366 chapter 1 看过辅导员视频后模拟付款、再只读回看",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 1 看过辅导员视频后模拟付款、再只读回看",
+      "check": "back preserves original result"
+    },
+    {
       "step": "1366 chapter 2 挂断",
       "check": "ending 安全离开",
       "detail": "安全离开"
+    },
+    {
+      "step": "1366 chapter 2 挂断",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 2 挂断",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 2 挂断",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 2 挂断",
+      "check": "hanging up never fabricates an accepted call or transaction"
+    },
+    {
+      "step": "1366 chapter 2 挂断",
+      "check": "back preserves original result"
     },
     {
       "step": "1366 chapter 2 挂断",
@@ -311,6 +415,26 @@
       "step": "1366 chapter 3 暂不打开群聊",
       "check": "ending 安全离开",
       "detail": "安全离开"
+    },
+    {
+      "step": "1366 chapter 3 暂不打开群聊",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 3 暂不打开群聊",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 3 暂不打开群聊",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 3 暂不打开群聊",
+      "check": "unopened invitation does not fabricate lecture or payment"
+    },
+    {
+      "step": "1366 chapter 3 暂不打开群聊",
+      "check": "back preserves original result"
     },
     {
       "step": "1366 chapter 3 暂不打开群聊",
@@ -328,14 +452,30 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.009,
-        "frames": 4
+        "time": 0.0546,
+        "frames": 5
       }
     },
     {
       "step": "1366 chapter 2 两项独立查询 go:07",
       "check": "ending 及时核实",
       "detail": "及时核实"
+    },
+    {
+      "step": "1366 chapter 2 两项独立查询 go:07",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 2 两项独立查询 go:07",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 2 两项独立查询 go:07",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 2 两项独立查询 go:07",
+      "check": "back preserves original result"
     },
     {
       "step": "1366 chapter 2 两项独立查询 go:08",
@@ -345,7 +485,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0426,
+        "time": 0.0262,
         "frames": 4
       }
     },
@@ -357,14 +497,30 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0283,
-        "frames": 5
+        "time": 0.0404,
+        "frames": 4
       }
     },
     {
       "step": "1366 chapter 2 两项独立查询 go:08",
       "check": "ending 及时核实",
       "detail": "及时核实"
+    },
+    {
+      "step": "1366 chapter 2 两项独立查询 go:08",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 2 两项独立查询 go:08",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 2 两项独立查询 go:08",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 2 两项独立查询 go:08",
+      "check": "back preserves original result"
     },
     {
       "step": "1366 chapter 3 两项独立查询 go:06",
@@ -374,7 +530,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0329,
+        "time": 0.0411,
         "frames": 5
       }
     },
@@ -382,6 +538,22 @@
       "step": "1366 chapter 3 两项独立查询 go:06",
       "check": "ending 及时核实",
       "detail": "及时核实"
+    },
+    {
+      "step": "1366 chapter 3 两项独立查询 go:06",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 3 两项独立查询 go:06",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 3 两项独立查询 go:06",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 3 两项独立查询 go:06",
+      "check": "back preserves original result"
     },
     {
       "step": "1366 chapter 3 两项独立查询 go:08",
@@ -391,7 +563,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0387,
+        "time": 0.0347,
         "frames": 5
       }
     },
@@ -403,14 +575,30 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0277,
-        "frames": 4
+        "time": 0.0272,
+        "frames": 5
       }
     },
     {
       "step": "1366 chapter 3 两项独立查询 go:08",
       "check": "ending 及时核实",
       "detail": "及时核实"
+    },
+    {
+      "step": "1366 chapter 3 两项独立查询 go:08",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 3 两项独立查询 go:08",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 3 两项独立查询 go:08",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 3 两项独立查询 go:08",
+      "check": "back preserves original result"
     },
     {
       "step": "1366 chapter 2 模拟交付 charge",
@@ -420,157 +608,273 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
+        "time": 0.0279,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 charge",
+      "check": "ending 出现模拟损失",
+      "detail": "出现模拟损失"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 charge",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 charge",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 charge",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 charge",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 charge",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 charge",
+      "check": "loss supports help"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 ship",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "2-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0368,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 ship",
+      "check": "ending 出现模拟损失",
+      "detail": "出现模拟损失"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 ship",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 ship",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 ship",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 ship",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 ship",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 ship",
+      "check": "loss supports help"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 deposit",
+      "check": "chapter-specific decoded insert film",
+      "detail": {
+        "file": "2-insert.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 4.5,
+        "time": 0.0294,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 deposit",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "2-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0328,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 deposit",
+      "check": "ending 出现模拟损失",
+      "detail": "出现模拟损失"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 deposit",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 deposit",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 deposit",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 deposit",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 deposit",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1366 chapter 2 模拟交付 deposit",
+      "check": "loss supports help"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 bundle",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "3-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0178,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 bundle",
+      "check": "ending 出现模拟损失",
+      "detail": "出现模拟损失"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 bundle",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 bundle",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 bundle",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 bundle",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 bundle",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 bundle",
+      "check": "loss supports help"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 service",
+      "check": "chapter-specific decoded insert film",
+      "detail": {
+        "file": "3-insert.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 4.5,
+        "time": 0.034,
+        "frames": 5
+      }
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 service",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "3-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0447,
+        "frames": 5
+      }
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 service",
+      "check": "ending 出现模拟损失",
+      "detail": "出现模拟损失"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 service",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 service",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 service",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 service",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 service",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1366 chapter 3 模拟交付 service",
+      "check": "loss supports help"
+    },
+    {
+      "step": "1366 chapter 2 取消充值",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "2-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.029,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1366 chapter 2 取消充值",
+      "check": "ending 有惊无险",
+      "detail": "有惊无险"
+    },
+    {
+      "step": "1366 chapter 2 取消充值",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 2 取消充值",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 2 取消充值",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 2 取消充值",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1366 chapter 3 交费前找人再商量",
+      "check": "chapter-specific decoded insert film",
+      "detail": {
+        "file": "3-insert.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 4.5,
         "time": 0.0314,
         "frames": 4
       }
     },
     {
-      "step": "1366 chapter 2 模拟交付 charge",
-      "check": "ending 出现模拟损失",
-      "detail": "出现模拟损失"
-    },
-    {
-      "step": "1366 chapter 2 模拟交付 charge",
-      "check": "loss supports help"
-    },
-    {
-      "step": "1366 chapter 2 模拟交付 ship",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "2-decision.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.026,
-        "frames": 4
-      }
-    },
-    {
-      "step": "1366 chapter 2 模拟交付 ship",
-      "check": "ending 出现模拟损失",
-      "detail": "出现模拟损失"
-    },
-    {
-      "step": "1366 chapter 2 模拟交付 ship",
-      "check": "loss supports help"
-    },
-    {
-      "step": "1366 chapter 2 模拟交付 deposit",
-      "check": "chapter-specific decoded insert film",
-      "detail": {
-        "file": "2-insert.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 4.5,
-        "time": 0.0336,
-        "frames": 5
-      }
-    },
-    {
-      "step": "1366 chapter 2 模拟交付 deposit",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "2-decision.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0322,
-        "frames": 4
-      }
-    },
-    {
-      "step": "1366 chapter 2 模拟交付 deposit",
-      "check": "ending 出现模拟损失",
-      "detail": "出现模拟损失"
-    },
-    {
-      "step": "1366 chapter 2 模拟交付 deposit",
-      "check": "loss supports help"
-    },
-    {
-      "step": "1366 chapter 3 模拟交付 bundle",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "3-decision.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0321,
-        "frames": 5
-      }
-    },
-    {
-      "step": "1366 chapter 3 模拟交付 bundle",
-      "check": "ending 出现模拟损失",
-      "detail": "出现模拟损失"
-    },
-    {
-      "step": "1366 chapter 3 模拟交付 bundle",
-      "check": "loss supports help"
-    },
-    {
-      "step": "1366 chapter 3 模拟交付 service",
-      "check": "chapter-specific decoded insert film",
-      "detail": {
-        "file": "3-insert.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 4.5,
-        "time": 0.0315,
-        "frames": 4
-      }
-    },
-    {
-      "step": "1366 chapter 3 模拟交付 service",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "3-decision.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0399,
-        "frames": 5
-      }
-    },
-    {
-      "step": "1366 chapter 3 模拟交付 service",
-      "check": "ending 出现模拟损失",
-      "detail": "出现模拟损失"
-    },
-    {
-      "step": "1366 chapter 3 模拟交付 service",
-      "check": "loss supports help"
-    },
-    {
-      "step": "1366 chapter 2 取消充值",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "2-decision.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0322,
-        "frames": 4
-      }
-    },
-    {
-      "step": "1366 chapter 2 取消充值",
-      "check": "ending 有惊无险",
-      "detail": "有惊无险"
-    },
-    {
-      "step": "1366 chapter 3 交费前找人再商量",
-      "check": "chapter-specific decoded insert film",
-      "detail": {
-        "file": "3-insert.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 4.5,
-        "time": 0.0463,
-        "frames": 5
-      }
-    },
-    {
       "step": "1366 chapter 3 交费前找人再商量",
       "check": "chapter-specific decoded decision film",
       "detail": {
@@ -578,7 +882,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0419,
+        "time": 0.0412,
         "frames": 5
       }
     },
@@ -586,6 +890,22 @@
       "step": "1366 chapter 3 交费前找人再商量",
       "check": "ending 有惊无险",
       "detail": "有惊无险"
+    },
+    {
+      "step": "1366 chapter 3 交费前找人再商量",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 3 交费前找人再商量",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 3 交费前找人再商量",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 3 交费前找人再商量",
+      "check": "back preserves original result"
     },
     {
       "step": "1366 chapter 2 资料不足时暂缓",
@@ -595,7 +915,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0463,
+        "time": 0.041,
         "frames": 5
       }
     },
@@ -603,6 +923,22 @@
       "step": "1366 chapter 2 资料不足时暂缓",
       "check": "ending 安全离开",
       "detail": "安全离开"
+    },
+    {
+      "step": "1366 chapter 2 资料不足时暂缓",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1366 chapter 2 资料不足时暂缓",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1366 chapter 2 资料不足时暂缓",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1366 chapter 2 资料不足时暂缓",
+      "check": "back preserves original result"
     },
     {
       "step": "1920 role 青年人",
@@ -620,7 +956,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0271,
+        "time": 0.0193,
         "frames": 4
       }
     },
@@ -676,8 +1012,8 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0361,
-        "frames": 5
+        "time": 0.0166,
+        "frames": 4
       }
     },
     {
@@ -736,8 +1072,8 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0356,
-        "frames": 5
+        "time": 0.028,
+        "frames": 4
       }
     },
     {
@@ -787,6 +1123,22 @@
     },
     {
       "step": "1920 chapter 1 放下兼职通知",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 1 放下兼职通知",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 1 放下兼职通知",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 1 放下兼职通知",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1920 chapter 1 放下兼职通知",
       "check": "card opens from chapter"
     },
     {
@@ -801,7 +1153,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0376,
+        "time": 0.046,
         "frames": 5
       }
     },
@@ -811,6 +1163,22 @@
       "detail": "及时核实"
     },
     {
+      "step": "1920 chapter 1 听老师回复与搜索记录",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 1 听老师回复与搜索记录",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 1 听老师回复与搜索记录",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 1 听老师回复与搜索记录",
+      "check": "back preserves original result"
+    },
+    {
       "step": "1920 chapter 1 仅拨号不能完成核实",
       "check": "chapter-specific decoded evidence film",
       "detail": {
@@ -818,7 +1186,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0259,
+        "time": 0.0352,
         "frames": 4
       }
     },
@@ -828,6 +1196,22 @@
       "detail": "安全离开"
     },
     {
+      "step": "1920 chapter 1 仅拨号不能完成核实",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 1 仅拨号不能完成核实",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 1 仅拨号不能完成核实",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 1 仅拨号不能完成核实",
+      "check": "back preserves original result"
+    },
+    {
       "step": "1920 chapter 1 从家人核实返回招聘主线",
       "check": "chapter-specific decoded evidence film",
       "detail": {
@@ -835,8 +1219,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0424,
-        "frames": 5
+        "time": 0.0243,
+        "frames": 4
       }
     },
     {
@@ -847,7 +1231,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0377,
+        "time": 0.0407,
         "frames": 5
       }
     },
@@ -855,6 +1239,22 @@
       "step": "1920 chapter 1 从家人核实返回招聘主线",
       "check": "ending 有惊无险",
       "detail": "有惊无险"
+    },
+    {
+      "step": "1920 chapter 1 从家人核实返回招聘主线",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 1 从家人核实返回招聘主线",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 1 从家人核实返回招聘主线",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 1 从家人核实返回招聘主线",
+      "check": "back preserves original result"
     },
     {
       "step": "1920 chapter 1 看过辅导员视频后模拟付款、再只读回看",
@@ -864,7 +1264,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0307,
+        "time": 0.0315,
         "frames": 4
       }
     },
@@ -876,8 +1276,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0029,
-        "frames": 4
+        "time": 0.0294,
+        "frames": 5
       }
     },
     {
@@ -886,9 +1286,49 @@
       "detail": "出现模拟损失"
     },
     {
+      "step": "1920 chapter 1 看过辅导员视频后模拟付款、再只读回看",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 1 看过辅导员视频后模拟付款、再只读回看",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 1 看过辅导员视频后模拟付款、再只读回看",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1920 chapter 1 看过辅导员视频后模拟付款、再只读回看",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 1 看过辅导员视频后模拟付款、再只读回看",
+      "check": "back preserves original result"
+    },
+    {
       "step": "1920 chapter 2 挂断",
       "check": "ending 安全离开",
       "detail": "安全离开"
+    },
+    {
+      "step": "1920 chapter 2 挂断",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 2 挂断",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 2 挂断",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 2 挂断",
+      "check": "hanging up never fabricates an accepted call or transaction"
+    },
+    {
+      "step": "1920 chapter 2 挂断",
+      "check": "back preserves original result"
     },
     {
       "step": "1920 chapter 2 挂断",
@@ -902,6 +1342,26 @@
       "step": "1920 chapter 3 暂不打开群聊",
       "check": "ending 安全离开",
       "detail": "安全离开"
+    },
+    {
+      "step": "1920 chapter 3 暂不打开群聊",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 3 暂不打开群聊",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 3 暂不打开群聊",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 3 暂不打开群聊",
+      "check": "unopened invitation does not fabricate lecture or payment"
+    },
+    {
+      "step": "1920 chapter 3 暂不打开群聊",
+      "check": "back preserves original result"
     },
     {
       "step": "1920 chapter 3 暂不打开群聊",
@@ -919,7 +1379,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0436,
+        "time": 0.0425,
         "frames": 5
       }
     },
@@ -929,6 +1389,22 @@
       "detail": "及时核实"
     },
     {
+      "step": "1920 chapter 2 两项独立查询 go:07",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 2 两项独立查询 go:07",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 2 两项独立查询 go:07",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 2 两项独立查询 go:07",
+      "check": "back preserves original result"
+    },
+    {
       "step": "1920 chapter 2 两项独立查询 go:08",
       "check": "chapter-specific decoded insert film",
       "detail": {
@@ -936,7 +1412,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0291,
+        "time": 0.0257,
         "frames": 4
       }
     },
@@ -945,198 +1421,6 @@
       "check": "chapter-specific decoded evidence film",
       "detail": {
         "file": "2-evidence.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0318,
-        "frames": 4
-      }
-    },
-    {
-      "step": "1920 chapter 2 两项独立查询 go:08",
-      "check": "ending 及时核实",
-      "detail": "及时核实"
-    },
-    {
-      "step": "1920 chapter 3 两项独立查询 go:06",
-      "check": "chapter-specific decoded evidence film",
-      "detail": {
-        "file": "3-evidence.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0369,
-        "frames": 5
-      }
-    },
-    {
-      "step": "1920 chapter 3 两项独立查询 go:06",
-      "check": "ending 及时核实",
-      "detail": "及时核实"
-    },
-    {
-      "step": "1920 chapter 3 两项独立查询 go:08",
-      "check": "chapter-specific decoded insert film",
-      "detail": {
-        "file": "3-insert.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 4.5,
-        "time": 0.0388,
-        "frames": 5
-      }
-    },
-    {
-      "step": "1920 chapter 3 两项独立查询 go:08",
-      "check": "chapter-specific decoded evidence film",
-      "detail": {
-        "file": "3-evidence.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0369,
-        "frames": 5
-      }
-    },
-    {
-      "step": "1920 chapter 3 两项独立查询 go:08",
-      "check": "ending 及时核实",
-      "detail": "及时核实"
-    },
-    {
-      "step": "1920 chapter 2 模拟交付 charge",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "2-decision.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0415,
-        "frames": 4
-      }
-    },
-    {
-      "step": "1920 chapter 2 模拟交付 charge",
-      "check": "ending 出现模拟损失",
-      "detail": "出现模拟损失"
-    },
-    {
-      "step": "1920 chapter 2 模拟交付 charge",
-      "check": "loss supports help"
-    },
-    {
-      "step": "1920 chapter 2 模拟交付 ship",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "2-decision.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0342,
-        "frames": 4
-      }
-    },
-    {
-      "step": "1920 chapter 2 模拟交付 ship",
-      "check": "ending 出现模拟损失",
-      "detail": "出现模拟损失"
-    },
-    {
-      "step": "1920 chapter 2 模拟交付 ship",
-      "check": "loss supports help"
-    },
-    {
-      "step": "1920 chapter 2 模拟交付 deposit",
-      "check": "chapter-specific decoded insert film",
-      "detail": {
-        "file": "2-insert.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 4.5,
-        "time": 0.0285,
-        "frames": 4
-      }
-    },
-    {
-      "step": "1920 chapter 2 模拟交付 deposit",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "2-decision.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0324,
-        "frames": 5
-      }
-    },
-    {
-      "step": "1920 chapter 2 模拟交付 deposit",
-      "check": "ending 出现模拟损失",
-      "detail": "出现模拟损失"
-    },
-    {
-      "step": "1920 chapter 2 模拟交付 deposit",
-      "check": "loss supports help"
-    },
-    {
-      "step": "1920 chapter 3 模拟交付 bundle",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "3-decision.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0182,
-        "frames": 4
-      }
-    },
-    {
-      "step": "1920 chapter 3 模拟交付 bundle",
-      "check": "ending 出现模拟损失",
-      "detail": "出现模拟损失"
-    },
-    {
-      "step": "1920 chapter 3 模拟交付 bundle",
-      "check": "loss supports help"
-    },
-    {
-      "step": "1920 chapter 3 模拟交付 service",
-      "check": "chapter-specific decoded insert film",
-      "detail": {
-        "file": "3-insert.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 4.5,
-        "time": 0.0429,
-        "frames": 5
-      }
-    },
-    {
-      "step": "1920 chapter 3 模拟交付 service",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "3-decision.mp4",
-        "width": 960,
-        "height": 540,
-        "seconds": 6,
-        "time": 0.0353,
-        "frames": 5
-      }
-    },
-    {
-      "step": "1920 chapter 3 模拟交付 service",
-      "check": "ending 出现模拟损失",
-      "detail": "出现模拟损失"
-    },
-    {
-      "step": "1920 chapter 3 模拟交付 service",
-      "check": "loss supports help"
-    },
-    {
-      "step": "1920 chapter 2 取消充值",
-      "check": "chapter-specific decoded decision film",
-      "detail": {
-        "file": "2-decision.mp4",
         "width": 960,
         "height": 540,
         "seconds": 6,
@@ -1145,9 +1429,365 @@
       }
     },
     {
+      "step": "1920 chapter 2 两项独立查询 go:08",
+      "check": "ending 及时核实",
+      "detail": "及时核实"
+    },
+    {
+      "step": "1920 chapter 2 两项独立查询 go:08",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 2 两项独立查询 go:08",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 2 两项独立查询 go:08",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 2 两项独立查询 go:08",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:06",
+      "check": "chapter-specific decoded evidence film",
+      "detail": {
+        "file": "3-evidence.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0323,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:06",
+      "check": "ending 及时核实",
+      "detail": "及时核实"
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:06",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:06",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:06",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:06",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:08",
+      "check": "chapter-specific decoded insert film",
+      "detail": {
+        "file": "3-insert.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 4.5,
+        "time": 0.0435,
+        "frames": 5
+      }
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:08",
+      "check": "chapter-specific decoded evidence film",
+      "detail": {
+        "file": "3-evidence.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0363,
+        "frames": 5
+      }
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:08",
+      "check": "ending 及时核实",
+      "detail": "及时核实"
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:08",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:08",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:08",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 3 两项独立查询 go:08",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 charge",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "2-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0287,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 charge",
+      "check": "ending 出现模拟损失",
+      "detail": "出现模拟损失"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 charge",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 charge",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 charge",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 charge",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 charge",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 charge",
+      "check": "loss supports help"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 ship",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "2-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0291,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 ship",
+      "check": "ending 出现模拟损失",
+      "detail": "出现模拟损失"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 ship",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 ship",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 ship",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 ship",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 ship",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 ship",
+      "check": "loss supports help"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 deposit",
+      "check": "chapter-specific decoded insert film",
+      "detail": {
+        "file": "2-insert.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 4.5,
+        "time": 0.0259,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 deposit",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "2-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0327,
+        "frames": 5
+      }
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 deposit",
+      "check": "ending 出现模拟损失",
+      "detail": "出现模拟损失"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 deposit",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 deposit",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 deposit",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 deposit",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 deposit",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1920 chapter 2 模拟交付 deposit",
+      "check": "loss supports help"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 bundle",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "3-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0199,
+        "frames": 4
+      }
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 bundle",
+      "check": "ending 出现模拟损失",
+      "detail": "出现模拟损失"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 bundle",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 bundle",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 bundle",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 bundle",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 bundle",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 bundle",
+      "check": "loss supports help"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 service",
+      "check": "chapter-specific decoded insert film",
+      "detail": {
+        "file": "3-insert.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 4.5,
+        "time": 0.043,
+        "frames": 5
+      }
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 service",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "3-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0372,
+        "frames": 5
+      }
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 service",
+      "check": "ending 出现模拟损失",
+      "detail": "出现模拟损失"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 service",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 service",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 service",
+      "check": "no real charge reassurance on cover"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 service",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 service",
+      "check": "back preserves original result"
+    },
+    {
+      "step": "1920 chapter 3 模拟交付 service",
+      "check": "loss supports help"
+    },
+    {
+      "step": "1920 chapter 2 取消充值",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "2-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0215,
+        "frames": 4
+      }
+    },
+    {
       "step": "1920 chapter 2 取消充值",
       "check": "ending 有惊无险",
       "detail": "有惊无险"
+    },
+    {
+      "step": "1920 chapter 2 取消充值",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 2 取消充值",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 2 取消充值",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 2 取消充值",
+      "check": "back preserves original result"
     },
     {
       "step": "1920 chapter 3 交费前找人再商量",
@@ -1157,8 +1797,8 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0405,
-        "frames": 5
+        "time": 0.0243,
+        "frames": 4
       }
     },
     {
@@ -1169,14 +1809,30 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0332,
-        "frames": 5
+        "time": 0.0357,
+        "frames": 4
       }
     },
     {
       "step": "1920 chapter 3 交费前找人再商量",
       "check": "ending 有惊无险",
       "detail": "有惊无险"
+    },
+    {
+      "step": "1920 chapter 3 交费前找人再商量",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 3 交费前找人再商量",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 3 交费前找人再商量",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 3 交费前找人再商量",
+      "check": "back preserves original result"
     },
     {
       "step": "1920 chapter 2 资料不足时暂缓",
@@ -1186,7 +1842,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0395,
+        "time": 0.0387,
         "frames": 5
       }
     },
@@ -1194,6 +1850,22 @@
       "step": "1920 chapter 2 资料不足时暂缓",
       "check": "ending 安全离开",
       "detail": "安全离开"
+    },
+    {
+      "step": "1920 chapter 2 资料不足时暂缓",
+      "check": "film result first; journal is opt-in"
+    },
+    {
+      "step": "1920 chapter 2 资料不足时暂缓",
+      "check": "cause is displayed immediately"
+    },
+    {
+      "step": "1920 chapter 2 资料不足时暂缓",
+      "check": "read-only journal has recorded actions"
+    },
+    {
+      "step": "1920 chapter 2 资料不足时暂缓",
+      "check": "back preserves original result"
     },
     {
       "step": "resource audit",

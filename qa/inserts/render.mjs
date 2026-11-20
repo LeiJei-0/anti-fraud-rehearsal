@@ -14,7 +14,7 @@ try{
  await send('Page.enable');await send('Emulation.setDeviceMetricsOverride',{width:960,height:540,deviceScaleFactor:1,mobile:false});
  await send('Page.navigate',{url:new URL('./studio.html',import.meta.url).href});for(let i=0;i<100;i++){if(await evaljs('typeof window.paint==="function"'))break;await wait(60)}
  await evaljs('window.model='+JSON.stringify(caller));await fs.mkdir(target,{recursive:true});
- for(const n of [1,2,3]){
+ for(const n of [1,2,3].filter(n=>!process.argv[2]||process.argv.slice(2).includes(String(n)))){
    enc=spawn(ff,['-v','error','-y','-f','image2pipe','-vcodec','mjpeg','-framerate','24','-i','pipe:0','-an','-c:v','libx264','-preset','veryfast','-crf','20','-pix_fmt','yuv420p','-movflags','+faststart',path.join(target,n+'-insert.mp4')],{stdio:['pipe','ignore','inherit']});const ended=once(enc,'exit');
    for(let f=0;f<108;f++){await evaljs('paint('+n+','+(f/24)+',model)');const shot=await send('Page.captureScreenshot',{format:'jpeg',quality:91});const frame=Buffer.from(shot.data,'base64');if(!enc.stdin.write(frame))await once(enc.stdin,'drain');if(process.env.FRAME_PROOFS && [0,44,92].includes(f))await fs.writeFile(path.join(process.env.FRAME_PROOFS,n+'-insert-'+f+'.jpg'),frame)}
    enc.stdin.end();const [code]=await ended;if(code!==0)throw Error('Encoder '+code);enc=null;console.log(n+'-insert.mp4 (960x540, 24fps, 4.5s)');

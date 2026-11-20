@@ -94,6 +94,18 @@ try{
      if((n===1&&key==='go:A07')||(n!==1&&key==='go:08'))await media(n,'insert');if(key==='go:A10'||key.startsWith('tx:'))await media(n,'decision');}
     await wait(visible('#result-title'));const shown=await ev(q(n===1?'.pill':'#result-title')+'.textContent.trim()');
     check('ending '+result,shown===result,shown);
+    const book='[data-ending="open"]', back='[data-ending="back"]';
+    check('film result first; journal is opt-in',await ev(visible(book)+'&&!('+visible('#journal-title')+')'));
+    check('cause is displayed immediately',await ev(q('#result-why')+'.textContent.trim().length>4'));
+    if(result==='出现模拟损失')check('no real charge reassurance on cover',await ev('/没有.{0,5}真实.{0,4}扣款|不会.{0,5}真实.{0,4}扣款|未发生真实/.test(document.body.innerText)'));
+    if(w===1366 && ((n===1&&label==='从家人核实返回招聘主线')||(n===2&&label==='挂断')||(n===3&&label==='暂不打开群聊')))await shot('ending-'+n);
+    await click(book);await wait(visible('#journal-title'));
+    const entries=await ev('[...document.querySelectorAll(".journal-steps li")].map(x=>x.innerText.trim())');
+    check('read-only journal has recorded actions',entries.length>0 && await ev('document.activeElement.id==="journal-title" && !document.querySelector(".journal-steps button,.journal-steps input")'));
+    if(n===2&&label==='挂断')check('hanging up never fabricates an accepted call or transaction',entries.some(x=>x.includes('挂断'))&&!entries.some(x=>/充值|接听|押金/.test(x)));
+    if(n===3&&label==='暂不打开群聊')check('unopened invitation does not fabricate lecture or payment',!entries.some(x=>/服务费|已付款|支付套餐/.test(x)));
+    if(w===1366 && n===1&&label==='从家人核实返回招聘主线')await shot('journal-1');
+    await click(back);await wait(visible(book));check('back preserves original result',await ev(q('#result-title')+'.textContent.includes('+JSON.stringify(result)+')'));
     if(result==='出现模拟损失'&&n>1){await action(n,'aftercare');check('loss supports help',await ev(visible('#aftercare')))}
     if(label==='放下兼职通知'||label==='挂断'||label==='暂不打开群聊'){
      await click('a[href="pact.html"]');await wait(visible('#print'));check('card opens from chapter',await ev('document.querySelectorAll("input").length===2'));await click('.actions a');await wait(visible('#start'));check('card return',true);}

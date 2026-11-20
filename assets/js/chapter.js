@@ -2,7 +2,7 @@
   "use strict";
   const B=new URLSearchParams(location.search).get("c")!=="3", W=B?"B":"C", n=B?2:3;
   const title=B?"一通晚间来电":"群里的一场讲座", place=B?"家中客厅，晚饭后":"家中客厅，周日上午";
-  const asset="assets/art/ch"+n+".svg", clock=B?"19:42":"09:16";
+  const asset="assets/art/ch"+n+".webp", clock=B?"19:42":"09:16";
   const $=id=>document.getElementById(id), app=$("app"), box=$("exitbox");
   document.title=title+"｜防骗预演"; document.body.style.setProperty("--anchor","68% 73%");
   let view="ready",cur="04",origin="04",verifyOrigin="04",source="main",amountKey="",entered=false,paid=false,helped=false,readSize=0,muted=false,reviewed=new Set(),seen=new Set(),actions=[],previewed=new Set(),checks=new Set(),hanged=false;
@@ -13,7 +13,7 @@
   function silence(){clearInterval(ring);ring=0;for(const osc of tones){try{osc.stop()}catch{}}tones.clear()}
   function toneRing(){note(440,.20);note(554,.25,.25)}
   function incoming(){if(muted||ring||box.open)return;toneRing();ring=setInterval(toneRing,2100)}
-  function log(s){if(actions[actions.length-1]!==s)actions.push(s)}
+  function log(s){actions.push(s)}
   function full(){try{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.()?.catch(()=>{});else document.exitFullscreen?.()?.catch(()=>{})}catch{}}
   function focusStep(id){const el=$(id);if(!el)return;el.focus({preventScroll:true});if(innerWidth<=650){scrollTo(0,0)}else if(view==="result"){scrollTo(0,0)}}
   const a=(label,k)=>({label,k}), goA=(label,s)=>a(label,"go:"+s), end=(txt)=>a(txt,"end"), ask=a("找人商量","help"), bbl=(s,t)=>'<div class="bubble"><span class="label">'+s+'</span><p>'+t+'</p></div>';
@@ -100,15 +100,37 @@
     Theatre.stop();
     silence();view="result";const line=reviewed.size?Array.from(reviewed).map(k=>vName[k]).join("、"):"";
     const result=paid?"出现模拟损失":entered?"有惊无险":line?"及时核实":"安全离开";
-    const why=paid?"你在演练中确认了「"+transactions[amountKey][1]+"」。没有发生真实扣款或交付。":entered?"你打开过交易确认页，最后停在了实际确认之前。":line?"你通过独立渠道核对了"+line+"，随后暂缓了行动。":"你结束了这次接触，没有交付钱物。对方的说法仍待核实。";
+    const why=paid?"你在演练中确认了"+transactions[amountKey][0]+"（"+transactions[amountKey][2]+"），没有发生真实扣款或交付。":entered?"你看到了"+transactions[amountKey][0]+"确认页，最后没有点确认。":line?"你通过独立渠道核对了"+line+"，随后暂缓了行动。":"你结束了这次接触，没有交付钱物。对方的说法仍待核实。";
     const tips=source==="side"&&seen.has("08")?(B?"直播里说的是上门收购，但书面条款收的是预约押金。愿意上门不等于保证收购。":"主播口头说会高价回收，付费页写的却是鉴定服务。报价和购买的内容是两件事。"):B?(seen.has("07")?"参与页列出的是平台名称，交钱时面对的却是「页面收款户」。应分别核对这两个对象。":seen.has("06")?"你看到了旧聊天和一张收益记录；聊天的时间长短不能证明这张图里的收益是真的。":"来电显示的是熟悉的昵称。仅凭这个名字，还不能确认对方这一次要谈什么。"):(seen.has("06")?"讲师声称能改善慢性病，包装写的却是保健食品。两种说法需要分别确认。":"你看到的是邻里群的邀请；认识发消息的人，并不等于已经了解活动内容。");
-    app.innerHTML='<article class="result"><div class="plate-no">本局结果　／　'+title+'</div><h1 id="result-title" tabindex="-1">'+result+'</h1><p class="lead">'+why+'</p>'+(paid?'<button data-do="aftercare">我现在可以怎么做</button><p id="aftercare" hidden>停止追加付款，保留聊天、收款方和交易凭据，请信任的人一起联系原支付渠道。</p>':'')+'<p>'+tips+'</p><details><summary>回看本局经过（只读）</summary><ol>'+(actions.length?actions.map(x=>'<li>'+x+'</li>').join(""):'<li>开始演练后，选择离开。</li>')+'</ol><p>求助：'+(helped?"和家人商量过":"本局没有找家人商量")+'。核实：'+(line||"尚未完成")+'。</p></details><nav><a href="pact.html">带走家庭约定卡</a><a href="index.html">回到选章</a><button data-do="replay">重新演练</button></nav></article>';
-    focusStep("result-title");
+    const notes=[tips];
+    if(helped)notes.push("你和家人商量过。");
+    if(line)notes.push("已经完成独立核对："+line+"。");
+    else if(checks.size)notes.push("你查过部分资料，两项对照还没有做完。");
+    Ending.mount(app,{chapter:n,title,picture:asset,result,why,loss:paid,actions,notes});
   }
-  function act(k,label){
-    if(k==="aftercare"){const el=$("aftercare");if(el){el.hidden=!el.hidden;app.querySelector('[data-do="aftercare"]').setAttribute("aria-expanded",String(!el.hidden))}return}
+  function choiceReceipt(k){
+    const places={"04":B?"来电画面":"邻里群通知",hang:"通话记录","05":B?"通话":"邻里群聊","06":B?"旧消息":"讲座","07":B?"参与条件":"商品包装","08":B?"回收直播":"鉴宝直播","11":"确认页"};
+    if(k.startsWith("tx:"))return "查看了"+transactions[k.slice(3)][0]+"确认页";
+    if(k==="pay")return "确认了模拟"+transactions[amountKey][0]+"（"+transactions[amountKey][2]+"）";
+    if(k==="end")return cur==="11"?"在确认前取消了"+transactions[amountKey][0]:cur==="04"&&!B?"决定这次先不打开邀请":"决定先停下来，结束了这次接触";
+    if(k==="hang")return "挂断了来电";
+    if(k==="help")return "把手机给家人看，一起商量了这件事";
+    if(k==="verify")return "打开了自己原有的渠道，准备核对";
+    if(k==="backHelp"||k==="backVerify")return "回到了"+(places[k==="backHelp"?origin:verifyOrigin]||"先前的画面");
+    if(k==="switch")return "改为查看"+vName[source==="main"?"side":"main"]+"的资料";
+    if(k.startsWith("check:")){
+      const checksHere=B?(source==="main"?["查过了所称平台的名称","核对了实际收款方"]:["查看了预约服务的经营者","读过了预约服务条款"]):
+        (source==="main"?["核对了包装上的商品类别","查看了原就诊渠道的答复"]:["查看了鉴定服务的经营者","读过了书面付费条件"]);
+      return checksHere[Number(k.slice(6))];
+    }
+    if(k==="go:05")return B?"接听了阿岚的电话":cur==="04"?"打开了邻里群的讲座邀请":"回到了邻里群聊";
+    if(k==="go:06")return B?"打开了和阿岚的旧聊天记录":"打开了健康讲座";
+    if(k==="go:07")return B?"查看了参与条件和收款方":"查看了商品的包装和价格";
+    if(k==="go:08")return B?"打开了旧相机回收直播":"打开了旧纸币鉴定直播";
+  }
+  function act(k){
     if(k==="replay"){location.reload();return}if(view!=="play")return;
-    log(label);if(k.startsWith("go:")){go(k.slice(3));return}
+    const receipt=choiceReceipt(k);if(receipt)log(receipt);if(k.startsWith("go:")){go(k.slice(3));return}
     if(k==="end"){finish();return}if(k==="hang"){hanged=true;go("hang");return}
     if(k==="help"){origin=cur==="10"?verifyOrigin:cur;helped=true;go("09");return}
     if(k==="verify"){verifyOrigin=cur==="09"?origin:cur;go("10");return}
@@ -120,7 +142,7 @@
   app.addEventListener("click",e=>{const b=e.target.closest("button[data-do]");if(!b)return;
     // A physical double click must not carry a decision into the next scene.
     if(e.detail>1)return;audio();const k=b.dataset.do;if(k==="pay"&&performance.now()-lastAct<350)return;
-    lastAct=performance.now();act(k,b.querySelector("span")?.textContent||b.textContent)});
+    lastAct=performance.now();act(k)});
   $("mute").onclick=()=>{muted=!muted;$("mute").setAttribute("aria-pressed",String(muted));$("mute").textContent=muted?"开声音":"静音";if(muted)silence();else {audio();if(B&&!box.open&&view==="play"&&cur==="04"&&!hanged)incoming()}};
   $("full").onclick=full;document.addEventListener("fullscreenchange",()=>{$("full").textContent=document.fullscreenElement?"退全屏":"全屏"});
   function askExit(){Theatre.suspend();silence();box.returnValue="";box.showModal()}

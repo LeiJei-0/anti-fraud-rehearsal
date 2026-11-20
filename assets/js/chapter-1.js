@@ -152,6 +152,7 @@ function freshRound(){
     videoFrame: 0,
     verify: { taskList:false, teacherReply:false, videoCheck:false, onlyDialed:false },
     log: [],
+    choices: [],  // Only deliberate player decisions, in the order they occurred.
     modal: null,       // 'loss' | 'info'
     payView: "form",   // form | readonly
     sub: "hub",        // A09 子页
@@ -609,83 +610,17 @@ function renderScene(spec){
 }
 function renderReview(){
   Theatre.stop();
-  var k = endingKey(), e = ENDINGS[k], meta = REVIEW_TEXT[k];
-  var done = verifiedItems(), todo = pendingItems();
-  var stars = starsFor(k);
-  var alts = altBranches();
-  var t = (R.log.length ? R.log : [{kind:"info", text:"（本局没有留下操作记录）"}]);
-  V.innerHTML =
-  '<div class="card"><div class="eyebrow">本局结果 · 立即结算</div>' +
-    '<div class="result"><h2 class="title-xl" id="result-title" tabindex="-1" style="font-size:1.5rem">《一份周末兼职》</h2>' +
-    '<span class="pill ' + (k==="verified"?"ok":(k==="loss"?"":"mid")) + '">' + e.name + '</span></div>' +
-    '<p class="lede" id="result-why">为什么是这个结果：' + esc(whyLine(k)) + '</p></div>' +
-
-  '<div class="card reveal"><div class="eyebrow">复盘里第一次说明</div>' +
-    '<p style="margin:0">' + esc(meta.reveal) + '</p></div>' +
-
-  '<div class="card"><div class="eyebrow">本局实际走过的镜头</div>' +
-    '<ul class="timeline">' + t.map(function(x){
-      var cls = { pay:"pay", verify:"verify", help:"help", follow:"follow" }[x.kind] || "";
-      var label = { info:"接收信息", follow:"已跟随", help:"找人商量", verify:"核实", pay:"确认动作", end:"结束" }[x.kind] || x.kind;
-      return '<li class="' + cls + '"><span class="k">' + esc(label) + (x.scene ? " · " + esc(x.scene) : "") + '</span>' +
-        esc(x.text) + '</li>';
-    }).join("") + '</ul></div>' +
-
-  '<div class="card"><div class="grid2">' +
-    '<div><div class="eyebrow">已经核实</div><ul class="checklist">' +
-      (done.length ? done.map(function(x){ return '<li class="done">' + esc(x) + '</li>'; }).join("")
-                   : '<li class="todo">本局没有完成校园渠道核实</li>') + '</ul></div>' +
-    '<div><div class="eyebrow">仍待核实</div><ul class="checklist">' +
-      (todo.length ? todo.map(function(x){ return '<li class="todo">' + esc(x) + '</li>'; }).join("")
-                   : '<li class="done">两条线都查过了</li>') + '</ul></div>' +
-  '</div>' +
-  '<p class="privacy">「找人商量」和「已核实」分开记录：本局' + (R.talked ? "找过同学商量" : "没有找可信的人商量") +
-  '；' + (done.length ? "从校园渠道取得 " + done.length + " 项答复" : "没有取得校园答复") + '。</p></div>' +
-
-  '<div class="card"><div class="eyebrow">本局提醒星 · 每颗对应一个能记住的动作</div>' +
-    '<ul class="stars" id="stars">' + stars.map(function(s){
-      return '<li><span class="s">★</span>' + esc(s) + '</li>'; }).join("") + '</ul></div>' +
-
-  '<div class="card"><div class="eyebrow">另一个可尝试的分支</div>' +
-    '<div class="alt">' + (alts.length
-      ? "这一局没有走到的镜头：" + alts.map(esc).join("；") + "。它们只作为可选分支列出，本局结算不使用里面的结论。"
-      : "这一局把主要镜头都走了一遍。") + '</div></div>' +
-
-  '<div class="card"><div class="eyebrow">继续</div>' +
-    '<div class="row">' +
-      '<button type="button" class="btn primary" data-act="copyStars">复制本局提醒</button>' +
-      '<button type="button" class="btn" data-act="replay">从头重玩本章</button>' +
-      '<button type="button" class="btn" data-act="select">选择其他章</button>' +
-      '<button type="button" class="btn ghost" data-act="home">返回首页</button><a class="btn pact-link" href="pact.html">带走家庭约定卡</a>' +
-    '</div>' +
-    '<p class="privacy" id="copy-note">复制只在当前网页内进行，不会联网。真实求助信息见顶栏「真实求助」。</p></div>';
-}
-var REVIEW_TEXT = {
-  safe: { reveal:"这一局对应的是「刷单返利」手法的前半段：先用一条看起来像校内兼职的通知接触人。" +
-    "你停在打开之前或只看了消息，没有进入标注演练的确认页。" },
-  verified: { reveal:"这一局涉及两种手法：用小额返利建立信任的「刷单返利」，以及冒充师长的身份冒充。" +
-    "你在跟着要求走之前，用了学校自己的渠道取得答复。" },
-  close: { reveal:"这一局你走到了「联单垫付」的确认页。要求先垫钱、整组做完才结算，是刷单返利里让金额加码的一步。" +
-    "你在点确认之前停住了。" },
-  loss: { reveal:"这一局你确认了演练中的垫付。刷单返利在真实案件里通常是：小额返利到账 → 联单要求加码 → 以「不做完不退」为理由继续收钱。" +
-    "本局没有出现真实扣款，损失只是演练记录。" }
-};
-function whyLine(k){
-  var v = verifiedItems().length, bits = [];
-  if(k === "loss"){
-    bits.push("你在标注「演练」的确认页点了「确认垫付」，这一步记为一次确认动作（380.00 元，没有发生真实扣款）");
-    bits.push(v ? "就算之前已经从校园渠道查到 " + v + " 项，结算顺序里模拟损失仍排在最前" : "之前也没有把该查的两项查完");
-  } else if(k === "close"){
-    bits.push("你到过垫付确认页，但在点「确认」之前停了下来，本局一条确认动作都没有");
-    bits.push(v ? "已经查到的 " + v + " 项写在下面" : "两项校园渠道核实还没有查完，仍标着待核实");
-  } else if(k === "verified"){
-    bits.push("你没有进入垫付确认页，并且从学校就业发布记录和原有号码两条线都拿到了答复");
-    bits.push("两条答复都写进了「已经核实」");
-  } else {
-    bits.push("你主动停止了这次接触");
-    bits.push(v ? "已经查到的 " + v + " 项写在下面" : "两件要确认的事仍然标着「待核实」，没有被算成已核实");
-  }
-  return bits.join("；") + "。";
+  const k = endingKey();
+  const why = {
+    loss:"你确认了 380 元的模拟垫付，没有发生真实扣款。",
+    close:"到了要垫付 380 元的时候，你停在了确认之前。",
+    verified:"你查过学校发布记录，也打给了原有号码。两边的答复都不支持这份兼职。",
+    safe:R.seen.A05?"你看过这条消息，决定先不继续，没有垫钱。":"你结束了这次接触，没有垫钱。"
+  }[k];
+  const notes = verifiedItems().concat(pendingItems());
+  if(R.talked) notes.push("你找同学林嘉商量过。商量和独立核实是两件不同的事。");
+  Ending.mount(V, {chapter:1, title:"一份周末兼职", picture:"assets/art/ch1.webp",
+    result:ENDINGS[k].name, why, loss:k==="loss", actions:R.choices, notes});
 }
 function starsFor(k){
   var base = {
@@ -698,15 +633,6 @@ function starsFor(k){
   if(base.length < 2 && !R.verify.taskList) base.push("任务有没有发布，去学校就业平台搜一次。");
   return base.slice(0,3);
 }
-function altBranches(){
-  var out = [];
-  if(!R.seen.A07) out.push("自称辅导员的视频（A07）· 从任务聊天里问「这是谁发布的」进入");
-  if(!R.seen.A08) out.push("找同学商量（A08）· 任何一幕点「找人商量」");
-  if(!R.seen.A09) out.push("校园渠道核实（A09）· 从「一起查学校渠道」或「用平时的号码问老师」进入");
-  if(!R.seen.A10) out.push("垫付确认页（A10）· 在连续任务那一步点「看看垫付要求」");
-  return out;
-}
-
 /* =====================================================================
    7. 弹窗
    ===================================================================== */
@@ -889,9 +815,35 @@ function paintVideo(){
   updateCaption(lines[shown-1].txt);
 }
 
+/* Use receipts of actions, not the menu labels or events from unvisited branches. */
+function choiceReceipt(act) {
+  const src=R.scene;
+  const mainReturn={A04:"回到了兼职通知",A05:"回到了试做任务的聊天",A06:"回到了连续任务的聊天",A10:"回到了垫付确认页"};
+  const receipts={
+    "go:A05":"打开了兼职短信，查看试做任务",
+    "go:A06":src==="A05"?"查看了下一组连续任务":"回到了连续任务的聊天",
+    "go:A07":R.seen.A07?"重新打开了自称辅导员的视频":"打开了对方发来的视频",
+    "go:A08":"找同学林嘉商量了这件事",
+    "go:A09":"打开了学校自己的渠道，准备核实",
+    "go:A10":"查看了需要先垫付 380 元的确认页",
+    "sub:jobs":"打开了学校就业平台","sub:contacts":"打开了原有校园通讯录",
+    back:mainReturn[R.from||"A04"]||"回到了先前的画面",
+    callTeacher:"拨打了通讯录里原有的老师号码",hangup:"在取得答复前挂断了电话",
+    answer:"接到了老师的答复",askVideo:"向老师核对了那段视频的来源",
+    checkTaskList:"在学校就业平台查过任务发布记录",
+    confirmPay:"确认了 380 元的模拟垫付",helpPost:"在模拟付款后找同学商量了后续处理",
+    reviewPay:"回看了本局的垫付记录",
+    end:src==="A10"&&!R.confirmedPay?"在 380 元确认页取消了垫付":src==="A04"?"放下了这条兼职通知":"决定先停下来，结束了这次接触"
+  };
+  return receipts[act];
+}
 /* ---- 动作处理 ---- */
 function doAct(act, node){
   if(!act) return;
+  if(node && /^A[0-9]{2}$/.test(R.scene) && !(act==="confirmPay" && R.confirmCount>0)){
+    const step=choiceReceipt(act);
+    if(step) R.choices.push(step);
+  }
   Sfx.tap();
   if(act === "noop") return; if(act === "fullscreen"){ if(document.fullscreenElement)leaveBrowserFullscreen();else requestCinemaFullscreen(); return; }
 
