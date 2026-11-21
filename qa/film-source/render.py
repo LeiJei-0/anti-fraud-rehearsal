@@ -11,6 +11,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from fontTools.pens.basePen import BasePen
 from fontTools.svgLib.path import parse_path
 import imageio_ffmpeg
+import painted_hand
 ROOT=Path(__file__).resolve().parents[2]; ART=ROOT/'assets/art'; OUT=ROOT/'assets/films'
 W,H,FPS=960,540,24
 M=Image.Resampling.BICUBIC
@@ -95,82 +96,6 @@ def table(c):
  d.ellipse((x+33,y-12,x+82,y+22),outline='#bbb8a0',width=10);d.ellipse((x-r,y-r,x+r,y+r),fill='#e5daba',outline='#737c70',width=2)
  d.ellipse((x-r+8,y-r+8,x+r-8,y+r-8),fill='#a98b5f');d.arc((x-r+12,y-r+13,x+r-14,y+r-14),194,304,fill='#d4b785',width=3)
  return im
-# A right-hand grip in phone coordinates. Back of fingers -> device -> grounded
-# thenar eminence + thumb. Only the thumb can intersect the glass.
-RW,RH=620,700
-CASE=(99,35)
-def paste(im,src,x,y):
- im.alpha_composite(src,(int(x),int(y)))
-def hexrgb(x):return tuple(bytes.fromhex(x.lstrip('#')))
-def wash(im, mask, marks, radius=10):
- layer=rgba(im.size);d=ImageDraw.Draw(layer)
- for coords,col in marks:d.ellipse(coords,fill=col)
- layer=layer.filter(ImageFilter.GaussianBlur(radius))
- layer.putalpha(Image.fromarray(np.uint8(np.asarray(layer.getchannel('A'),dtype='float32')*np.asarray(mask)/255)))
- im.alpha_composite(layer)
-@lru_cache(None)
-def grip_back(c):
- skin=['','#cba184','#ba9179','#cda689'][c];ink=['','#98765e','#846651','#9c7b66'][c]
- q=rgba((RW,RH))
- # A single closed silhouette from palm to wrist; most of its left side is
- # covered by the metal case, never floating above the screen.
- path(q,'M103 193 Q145 158 207 166 C256 148 299 147 321 163 C342 173 353 195 360 215 C380 252 385 306 396 350 C404 385 432 420 466 451 L602 571 L595 699 L439 699 C422 621 397 563 352 518 C337 500 315 483 291 473 C257 458 233 453 208 455 C171 455 144 452 126 445 Q112 437 115 425 Q117 411 135 411 L161 412 Q115 402 104 377 Q84 340 92 292Z',skin,ink,2)
- wash(q,q.getchannel('A'),[((294,168,369,340),(246,211,177,140)),((141,395,310,474),(120,78,62,140)),((377,412,539,605),(235,187,152,115))],13)
- # Distal pads come around the FAR edge, facing inwards. The lowest pad is
- # short and stays under the chassis; there is no extended/floating digit.
- for k,(x,y,ww,hh) in enumerate([(87,183,37,39),(82,239,40,43),(88,295,36,41)]):
-  path(q,f'M{x+ww} {y} C{x+15} {y-4} {x+2} {y+1} {x} {y+11} C{x-3} {y+22} {x+5} {y+hh-2} {x+15} {y+hh} L{x+ww+4} {y+hh+5}Z',skin,ink,2)
-  path(q,f'M{x+4} {y+13} Q{x+8} {y+5} {x+18} {y+6}',None,'#dfbca0',2)
- path(q,'M129 430 Q154 424 190 434 M283 441 Q294 451 312 459 M327 206 Q342 223 345 249',None,ink,2)
- # Sleeve seam, folds and a narrow band of reflected light.
- cloth=['','#ece4cc','#8a8167','#8a9280'][c]; dark=['','#aeaa94','#615c4a','#677466'][c]
- path(q,'M343 515 Q391 493 434 444 L477 463 Q456 506 399 552Z',cloth,dark,2)
- path(q,'M358 539 Q411 522 465 454 Q521 482 619 538 L619 699 L414 699 Q405 613 358 539Z',cloth)
- path(q,'M414 699 Q405 613 358 539 Q411 522 465 454 Q521 482 619 538',None,dark,2)
- path(q,'M374 548 Q425 520 454 481 M403 597 Q422 578 449 568 M473 551 Q499 529 516 530 M423 664 Q456 611 497 601',None,dark,2)
- return q
-def unit(dx,dy):
- mag=max(.0001,(dx*dx+dy*dy)**.5);return dx/mag,dy/mag
-def thumb_layer(c,tx,ty,lift):
- q=rgba((RW,RH));d=ImageDraw.Draw(q)
- skin=['','#d5aa8b','#c39a80','#d3b094'][c];ink=['','#93735d','#866551','#987963'][c]
- # Distal pad is the END of a curved two-joint thumb, not a detached capsule.
- # Its broad root crosses the radial side of the hand and terminates in a soft
- # thenar fold just above the wrist. Tangent follows the axis as the thumb arcs.
- jx=lerp(308,296,s(332-ty,5,90));jy=ty+27
- b=(369,351); ctl1=(348,335);ctl2=(jx+22,jy+21); end=(jx,jy)
- def bez(a,b,c,d,u):
-  v=1-u;return (v**3*a[0]+3*v*v*u*b[0]+3*v*u*u*c[0]+u**3*d[0],v**3*a[1]+3*v*v*u*b[1]+3*v*u*u*c[1]+u**3*d[1])
- pts=[bez(b,ctl1,ctl2,end,i/26) for i in range(27)]
- pts += [bez(end,(jx-13,jy-13),(tx+19,ty+5),(tx,ty),i/25) for i in range(1,26)]
- left=[];right=[]
- for i,(x,y) in enumerate(pts):
-  pp=pts[max(0,i-1)];nn=pts[min(len(pts)-1,i+1)];dx,dy=unit(nn[0]-pp[0],nn[1]-pp[1]);u=i/(len(pts)-1)
-  r=float(np.interp(u,[0,.19,.5,.71,1],[32,27,16.5,16,16]))
-  left.append((x-dy*r,y+dx*r));right.append((x+dy*r,y-dx*r))
- dx,dy=unit(tx-pts[-3][0],ty-pts[-3][1]);nx,ny=-dy,dx
- # Tip round-over; use the same skin shape for all poses, including swipes.
- cap=[(tx+16*(nx*cos(z)+dx*sin(z)),ty+16*(ny*cos(z)+dy*sin(z))) for z in np.linspace(0,pi,15)]
- border=left+cap+right[::-1]+[(362,401),(371,406),(383,390),(392,367),(391,346),(383,327)]
- # Blend thumb base into palm instead of outlining a sausage at the joint.
- d.polygon(border,fill=skin);d.line(left[9:]+cap+right[5:][::-1],fill=ink,width=2,joint='curve')
- wash(q,q.getchannel('A'),[((jx-44,jy-17,jx+10,jy+15),(255,226,193,75)),((314,317,374,379),(240,203,172,58)),((tx-5,ty+2,tx+31,ty+19),(164,111,85,125))],6)
- # Fingernail: short, oblique, oriented ALONG distal joint. Free edge at the
- # pad tip; a shallow lunula and the IP crease distinguish this from a finger.
- def npnt(u,v):return(tx+dx*u+nx*v,ty+dy*u+ny*v)
- nail=[npnt(u,v) for u,v in [(-15,-7),(-9,-9),(1,-8),(8,-6),(11,-2),(10,3),(6,6),(-6,7),(-14,5),(-17,0)]]
- d.polygon(nail,fill='#d8b4a4',outline='#ac8777');d.line([npnt(7,-5),npnt(9,-1),npnt(7,4)],fill='#e9d1b8',width=2)
- d.line([npnt(-13,-4),npnt(-9,-5),npnt(-3,-5)],fill='#e4c5b4',width=1)
- d.line([npnt(-26,-7),npnt(-29,0),npnt(-28,5)],fill=ink,width=1)
- if c==3:
-  d.line([npnt(-33,-8),npnt(-35,-3),npnt(-35,4)],fill='#aa8975',width=1)
-  d.arc((337,304,370,361),54,117,fill='#b18a70',width=1)
- # Melt the root paint into the palm; shape remains crisp over the bezel.
- fade=_thenar_fade();ch=q.getchannel('A'); q.putalpha(Image.fromarray((np.asarray(ch)*fade).astype('uint8')))
- return q
-@lru_cache(None)
-def _thenar_fade():
- yy,xx=np.mgrid[:RH,:RW];return np.clip((390-xx)/60,0,1)*np.clip((406-yy)/45,0,1)
 @lru_cache(maxsize=280)
 def screen_phone(c,mode,offset,reveal):
  im=handset(c,mode,1).copy();d=ImageDraw.Draw(im)
@@ -193,51 +118,6 @@ def screen_phone(c,mode,offset,reveal):
    txt(pd,(14,y+6),label,15,blue);pd.line((15,y+34,105+i*7,y+34),fill='#97a799',width=2)
   im.paste(panel,(27,102))
  return im
-def grip(im,c,mode,t,lift=1,approach=1):
- # One rig affine transform is applied after all layers are composited.
- # Intake exactly locks the hand to the case BEFORE they leave the table.
- # At the cut our hand has already reached the near edge, but the pads have not curled under it.
- dx=round(17*(1-approach));dy=round(9*(1-approach))
- rig=rgba((RW,RH));paste(rig,grip_back(c),dx,dy)
- swipe=s(t,2.47,3.46) if mode=='orient' else s(t,1.48,2.92) if mode=='evidence' else 0
- if c==2 and mode=='orient':swipe=0
- # Scroll only while thumb pad is down (matching travel precisely). Small
- # overscroll settles after release. Resting thumb returns onto the side bezel.
- dist=68 if mode!='decision' else 0
- release=s(t,3.59,4.32) if mode=='orient' else s(t,3.20,4.55) if mode=='evidence' else 0
- offset=round(dist*swipe+3*release)
- paste(rig,screen_phone(c,mode,offset,int(mode!='orient' or t>.55)),*CASE)
- if mode=='decision':
-  near=s(t,.30,1.87); back=s(t,2.8,4.40)
-  tx=lerp(305,253,near)+51*back;ty=lerp(302,264,near)+42*back
- else:
-  touch=s(t,2.01,2.47) if mode=='orient' else s(t,.65,1.48)
-  tx=304-51*touch-8*sin(swipe*pi)+45*release;ty=325-8*touch-dist*swipe+65*release
- if mode=='orient' and c==2:tx,ty=301,319
- th=thumb_layer(c,tx,ty,0);paste(rig,th,dx,dy)
- if mode=='evidence':cx,cy,sc,angle,fy=677,336,.91,-4,1
- elif mode=='decision':cx,cy,sc,angle,fy=556,386,1.10,2,1
- else:
-  cx=lerp(563,551,lift);cy=lerp(378,381,lift);sc=lerp(.83,1.13,lift);angle=lerp(22,3,lift)
-  fy=lerp(.74,1,lift)
- # Whole-device rise, not a scale-up of a floating phone: shadow remains on
- # the table, grows softer and separates from the base as the wrist lifts.
- shade=Image.new('RGBA',(230,425),(53,48,35,0));sd=ImageDraw.Draw(shade);sd.rounded_rectangle((5,7,216,414),radius=31,fill=(56,49,40,int(47-24*lift)))
- lay(im,shade.filter(ImageFilter.GaussianBlur(3+11*lift)),(cx-89+14*lift,cy-51+19*lift),angle,.77)
- # Continue the forearm beyond the source illustration on shallow table
- # shots. Its long edges share the exact transform of the hand + sleeve.
- rad=angle*pi/180
- def wp(x,y):
-  xx=(x+dx-RW/2)*sc; yy=(y+dy-RH/2)*sc*fy
-  return (round(cx+xx*cos(rad)+yy*sin(rad)),round(cy-xx*sin(rad)+yy*cos(rad)))
- cloth=['','#ece4cc','#8a8167','#8a9280'][c]; edge=['','#aeaa94','#615c4a','#677466'][c]
- tail=[(604,530),(1150,811),(1160,1190),(629,1194),(412,693),(440,669),(587,568)]
- dr=ImageDraw.Draw(im);dr.polygon([wp(*a) for a in tail], fill=cloth)
- dr.line([wp(*a) for a in tail[:2]],fill=edge,width=2)
- dr.line([wp(*a) for a in tail[3:5]],fill=edge,width=2)
- if fy!=1:rig=rig.resize((RW,round(RH*fy)),M)
- lay(im,rig,(cx,cy),angle,sc)
-
 @lru_cache(maxsize=100)
 def handset(c,mode,state):
  base,sage,blue,rust,paper,skin=palette(c); im=rgba((220,415));d=ImageDraw.Draw(im)
@@ -367,17 +247,17 @@ def scene(c,mode,t):
   if c==1:lay(im,loose(c),(122,77),7,.65)
   if c==2:lay(im,loose(c),(176,426),10,.79)
   if c==3:lay(im,spectacles(),(194,426),-11,.83)
-  grip(im,c,mode,t,lift=1 if c==1 else s(t,1.35,2.03),approach=1 if c==1 else s(t,.18,1.34))
+  painted_hand.paint(im,c,mode,t,screen_phone)
  elif mode=='evidence':
   # Compare the two sources, then scroll their details using the hand which
   # already holds the handset. No second pointing hand is introduced.
   outline_shadow(im,folio(c,0),(176,152),8,.74)
   turn=s(t,.10,.91)
   outline_shadow(im,folio(c,1),(lerp(-110,207,turn),lerp(387,349,turn)),-5,.77)
-  grip(im,c,mode,t)
+  painted_hand.paint(im,c,mode,t,screen_phone)
  else:
   outline_shadow(im,folio(c,0),(136,157),9,.70)
-  grip(im,c,mode,t)
+  painted_hand.paint(im,c,mode,t,screen_phone)
  return im
 
 def crop(img,center,scale):
