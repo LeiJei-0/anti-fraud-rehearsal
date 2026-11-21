@@ -4,71 +4,71 @@
     "frames": 174,
     "seconds": 7.25,
     "decoded": true,
-    "bytes": 1069490,
-    "sha256": "7ba3e17d0ce042deafebd5231d7daf559a0645b8fd3b83d3f0e3930d4ab7cb20"
+    "bytes": 1093062,
+    "sha256": "8d54c0a459892ac0a0b2c48b1d68809dee3a7fb890e3b1534eb2bacfd15426ba"
   },
   {
     "file": "1-evidence.mp4",
     "frames": 144,
     "seconds": 6.0,
     "decoded": true,
-    "bytes": 645831,
-    "sha256": "dcbfa878b95948bb458eb8dc2bf2fb30bb7bda72f9e82bffbd0ff9c8ca66d945"
+    "bytes": 694261,
+    "sha256": "eab0db03e899a8076563c1eb472170153267cf222f046016cd3f1beb6bd95d46"
   },
   {
     "file": "1-decision.mp4",
     "frames": 144,
     "seconds": 6.0,
     "decoded": true,
-    "bytes": 725051,
-    "sha256": "80d955d3a3940032c28e5fc0a348bd8b2c38d0a4484509b9e370ff61f47dab25"
+    "bytes": 772069,
+    "sha256": "62d84cd59bbf76a25075e6b96632589b63a79b8fc243f2b8c1baf023a34ec19b"
   },
   {
     "file": "2-orient.mp4",
     "frames": 174,
     "seconds": 7.25,
     "decoded": true,
-    "bytes": 933496,
-    "sha256": "a35e90ce98ca121f52a6facfd81a9b8c6ae0a80854f0256b4c0434d6d1f6dfb3"
+    "bytes": 1055860,
+    "sha256": "773fae974df93f9898473b8a45b36c8a0114a01d7eba97bc870fe4fb4e9e6b7a"
   },
   {
     "file": "2-evidence.mp4",
     "frames": 144,
     "seconds": 6.0,
     "decoded": true,
-    "bytes": 601743,
-    "sha256": "8cecda99f045e0043ac1e3fd0f2bc4292f32e5390ea03e2e2065468d10ad1d1a"
+    "bytes": 670758,
+    "sha256": "74760eeb9a2c0f1a9cdf4a85ea54ccd876bec22270f246520aabcc481a5a4a25"
   },
   {
     "file": "2-decision.mp4",
     "frames": 144,
     "seconds": 6.0,
     "decoded": true,
-    "bytes": 621864,
-    "sha256": "b9b8e43975b0fb01a2c8bdb42928aba8776deaf626217085b5372729425c7cf8"
+    "bytes": 683909,
+    "sha256": "a824549dab105fa4a3d73366e970e8da2b1475f873d99d6c9bb291b3381cc881"
   },
   {
     "file": "3-orient.mp4",
     "frames": 174,
     "seconds": 7.25,
     "decoded": true,
-    "bytes": 1195128,
-    "sha256": "2e291ac12aad495a06b7ddd39e37febe51575e0fea339568c6e45fe7e235fe96"
+    "bytes": 1274707,
+    "sha256": "fd4b3fec59f9dc3cc72544e325adcecf57d8e015193312fc648dc5d795fd9ef4"
   },
   {
     "file": "3-evidence.mp4",
     "frames": 144,
     "seconds": 6.0,
     "decoded": true,
-    "bytes": 631980,
-    "sha256": "56afe88a531e6c4da9f7e3d54ae6f38d884cb7cba029d3bb5bfc5b1f5a76c6a6"
+    "bytes": 700657,
+    "sha256": "4421cfe4ad961e7b215efdcec69db8df88cbab6040cde5f46920f49365f3be30"
   },
   {
     "file": "3-decision.mp4",
     "frames": 144,
     "seconds": 6.0,
     "decoded": true,
-    "bytes": 662885,
-    "sha256": "5d7d103e77f9f01b67f1281128fc29c5cff4a509282188c4b7b174a2151bb259"
+    "bytes": 730669,
+    "sha256": "376464f8c2735e5cf5956ba6c66e4b734342c44ee3585910ab15d48b5fb7ae37"
   }
 ]

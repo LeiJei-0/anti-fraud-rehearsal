@@ -29,7 +29,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0401,
+        "time": 0.0266,
         "frames": 4
       }
     },
@@ -85,7 +85,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0092,
+        "time": 0.0352,
         "frames": 4
       }
     },
@@ -145,7 +145,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0238,
+        "time": 0.0055,
         "frames": 4
       }
     },
@@ -226,7 +226,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0382,
+        "time": 0.0359,
         "frames": 4
       }
     },
@@ -259,8 +259,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0265,
-        "frames": 4
+        "time": 0.0548,
+        "frames": 5
       }
     },
     {
@@ -292,7 +292,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0321,
+        "time": 0.0131,
         "frames": 4
       }
     },
@@ -304,8 +304,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0446,
-        "frames": 5
+        "time": 0.0337,
+        "frames": 4
       }
     },
     {
@@ -337,8 +337,8 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0394,
-        "frames": 5
+        "time": 0.0275,
+        "frames": 4
       }
     },
     {
@@ -349,8 +349,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0337,
-        "frames": 5
+        "time": 0.015,
+        "frames": 4
       }
     },
     {
@@ -452,8 +452,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0546,
-        "frames": 5
+        "time": 0.0164,
+        "frames": 4
       }
     },
     {
@@ -485,7 +485,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0262,
+        "time": 0.0453,
         "frames": 4
       }
     },
@@ -497,8 +497,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0404,
-        "frames": 4
+        "time": 0.0411,
+        "frames": 5
       }
     },
     {
@@ -530,8 +530,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0411,
-        "frames": 5
+        "time": 0.0233,
+        "frames": 4
       }
     },
     {
@@ -563,8 +563,8 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0347,
-        "frames": 5
+        "time": 0.0414,
+        "frames": 4
       }
     },
     {
@@ -575,7 +575,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0272,
+        "time": 0.0235,
         "frames": 5
       }
     },
@@ -608,7 +608,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0279,
+        "time": 0.0404,
         "frames": 4
       }
     },
@@ -649,7 +649,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0368,
+        "time": 0.0279,
         "frames": 4
       }
     },
@@ -690,7 +690,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0294,
+        "time": 0.022,
         "frames": 4
       }
     },
@@ -702,8 +702,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0328,
-        "frames": 4
+        "time": 0.0435,
+        "frames": 5
       }
     },
     {
@@ -743,7 +743,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0178,
+        "time": 0.0197,
         "frames": 4
       }
     },
@@ -784,7 +784,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.034,
+        "time": 0.0442,
         "frames": 5
       }
     },
@@ -796,7 +796,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0447,
+        "time": 0.0374,
         "frames": 5
       }
     },
@@ -837,7 +837,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.029,
+        "time": 0.024,
         "frames": 4
       }
     },
@@ -870,8 +870,8 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0314,
-        "frames": 4
+        "time": 0.0433,
+        "frames": 5
       }
     },
     {
@@ -882,7 +882,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0412,
+        "time": 0.0379,
         "frames": 5
       }
     },
@@ -915,7 +915,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.041,
+        "time": 0.0355,
         "frames": 5
       }
     },
@@ -956,7 +956,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0193,
+        "time": 0.0368,
         "frames": 4
       }
     },
@@ -1012,7 +1012,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0166,
+        "time": 0.0258,
         "frames": 4
       }
     },
@@ -1072,7 +1072,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.028,
+        "time": 0.027,
         "frames": 4
       }
     },
@@ -1153,7 +1153,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.046,
+        "time": 0.0427,
         "frames": 5
       }
     },
@@ -1186,7 +1186,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0352,
+        "time": 0.0342,
         "frames": 4
       }
     },
@@ -1219,8 +1219,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0243,
-        "frames": 4
+        "time": 0.0333,
+        "frames": 5
       }
     },
     {
@@ -1231,7 +1231,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0407,
+        "time": 0.0342,
         "frames": 5
       }
     },
@@ -1264,7 +1264,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0315,
+        "time": 0.0299,
         "frames": 4
       }
     },
@@ -1276,7 +1276,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0294,
+        "time": 0.0203,
         "frames": 5
       }
     },
@@ -1379,7 +1379,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0425,
+        "time": 0.0373,
         "frames": 5
       }
     },
@@ -1412,7 +1412,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0257,
+        "time": 0.0256,
         "frames": 4
       }
     },
@@ -1424,8 +1424,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0255,
-        "frames": 4
+        "time": 0.0356,
+        "frames": 5
       }
     },
     {
@@ -1457,8 +1457,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0323,
-        "frames": 4
+        "time": 0.0389,
+        "frames": 5
       }
     },
     {
@@ -1490,7 +1490,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0435,
+        "time": 0.0449,
         "frames": 5
       }
     },
@@ -1502,7 +1502,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0363,
+        "time": 0.0345,
         "frames": 5
       }
     },
@@ -1535,7 +1535,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0287,
+        "time": 0.0309,
         "frames": 4
       }
     },
@@ -1576,7 +1576,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0291,
+        "time": 0.0269,
         "frames": 4
       }
     },
@@ -1617,7 +1617,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0259,
+        "time": 0.0354,
         "frames": 4
       }
     },
@@ -1629,7 +1629,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0327,
+        "time": 0.0417,
         "frames": 5
       }
     },
@@ -1670,7 +1670,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0199,
+        "time": 0.0281,
         "frames": 4
       }
     },
@@ -1711,7 +1711,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.043,
+        "time": 0.0455,
         "frames": 5
       }
     },
@@ -1723,7 +1723,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0372,
+        "time": 0.0407,
         "frames": 5
       }
     },
@@ -1764,7 +1764,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0215,
+        "time": 0.0249,
         "frames": 4
       }
     },
@@ -1797,8 +1797,8 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0243,
-        "frames": 4
+        "time": 0.0419,
+        "frames": 5
       }
     },
     {
@@ -1809,7 +1809,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0357,
+        "time": 0.0331,
         "frames": 4
       }
     },
@@ -1842,8 +1842,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0387,
-        "frames": 5
+        "time": 0.032,
+        "frames": 4
       }
     },
     {

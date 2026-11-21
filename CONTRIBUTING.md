@@ -31,7 +31,7 @@ python render.py --sheets ./strips --preview-only   # 只出三章分镜审看�
 python render.py                                    # 重新输出九段持机与场景影片（960×540、24 帧/秒）
 ```
 
-第一章到第三章各三段（消息到达、查看线索、确认之前），共九段由上面的脚本输出；三段插叙（`*-insert.mp4`，每段 108 帧）由 `qa/inserts/render.mjs` 用本机浏览器逐帧截图后编码，需要 `CHROME_PATH` 或默认路径下的 Chrome，两者合起来才是十二段。改完手部或构图，先看 `--sheets` 出的审看条逐张确认；[#8](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/8) 合并后还会带上按试玩尺寸摆放的审看页 `qa/手形审看/看手形.html`。手势自然度由人判定，不接受只凭脚本通过就改片。
+第一章到第三章各三段（消息到达、查看线索、确认之前），共九段由上面的脚本输出；三段插叙（`*-insert.mp4`，每段 108 帧）由 `qa/inserts/render.mjs` 用本机浏览器逐帧截图后编码，需要 `CHROME_PATH` 或默认路径下的 Chrome，两者合起来才是十二段。改完手部或构图，先看 `--sheets` 出的审看条逐张确认，再到 `qa/手形审看/看手形.html` 按试玩尺寸逐张看。手势自然度由人判定，不接受只凭脚本通过就改片。
 
 ## 提交前自查
 

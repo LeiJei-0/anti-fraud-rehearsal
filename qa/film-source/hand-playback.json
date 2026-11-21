@@ -1,0 +1,397 @@
+{
+  "pass": true,
+  "failedStep": null,
+  "error": null,
+  "widths": [
+    [
+      1366,
+      768
+    ]
+  ],
+  "checks": [
+    {
+      "step": "index 青年人",
+      "check": "identity matches menu"
+    },
+    {
+      "step": "青年人 orient",
+      "check": "chapter-specific decoded orient film",
+      "detail": {
+        "file": "1-orient.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 7.25,
+        "time": 0.0337,
+        "frames": 4
+      }
+    },
+    {
+      "step": "青年人 orient",
+      "check": "offline file source"
+    },
+    {
+      "step": "青年人 orient",
+      "check": "film visibly advances decoded frames"
+    },
+    {
+      "step": "青年人 orient",
+      "check": "pause stops the clock"
+    },
+    {
+      "step": "青年人 orient",
+      "check": "play resumes from paused location"
+    },
+    {
+      "step": "青年人 orient",
+      "check": "native ended -> replay restarts from beginning"
+    },
+    {
+      "step": "青年人 evidence",
+      "check": "chapter-specific decoded evidence film",
+      "detail": {
+        "file": "1-evidence.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0279,
+        "frames": 4
+      }
+    },
+    {
+      "step": "青年人 evidence",
+      "check": "offline file source"
+    },
+    {
+      "step": "青年人 evidence",
+      "check": "film visibly advances decoded frames"
+    },
+    {
+      "step": "青年人 evidence",
+      "check": "pause stops the clock"
+    },
+    {
+      "step": "青年人 evidence",
+      "check": "play resumes from paused location"
+    },
+    {
+      "step": "青年人 evidence",
+      "check": "native ended -> replay restarts from beginning"
+    },
+    {
+      "step": "青年人 decision",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "1-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0388,
+        "frames": 5
+      }
+    },
+    {
+      "step": "青年人 decision",
+      "check": "offline file source"
+    },
+    {
+      "step": "青年人 decision",
+      "check": "film visibly advances decoded frames"
+    },
+    {
+      "step": "青年人 decision",
+      "check": "pause stops the clock"
+    },
+    {
+      "step": "青年人 decision",
+      "check": "play resumes from paused location"
+    },
+    {
+      "step": "青年人 decision",
+      "check": "native ended -> replay restarts from beginning"
+    },
+    {
+      "step": "index 中年人",
+      "check": "identity matches menu"
+    },
+    {
+      "step": "中年人 orient",
+      "check": "chapter-specific decoded orient film",
+      "detail": {
+        "file": "2-orient.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 7.25,
+        "time": 0.0032,
+        "frames": 4
+      }
+    },
+    {
+      "step": "中年人 orient",
+      "check": "offline file source"
+    },
+    {
+      "step": "中年人 orient",
+      "check": "film visibly advances decoded frames"
+    },
+    {
+      "step": "中年人 orient",
+      "check": "pause stops the clock"
+    },
+    {
+      "step": "中年人 orient",
+      "check": "play resumes from paused location"
+    },
+    {
+      "step": "中年人 orient",
+      "check": "native ended -> replay restarts from beginning"
+    },
+    {
+      "step": "中年人 evidence",
+      "check": "chapter-specific decoded evidence film",
+      "detail": {
+        "file": "2-evidence.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0448,
+        "frames": 5
+      }
+    },
+    {
+      "step": "中年人 evidence",
+      "check": "offline file source"
+    },
+    {
+      "step": "中年人 evidence",
+      "check": "film visibly advances decoded frames"
+    },
+    {
+      "step": "中年人 evidence",
+      "check": "pause stops the clock"
+    },
+    {
+      "step": "中年人 evidence",
+      "check": "play resumes from paused location"
+    },
+    {
+      "step": "中年人 evidence",
+      "check": "native ended -> replay restarts from beginning"
+    },
+    {
+      "step": "中年人 decision",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "2-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0326,
+        "frames": 5
+      }
+    },
+    {
+      "step": "中年人 decision",
+      "check": "offline file source"
+    },
+    {
+      "step": "中年人 decision",
+      "check": "film visibly advances decoded frames"
+    },
+    {
+      "step": "中年人 decision",
+      "check": "pause stops the clock"
+    },
+    {
+      "step": "中年人 decision",
+      "check": "play resumes from paused location"
+    },
+    {
+      "step": "中年人 decision",
+      "check": "native ended -> replay restarts from beginning"
+    },
+    {
+      "step": "index 老年人",
+      "check": "identity matches menu"
+    },
+    {
+      "step": "老年人 orient",
+      "check": "chapter-specific decoded orient film",
+      "detail": {
+        "file": "3-orient.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 7.25,
+        "time": 0.0231,
+        "frames": 4
+      }
+    },
+    {
+      "step": "老年人 orient",
+      "check": "offline file source"
+    },
+    {
+      "step": "老年人 orient",
+      "check": "film visibly advances decoded frames"
+    },
+    {
+      "step": "老年人 orient",
+      "check": "pause stops the clock"
+    },
+    {
+      "step": "老年人 orient",
+      "check": "play resumes from paused location"
+    },
+    {
+      "step": "老年人 orient",
+      "check": "native ended -> replay restarts from beginning"
+    },
+    {
+      "step": "老年人 evidence",
+      "check": "chapter-specific decoded evidence film",
+      "detail": {
+        "file": "3-evidence.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0402,
+        "frames": 5
+      }
+    },
+    {
+      "step": "老年人 evidence",
+      "check": "offline file source"
+    },
+    {
+      "step": "老年人 evidence",
+      "check": "film visibly advances decoded frames"
+    },
+    {
+      "step": "老年人 evidence",
+      "check": "pause stops the clock"
+    },
+    {
+      "step": "老年人 evidence",
+      "check": "play resumes from paused location"
+    },
+    {
+      "step": "老年人 evidence",
+      "check": "native ended -> replay restarts from beginning"
+    },
+    {
+      "step": "老年人 decision",
+      "check": "chapter-specific decoded decision film",
+      "detail": {
+        "file": "3-decision.mp4",
+        "width": 960,
+        "height": 540,
+        "seconds": 6,
+        "time": 0.0425,
+        "frames": 5
+      }
+    },
+    {
+      "step": "老年人 decision",
+      "check": "offline file source"
+    },
+    {
+      "step": "老年人 decision",
+      "check": "film visibly advances decoded frames"
+    },
+    {
+      "step": "老年人 decision",
+      "check": "pause stops the clock"
+    },
+    {
+      "step": "老年人 decision",
+      "check": "play resumes from paused location"
+    },
+    {
+      "step": "老年人 decision",
+      "check": "native ended -> replay restarts from beginning"
+    },
+    {
+      "step": "final audit",
+      "check": "3 roles × 3 verified scene videos"
+    },
+    {
+      "step": "final audit",
+      "check": "zero external requests, missing resources, or JavaScript errors",
+      "detail": []
+    }
+  ],
+  "clips": {
+    "1-orient.mp4": {
+      "pixels": [
+        960,
+        540
+      ],
+      "duration": 7.25,
+      "sha256": "8d54c0a459892ac0a0b2c48b1d68809dee3a7fb890e3b1534eb2bacfd15426ba"
+    },
+    "1-evidence.mp4": {
+      "pixels": [
+        960,
+        540
+      ],
+      "duration": 6,
+      "sha256": "eab0db03e899a8076563c1eb472170153267cf222f046016cd3f1beb6bd95d46"
+    },
+    "1-decision.mp4": {
+      "pixels": [
+        960,
+        540
+      ],
+      "duration": 6,
+      "sha256": "62d84cd59bbf76a25075e6b96632589b63a79b8fc243f2b8c1baf023a34ec19b"
+    },
+    "2-orient.mp4": {
+      "pixels": [
+        960,
+        540
+      ],
+      "duration": 7.25,
+      "sha256": "773fae974df93f9898473b8a45b36c8a0114a01d7eba97bc870fe4fb4e9e6b7a"
+    },
+    "2-evidence.mp4": {
+      "pixels": [
+        960,
+        540
+      ],
+      "duration": 6,
+      "sha256": "74760eeb9a2c0f1a9cdf4a85ea54ccd876bec22270f246520aabcc481a5a4a25"
+    },
+    "2-decision.mp4": {
+      "pixels": [
+        960,
+        540
+      ],
+      "duration": 6,
+      "sha256": "a824549dab105fa4a3d73366e970e8da2b1475f873d99d6c9bb291b3381cc881"
+    },
+    "3-orient.mp4": {
+      "pixels": [
+        960,
+        540
+      ],
+      "duration": 7.25,
+      "sha256": "fd4b3fec59f9dc3cc72544e325adcecf57d8e015193312fc648dc5d795fd9ef4"
+    },
+    "3-evidence.mp4": {
+      "pixels": [
+        960,
+        540
+      ],
+      "duration": 6,
+      "sha256": "4421cfe4ad961e7b215efdcec69db8df88cbab6040cde5f46920f49365f3be30"
+    },
+    "3-decision.mp4": {
+      "pixels": [
+        960,
+        540
+      ],
+      "duration": 6,
+      "sha256": "376464f8c2735e5cf5956ba6c66e4b734342c44ee3585910ab15d48b5fb7ae37"
+    }
+  },
+  "issues": []
+}

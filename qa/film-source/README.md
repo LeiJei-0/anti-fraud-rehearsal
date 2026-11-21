@@ -10,6 +10,8 @@
 
 青年：白衣、上铺、床面的织纹、校园卡与校园服务入口。中年：旧相机和照片、傍晚来电、聊天附件与服务条款。老年：上午窗光、茶具、眼镜、纸币与讲座邀请。物件用于叙事示意，判断以手机中实际打开的资料为准。
 
-参考 [painted-animation](https://github.com/tuzhechen2005/opus-video-skills/tree/main/skills/painted-animation) 的关键姿势、动作先后、按时间绘帧和联系表审片做法。这里的离线实现为 Pillow 路径、纹理、局部位移与 FFmpeg，未调用该技能的 p5.js 运行时。人物远景采用本项目现有图版；手势、手机、床面、核对道具等近景由脚本绘制。
+手部近景采用 imagegen 生成的原画。制作时把掌和袖口、手机背后的四指、机身、屏幕前的拇指拆成透明图层，保存在 `hand-art/`。在 `painted_hand.py` 中，抓稳后手掌与机身共用同一变换。滑动时，局部网格让指腹沿短弧移动，拇指根部留在掌侧，手机内容跟随接触进度移动。三个角色沿用同一组握姿，衣袖与光色分别对应宿舍、晚饭后和晨间场景。
+
+制作参考了 [2d-character-rig-animation 的分层、支点与遮挡说明](https://github.com/calesthio/generative-media-skills/blob/main/skills/production/creative-direction/2d-character-rig-animation/SKILL.md) 和 [painted-animation 的逐帧审看方法](https://github.com/tuzhechen2005/opus-video-skills/tree/main/skills/painted-animation)。网站当前九段持机影片由 Pillow 合成、FFmpeg 编码。可在[第二章静帧审看页](../手形审看/看手形.html)按试玩尺寸逐张看手形。
 
 **复现**（Python 3：Pillow、NumPy、fontTools、imageio-ffmpeg；Windows 中文字体）：从任意目录运行 `python render.py --sheets ./strips`（脚本路径按所在目录填）。渲染器从 assets/art 读取三章对应的 WebP 画面。影片是 960×540、24 帧/秒的 H.264 MP4，兼容直接打开的静态站点。程序只在制作时运行。

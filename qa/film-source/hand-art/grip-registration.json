@@ -1,0 +1,19 @@
+{
+  "source": "../../手形审看/图层/扣边原画.jpg",
+  "canvasSize": [1672, 941],
+  "layerOrigin": [0, 0],
+  "screenQuadTL_TR_BR_BL": [
+    [357.2, 106.2],
+    [713.1, 30.6],
+    [984.9, 749.7],
+    [616.2, 835.8]
+  ],
+  "screenQuadNote": "Intersections of the extended straight sides of the lit screen, before corner rounding.",
+  "drawOrder": [
+    "grip-fingers.png",
+    "grip-palm.png",
+    "phone",
+    "grip-thumb.png"
+  ],
+  "cutoutNote": "The three planes contain only visible original painted pixels. Keep the palm and phone in the same parent transform once gripped. The palm and thumb have a 2px overlap at their shared internal seam."
+}
