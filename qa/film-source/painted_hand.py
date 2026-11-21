@@ -211,7 +211,8 @@ def paint(im, chapter, mode, t, make_screen):
     lift=camera_params[-1]
     pickup=mode=="orient" and chapter!=1
     dx,dy,press,swipe=shot_motion(chapter,mode,t)
-    screen=make_screen(chapter,mode,round(62*swipe),int(t>.52 or mode!="orient"))
+    # The arrival already occurred in the wide shot before the cut to glass.
+    screen=make_screen(chapter,mode,round(62*swipe),1)
     phone=device(screen)
     place(im,shadow(round(12*lift)),camera_params,(-2-10*lift,3+25*lift))
     if pickup:
