@@ -23,14 +23,15 @@ node qa/review.mjs review-output
 
 它会断网跑三种身份在 1366×768 与 1920×1080 各 19 条路线，输出 `review.json`。报告需要随对应的影片一起提交，并在文件里能看出是哪一次提交跑出来的。
 
-重绘动作短片（Python 3，需要 Pillow、NumPy、fontTools、imageio-ffmpeg，以及 Windows 中文字体）：
+重绘动作短片（Python 3，先 `pip install -r qa/film-source/requirements.txt`，需要 Windows 中文字体黑体与楷体）：
 
 ```bash
-python qa/film-source/render.py --sheets ./strips --preview-only   # 只出分镜审看条
-python qa/film-source/render.py                                    # 重新输出九段影片
+cd qa/film-source
+python render.py --sheets ./strips --preview-only   # 只出三章分镜审看条，不覆盖影片
+python render.py                                    # 重新输出九段持机与场景影片（960×540、24 帧/秒）
 ```
 
-改完手形请到 `qa/手形审看/看手形.html` 按试玩尺寸逐张看，手势自然度由人判定，不接受只凭脚本通过就改片。
+第一章到第三章各三段（消息到达、查看线索、确认之前），共九段由上面的脚本输出；三段插叙（`*-insert.mp4`，每段 108 帧）由 `qa/inserts/render.mjs` 用本机浏览器逐帧截图后编码，需要 `CHROME_PATH` 或默认路径下的 Chrome，两者合起来才是十二段。改完手部或构图，先看 `--sheets` 出的审看条逐张确认；[#8](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/8) 合并后还会带上按试玩尺寸摆放的审看页 `qa/手形审看/看手形.html`。手势自然度由人判定，不接受只凭脚本通过就改片。
 
 ## 提交前自查
 
