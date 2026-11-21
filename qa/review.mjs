@@ -111,6 +111,41 @@ try{
      await click('a[href="pact.html"]');await wait(visible('#print'));check('card opens from chapter',await ev('document.querySelectorAll("input").length===2'));await click('.actions a');await wait(visible('#start'));check('card return',true);}
    }
  }
+ current='arrival and message timing';
+ await cmd('Page.addScriptToEvaluateOnNewDocument',{source:`
+   window.phoneWake=[];
+   new MutationObserver(()=>{
+     const phone=document.querySelector('.pc-set .phone');
+     if(!phone)return;
+     const dark=phone.classList.contains('is-asleep');
+     if(window.phoneWake.at(-1)?.dark!==dark){
+       window.phoneWake.push({dark,time:document.querySelector('video')?.currentTime});
+     }
+   }).observe(document,{subtree:true,attributes:true,childList:true});
+ `});
+ for(const n of [1,2,3]){
+   await enter(n);
+   await wait('phoneWake.length>=2');
+   const states=await ev('phoneWake');
+   check('screen starts dark and wakes with the scene',states[0].dark && !states[1].dark && states[1].time>=.72,states);
+   await action(n,n===1?'go:A05':n===2?'go:06':'go:05');
+   const bubbles=n===1?'.screen .msg':'.screen .bubble';
+   const visibility='[...document.querySelectorAll('+JSON.stringify(bubbles)+')].map(el=>getComputedStyle(el).visibility)';
+   await wait(visibility+'.length>=2 && '+visibility+'[0]==="visible"');
+   check('the next message waits its turn',(await ev(visibility))[1]==='hidden');
+   if(n===1){
+     await click('[data-film-pause]');await sleep(850);
+     check('pausing holds pending messages',(await ev(visibility))[1]==='hidden');
+     await click('[data-film-pause]');
+   }
+   await wait(visibility+'.every(state=>state==="visible")');
+   check('all messages remain readable',true);
+ }
+ await cmd('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+ await enter(1);
+ check('reduced motion opens directly on the notification',await ev('phoneWake.length===1 && !phoneWake[0].dark'));
+ await action(1,'go:A05');
+ check('reduced motion presents the whole conversation',await ev('[...document.querySelectorAll(".msg")].every(el=>!el.getAnimations().length && getComputedStyle(el).visibility==="visible")'));
  current='resource audit';check('all twelve local narrative films decoded',Object.keys(clips).length===12,Object.keys(clips));
  check('no JS exceptions, external requests or missing resources',issues.length===0,issues);
 } catch(e){fail=e.message;console.error(current,fail);try{await shot?.('failure')}catch{}process.exitCode=1}

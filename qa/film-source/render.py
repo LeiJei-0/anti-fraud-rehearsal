@@ -264,10 +264,38 @@ def crop(img,center,scale):
  iw,ih=img.size;ww=min(iw,ih*W/H)/scale;hh=ww*H/W
  x=max(0,min(iw-ww,center[0]*iw-ww/2));y=max(0,min(ih-hh,center[1]*ih-hh/2))
  return img.transform((W,H),Image.Transform.EXTENT,(x,y,x+ww,y+hh),M)
-def acting_plate(c,t):
+@lru_cache(None)
+def opening_glass(c):
+ # The first camera sees the back of the student's handset. Only reflected
+ # light reaches his fingers. In the other rooms the glass faces the camera.
+ original=plates[c].convert('RGB')
+ w,h=original.size
+ def xy(x,y):return (round(x*w/960),round(y*h/540))
+ def mask_box(box,alpha,blur):
+  mask=Image.new('L',original.size)
+  ImageDraw.Draw(mask).ellipse([xy(*box[:2]),xy(*box[2:])],fill=alpha)
+  return mask.filter(ImageFilter.GaussianBlur(blur*w/960))
+ if c==1:
+  reflected=mask_box((699,127,748,155),92,7)
+  return original,Image.composite(Image.new('RGB',original.size,'#ffe4c0'),original,reflected)
+ corners=([(418,416),(469,407),(502,410),(456,419)] if c==2 else
+          [(466,436),(527,420),(570,427),(508,442)])
+ glass=Image.new('L',original.size)
+ ImageDraw.Draw(glass).polygon([xy(*p) for p in corners],fill=242)
+ glass=glass.filter(ImageFilter.GaussianBlur(.48*w/960))
+ sleeping=Image.composite(Image.new('RGB',original.size,'#202727'),original,glass)
+ reflection=mask_box((433,417,494,430) if c==2 else (484,437,556,453),52,5)
+ lit=Image.composite(Image.new('RGB',original.size,'#bcd6d4'),original,reflection)
+ return sleeping,Image.composite(Image.new('RGB',original.size,'#b7d4d8'),lit,glass)
+
+def acting_plate(c,t,opening=False):
  # A low-frequency, local mesh: slight neck rotation toward the ringing phone,
  # then a delayed shoulder/forearm shift. Architecture is outside the masks.
- src=plates[c];w,h=src.size
+ src=plates[c]
+ if opening:
+  sleeping,lit=opening_glass(c)
+  src=mix(sleeping,lit,s(t,.72,.94))
+ w,h=src.size
  head=[None,(.82,.14),(.68,.25),(.62,.24)][c]
  arm=[None,(.755,.255),(.57,.66),(.43,.66)][c]
  a=s(t,.40,1.64); release=s(t,2.,3.0)
@@ -287,7 +315,7 @@ def acting_plate(c,t):
 def room(c,t,close=False):
  center=[(0,0),(.775,.26),(.665,.41),(.60,.40)][c]
  scale=(1.6 if close else 1)+s(t,0,3)*(.16 if close else .08)
- im=crop(acting_plate(c,t),center,scale)
+ im=crop(acting_plate(c,t,opening=not close),center,scale)
  if not close:
   overlay=rgba((W,H));d=ImageDraw.Draw(overlay)
   for i in range(10):

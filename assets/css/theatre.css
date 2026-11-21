@@ -78,5 +78,11 @@ body #statusline{position:absolute;width:1px;height:1px;padding:0;overflow:hidde
 .pc-set .phone[data-page="call"] .choice[data-do="hang"]:before{transform:rotate(137deg);background-color:#ae5847}
 .pc-set .phone[data-page="call"] .choice[data-do="go:06"],.pc-set .phone[data-page="call"] .backhelp button{font-size:14px;min-height:44px;text-decoration:underline;text-underline-offset:3px}
 .pc-set .phone[data-page="call"] .choice:focus-visible{outline-offset:0}
+.pc-set .phone.is-asleep[data-page]{
+  background:linear-gradient(118deg,#131918,#0a0e0e 52%,#090d0c);
+}
+.pc-set .phone.is-asleep > :not(.notch){display:none!important}
+.pc-set .phone.is-asleep .notch{background:#070b0a}
+.pc-set .wake-glass{position:absolute;inset:0;z-index:4;pointer-events:none;background:#0a0e0e;border-radius:inherit}
 .pc-set .phone:not([data-page="lock"]):not([data-page="call"]) .decide,.pc-set .phone[data-page="app"] .reply-tray{border-top:1px solid #d8ded2;margin-top:5px}
 .pc-set .phone .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}

@@ -12,7 +12,7 @@
   function note(freq,duration=.14,delay=0){if(muted||!ctx||ctx.state!=="running")return;const osc=ctx.createOscillator(),gain=ctx.createGain(),t=ctx.currentTime+delay;osc.type="sine";osc.frequency.value=freq;gain.gain.setValueAtTime(.001,t);gain.gain.exponentialRampToValueAtTime(.045,t+.025);gain.gain.exponentialRampToValueAtTime(.001,t+duration);osc.connect(gain);gain.connect(ctx.destination);tones.add(osc);osc.onended=()=>{tones.delete(osc);osc.disconnect();gain.disconnect()};osc.start(t);osc.stop(t+duration+.03)}
   function silence(){clearInterval(ring);ring=0;for(const osc of tones){try{osc.stop()}catch{}}tones.clear()}
   function toneRing(){note(440,.20);note(554,.25,.25)}
-  function incoming(){if(muted||ring||box.open)return;toneRing();ring=setInterval(toneRing,2100)}
+  function incoming(){if(muted||ring||box.open||document.hidden||app.querySelector(".is-asleep"))return;toneRing();ring=setInterval(toneRing,2100)}
   function log(s){actions.push(s)}
   function full(){try{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.()?.catch(()=>{});else document.exitFullscreen?.()?.catch(()=>{})}catch{}}
   function focusStep(id){const el=$(id);if(!el)return;el.focus({preventScroll:true});if(innerWidth<=650){scrollTo(0,0)}else if(view==="result"){scrollTo(0,0)}}
@@ -43,11 +43,11 @@
         heading="通话已结束";caption="屋子又安静下来。你还可以回头看看，过去几周聊过些什么。";name="通话记录";content='<p>阿岚　｜　通话已结束</p>';opts=[end("结束这次接触"),goA("看看旧消息","06")];break;
       case "05":
         heading=B?"一句日常问候":"群里的邀约";caption=B?"你们认识了几个星期，平时聊过散步、天气，还有修相机的事。":"吴姨转来一张活动通知，说听讲座还可以领一份小礼物。";name=B?"与阿岚通话":"邻里生活群";
-        content=B?bbl("阿岚","吃过饭了吗？前两天说的理财页面，要不要先看看？"):bbl("吴姨","今天讲日常健康，来听还可以领鸡蛋。我把讲座发群里了。");
+        content=B?bbl("阿岚","吃过饭了吗？前两天说的理财页面，要不要先看看？"):bbl("吴姨","今天讲日常健康，来听还可以领鸡蛋。")+bbl("吴姨","我把讲座发群里了。");
         opts=B?[goA("看看你发的页面","06"),check,a("先挂断","hang")]:[goA("听听讲座","06"),goA("看看另一条旧纸币消息","08"),end("今天先不看")];break;
       case "06":
         heading=B?"旧消息，新话题":"听听讲师怎么说";caption=B?"过去的问候是真的留在手机里。这张图里跳动的数字，又能说明什么？":"桌边的礼品袋还没打开，屏幕已经切到了一个商品包装。";name=B?"和阿岚的聊天":"健康讲座";
-        content=B?'<div class="sms"><small>10月18日</small>天凉了，散步记得加件衣服。</div><div class="sms"><small>10月27日</small>上次说的相机修好了吗？</div><div class="sms"><small>11月03日</small>周末有空聊聊。</div>'+bbl("今天 · 阿岚","这是页面上显示的收益记录。你想看看参与条件吗？"):ill("pack")+bbl("讲师的宣传","我们把它当成能改善慢性病的产品来介绍。")+'<p>包装正面：保健食品（演练道具）。</p>';
+        content=B?'<div class="sms"><small>10月18日</small>天凉了，散步记得加件衣服。</div><div class="sms"><small>10月27日</small>上次说的相机修好了吗？</div><div class="sms"><small>11月03日</small>周末有空聊聊。</div>'+bbl("今天 · 阿岚","这是页面上显示的收益记录。")+bbl("阿岚","你想看看参与条件吗？"):ill("pack")+bbl("讲师的宣传","我们把它当成能改善慢性病的产品来介绍。")+'<p>包装正面：保健食品（演练道具）。</p>';
         opts=B?[goA("看看参与条件","07"),goA("另看旧相机回收邀请","08"),end("先不参与")]:[goA("看包装和价格","07"),check,goA("关掉讲座","05")];break;
       case "07":
         heading=B?"钱将交给谁":"把包装翻过来";caption=B?"页面上的名字和收钱的人并排放着。对方还提到，也可以寄出闲置相机。":"群里说可以帮你留一份。你把总价和包装上的字放在一起看。";name=B?"参与条件":"商品资料";
@@ -87,14 +87,14 @@
       '<section class="phone" data-page="'+(call?'call':lock?'lock':'app')+'" aria-label="模拟手机"><div class="notch" aria-hidden="true"></div><div class="statusbar"><span>'+clock+'</span>'+Theatre.symbols+'</div><div class="phone-flow"><div class="screen"><h2 id="step" tabindex="-1">'+s.name+'</h2>'+
       (lock?'<div class="lock-day">星期日　上午</div><div class="lock-hour">'+clock+'</div>':'')+(lock?'<button class="notification-tap lock-note" data-do="go:05" aria-label="打开邻里群消息"><span class="lock-meta"><span>邻里生活群</span><span>现在</span></span><strong>邻居吴姨</strong><span>今天上午有场健康讲座，想来听听吗？</span></button>':s.content)+'</div><div class="decide">'+(lock?s.opts.filter(x=>x.k!=="go:05"):s.opts).map(btn).join("")+(s.extras.length?'<div class="backhelp">'+s.extras.map(x=>'<button data-do="'+x.k+'">'+x.label+'</button>').join("")+'</div>':"")+
       '</div></div><div class="home-indicator" aria-hidden="true"></div></section></div>';
-    Theatre.bind(n+"-"+phase,asset);if(lock){const h=app.querySelector(".lock-day");h.tabIndex=-1;h.focus({preventScroll:true})}else focusStep("step");
+    Theatre.bind(n+"-"+phase,asset,call&&!hanged?incoming:undefined);if(lock){const h=app.querySelector(".lock-day");h.tabIndex=-1;h.focus({preventScroll:true})}else focusStep("step");
   }
   function go(i){
     silence();cur=i;seen.add(i);
     if(i==="07"||i==="06"||i==="05"){source="main";if(i==="07"||(!B&&i==="06"))previewed.add(source)}
     if(i==="08"){source="side";previewed.add(source)}
     if(i==="11"){entered=true;source=(amountKey==="deposit"||amountKey==="service")?"side":"main"}
-    desk();if(i==="04"&&B&&!hanged)incoming();
+    desk();
   }
   function finish(){
     Theatre.stop();

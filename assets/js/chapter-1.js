@@ -301,7 +301,7 @@ function specA04(){
 function specA05(){
   return {
     stage: "play",
-    cap: { who:"兼职联系人 小周", txt:"这笔试做的报酬已经到账，你可以看一下。",
+    cap: { who:"兼职联系人 小周", txt:"你打开了和兼职联系人的聊天，试做那一单的消息还在。",
            cue:"这笔返利是剧情预设的演练数据，不是玩家付的钱，也不影响本局结算。" },
     phone: phoneShell(
       '<div class="thread">' +
@@ -326,7 +326,7 @@ function specA05(){
 function specA06(){
   return {
     stage: "play",
-    cap: { who:"兼职联系人 小周", txt:"下一项是连续任务，要先垫付。页面提示整组做完才能结算。",
+    cap: { who:"兼职联系人 小周", txt:"聊天还开着，小周又发来了下一项任务。",
            cue:"屏幕上写明了下一步要你付款。到这里你仍然只是在看消息。" },
     phone: phoneShell(
       '<div class="thread">' +
@@ -1074,7 +1074,7 @@ document.addEventListener("keydown", function(ev){
   if(/^[1-4]$/.test(ev.key)){
     var list = V.querySelectorAll(".actions .act:not([disabled])");
     var b = list[parseInt(ev.key,10)-1];
-    if(b){ ev.preventDefault(); b.click(); }
+    if(b && b.getClientRects().length){ ev.preventDefault(); b.click(); }
   } else if(ev.key === "m" || ev.key === "M"){
     btnSound.click();
   }

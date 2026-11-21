@@ -29,7 +29,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0266,
+        "time": 0.0467,
         "frames": 4
       }
     },
@@ -85,7 +85,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0352,
+        "time": 0.0177,
         "frames": 4
       }
     },
@@ -145,7 +145,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0055,
+        "time": 0.0271,
         "frames": 4
       }
     },
@@ -226,7 +226,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0359,
+        "time": 0.0214,
         "frames": 4
       }
     },
@@ -259,7 +259,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0548,
+        "time": 0.0358,
         "frames": 5
       }
     },
@@ -292,7 +292,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0131,
+        "time": 0.0257,
         "frames": 4
       }
     },
@@ -304,8 +304,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0337,
-        "frames": 4
+        "time": 0.0443,
+        "frames": 5
       }
     },
     {
@@ -337,7 +337,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0275,
+        "time": 0.0342,
         "frames": 4
       }
     },
@@ -349,7 +349,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.015,
+        "time": 0.0164,
         "frames": 4
       }
     },
@@ -452,8 +452,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0164,
-        "frames": 4
+        "time": 0.0499,
+        "frames": 5
       }
     },
     {
@@ -485,7 +485,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0453,
+        "time": 0.0197,
         "frames": 4
       }
     },
@@ -497,7 +497,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0411,
+        "time": 0.0383,
         "frames": 5
       }
     },
@@ -530,8 +530,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0233,
-        "frames": 4
+        "time": 0.0392,
+        "frames": 5
       }
     },
     {
@@ -563,8 +563,8 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0414,
-        "frames": 4
+        "time": 0.0412,
+        "frames": 5
       }
     },
     {
@@ -575,7 +575,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0235,
+        "time": 0.0342,
         "frames": 5
       }
     },
@@ -608,7 +608,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0404,
+        "time": 0.0187,
         "frames": 4
       }
     },
@@ -649,7 +649,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0279,
+        "time": 0.0129,
         "frames": 4
       }
     },
@@ -690,7 +690,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.022,
+        "time": 0.0229,
         "frames": 4
       }
     },
@@ -702,7 +702,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0435,
+        "time": 0.0452,
         "frames": 5
       }
     },
@@ -743,7 +743,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0197,
+        "time": 0.0072,
         "frames": 4
       }
     },
@@ -784,7 +784,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0442,
+        "time": 0.04,
         "frames": 5
       }
     },
@@ -796,8 +796,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0374,
-        "frames": 5
+        "time": 0.032,
+        "frames": 4
       }
     },
     {
@@ -837,8 +837,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.024,
-        "frames": 4
+        "time": 0.0314,
+        "frames": 5
       }
     },
     {
@@ -870,7 +870,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0433,
+        "time": 0.0371,
         "frames": 5
       }
     },
@@ -882,7 +882,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0379,
+        "time": 0.0446,
         "frames": 5
       }
     },
@@ -915,7 +915,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0355,
+        "time": 0.037,
         "frames": 5
       }
     },
@@ -956,7 +956,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0368,
+        "time": 0.015,
         "frames": 4
       }
     },
@@ -1012,7 +1012,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.0258,
+        "time": 0.0278,
         "frames": 4
       }
     },
@@ -1072,7 +1072,7 @@
         "width": 960,
         "height": 540,
         "seconds": 7.25,
-        "time": 0.027,
+        "time": 0.0166,
         "frames": 4
       }
     },
@@ -1153,7 +1153,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0427,
+        "time": 0.0378,
         "frames": 5
       }
     },
@@ -1186,7 +1186,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0342,
+        "time": 0.0281,
         "frames": 4
       }
     },
@@ -1219,8 +1219,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0333,
-        "frames": 5
+        "time": 0.0156,
+        "frames": 4
       }
     },
     {
@@ -1231,7 +1231,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0342,
+        "time": 0.04,
         "frames": 5
       }
     },
@@ -1264,7 +1264,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0299,
+        "time": 0.0341,
         "frames": 4
       }
     },
@@ -1276,8 +1276,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0203,
-        "frames": 5
+        "time": 0.028,
+        "frames": 4
       }
     },
     {
@@ -1379,8 +1379,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0373,
-        "frames": 5
+        "time": 0.0548,
+        "frames": 6
       }
     },
     {
@@ -1412,7 +1412,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0256,
+        "time": 0.0314,
         "frames": 4
       }
     },
@@ -1424,7 +1424,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0356,
+        "time": 0.0354,
         "frames": 5
       }
     },
@@ -1457,7 +1457,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0389,
+        "time": 0.0273,
         "frames": 5
       }
     },
@@ -1490,7 +1490,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0449,
+        "time": 0.0409,
         "frames": 5
       }
     },
@@ -1502,7 +1502,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0345,
+        "time": 0.0279,
         "frames": 5
       }
     },
@@ -1535,8 +1535,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0309,
-        "frames": 4
+        "time": 0.0368,
+        "frames": 5
       }
     },
     {
@@ -1576,7 +1576,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0269,
+        "time": 0.0208,
         "frames": 4
       }
     },
@@ -1617,8 +1617,8 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0354,
-        "frames": 4
+        "time": 0.0311,
+        "frames": 5
       }
     },
     {
@@ -1629,7 +1629,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0417,
+        "time": 0.0356,
         "frames": 5
       }
     },
@@ -1670,8 +1670,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0281,
-        "frames": 4
+        "time": 0.0144,
+        "frames": 5
       }
     },
     {
@@ -1723,7 +1723,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0407,
+        "time": 0.038,
         "frames": 5
       }
     },
@@ -1764,7 +1764,7 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0249,
+        "time": 0.0224,
         "frames": 4
       }
     },
@@ -1797,7 +1797,7 @@
         "width": 960,
         "height": 540,
         "seconds": 4.5,
-        "time": 0.0419,
+        "time": 0.0374,
         "frames": 5
       }
     },
@@ -1809,8 +1809,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.0331,
-        "frames": 4
+        "time": 0.0297,
+        "frames": 5
       }
     },
     {
@@ -1842,8 +1842,8 @@
         "width": 960,
         "height": 540,
         "seconds": 6,
-        "time": 0.032,
-        "frames": 4
+        "time": 0.035,
+        "frames": 5
       }
     },
     {
@@ -1866,6 +1866,84 @@
     {
       "step": "1920 chapter 2 资料不足时暂缓",
       "check": "back preserves original result"
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "screen starts dark and wakes with the scene",
+      "detail": [
+        {
+          "dark": true,
+          "time": 0
+        },
+        {
+          "dark": false,
+          "time": 0.7305
+        }
+      ]
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "the next message waits its turn"
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "pausing holds pending messages"
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "all messages remain readable"
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "screen starts dark and wakes with the scene",
+      "detail": [
+        {
+          "dark": true,
+          "time": 0
+        },
+        {
+          "dark": false,
+          "time": 0.7274
+        }
+      ]
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "the next message waits its turn"
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "all messages remain readable"
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "screen starts dark and wakes with the scene",
+      "detail": [
+        {
+          "dark": true,
+          "time": 0
+        },
+        {
+          "dark": false,
+          "time": 0.7236
+        }
+      ]
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "the next message waits its turn"
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "all messages remain readable"
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "reduced motion opens directly on the notification"
+    },
+    {
+      "step": "arrival and message timing",
+      "check": "reduced motion presents the whole conversation"
     },
     {
       "step": "resource audit",

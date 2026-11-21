@@ -4,8 +4,8 @@
     "frames": 174,
     "seconds": 7.25,
     "decoded": true,
-    "bytes": 1093062,
-    "sha256": "8d54c0a459892ac0a0b2c48b1d68809dee3a7fb890e3b1534eb2bacfd15426ba"
+    "bytes": 1089053,
+    "sha256": "800a602c813e8d4cbe1e42bbbf270d007b5eb27a07bd2805fff8eb10e336e78c"
   },
   {
     "file": "1-evidence.mp4",
@@ -28,8 +28,8 @@
     "frames": 174,
     "seconds": 7.25,
     "decoded": true,
-    "bytes": 1055860,
-    "sha256": "773fae974df93f9898473b8a45b36c8a0114a01d7eba97bc870fe4fb4e9e6b7a"
+    "bytes": 1056162,
+    "sha256": "f5a01e514981ae41377a42615e79dc081f2fb5d3698191e379ce2da07a69da18"
   },
   {
     "file": "2-evidence.mp4",
@@ -52,8 +52,8 @@
     "frames": 174,
     "seconds": 7.25,
     "decoded": true,
-    "bytes": 1274707,
-    "sha256": "fd4b3fec59f9dc3cc72544e325adcecf57d8e015193312fc648dc5d795fd9ef4"
+    "bytes": 1276345,
+    "sha256": "e8be33df733fae5f93dfeaf0c54b1126c22ab52acca4568aba9a269724b64fc5"
   },
   {
     "file": "3-evidence.mp4",
