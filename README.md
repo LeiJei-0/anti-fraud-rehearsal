@@ -33,6 +33,14 @@
 - [Qoder 执行任务书](Qoder执行任务书.md)
 - [变更记录](CHANGELOG.md)
 
+## 仓库规范
+
+- [LICENSE](LICENSE)：代码用 MIT，剧情文本与美术影片用 CC BY-NC-SA 4.0；学校和社区做反诈宣传可以直接复制离线包部署。
+- [CONTRIBUTING.md](CONTRIBUTING.md)：一轮开发走的顺序、提交信息写法、回归与渲染命令、提交前自查。
+- [SECURITY.md](SECURITY.md)：离线与不收集个人信息的边界，以及哪些情况按安全问题私下报告。
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)：行为准则，重点是试玩反馈怎么写才能被复现。
+- Issue 与 PR 模板在 `.github/`：新需求填验收标准，试玩反馈填环境与第几步。
+
 ## 过程记录
 
 每轮开发按 [GitHub Issues](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues) 记需求 → 分支开发 → PR 关联 Issue 并附验收结果 → 合并进 `main` → 在 [CHANGELOG.md](CHANGELOG.md) 追加一轮记录。
@@ -41,12 +49,16 @@
 | --- | --- | --- | --- | --- |
 | 第一章《一份周末兼职》样片 | [#1 需求与验收标准](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/1) | `feat/chapter-1-prototype` | [#2 样片与验收](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/2) | 已合并，[#1 已关闭](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/1) |
 | 合并结果补记（文档） | 沿用 #1 | `docs/merge-record-1` | [#3 合并结果补记](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/3) | 补写 #2 的合并提交号 |
-| 第一章宿舍改版 → 三身份桌面版 | [#4 宿舍开场与直接结算](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/4) · [#5 三章可试玩与人物比例](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/5) · [#7 拇指持机与选择手记](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/7) | `feat/chapter-1-dorm` | [#6 拇指持机动画与电影定格结算](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/6) | 待合并，合并后关闭 #4 / #5 / #7 |
+| 第一章宿舍改版 → 三身份桌面版 | [#4 宿舍开场与直接结算](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/4) · [#5 三章可试玩与人物比例](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/5) · [#7 拇指持机与选择手记](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/7) | `feat/chapter-1-dorm` | [#6 拇指持机动画与电影定格结算](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/6) | 已合并，合并提交 [`5ed6636`](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/5ed6636e68fefde0a3e27356ec8eb341228f4b15)，[#4](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/4) / [#5](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/5) / [#7](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/7) 随之关闭 |
+| 三章持机近景重绘与拇指滑屏 | 沿用 #7 的试玩反馈（`b702b8b` · `45b7ef3` · `2227391`） | `feat/painted-hand-closeups` | [#8 三章持机近景重绘及拇指滑屏验证](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/8) | 草稿，等手势自然度的人工试玩反馈 |
+| 仓库规范补齐（文档） | 沿用公开仓库社区健康文件要求 | `chore/community-standards` | 本 PR | 待合并 |
 
 - [#4](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/4) 记录宿舍开场、屏内文字、无配音弹幕、图案入口与直接结算的验收标准，分镜见 [docs/chapter-1-dorm.md](docs/chapter-1-dorm.md)。
 - [80d46a4](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/80d46a4) 是 Qoder 的宿舍改版实现：先复现并留存改前证据（161 处文字越界，含通知卡片内文字超出卡片 25px、手遮住通知 10%～16%），改后同一检测为 0 处；七条路线 98 项断言与四种结算首屏 32 项断言全部通过，并附「宿舍开场 → A04 点先放一放 → 立即安全离开」的连续录像。**手机尺寸三档字号的结果只计入这一版**，后续桌面版另计。
 - [7b6e4fb](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/7b6e4fb) 与 [cdc0aa3](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/cdc0aa3) 是 Codex 按试玩反馈改成的三身份桌面版（12 段本地影片、拇指持机、电影定格结算与只读手记），回归见 `docs/pc-review.json`，334 项检查通过。
 - [#6](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/6) 合并这三段提交，正文含逐条验收结果与仍需人工试玩的项目。
+- [#6 的合并结果](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/5ed6636e68fefde0a3e27356ec8eb341228f4b15)：`merged_at = 2026-11-20T16:06:18Z`（北京时间 11-21 00:06:18），`main` 由 `ff6037b` 前进到 `5ed6636`；#4、#5、#7 分别在同日 00:06:20、00:06:21、00:06:23 自动关闭。开发分支 `feat/chapter-1-dorm` 保留在 `14b673b`，未删除、未强推。
+- [#8](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/8) 收三章持机近景的三段重绘（`b702b8b`、`45b7ef3`、`2227391`）。第三段只替换第一章的通知、查线索与确认前三条影片，共 462 帧，逐段比对后十二段中仅这三条发生变化；`2227391` 之后整站回归重跑过一遍，334 项通过，但仓库里 `docs/pc-review.json` 的记录早于这三条影片，`clips` 字段也没有哈希，绑不到具体素材——重跑结果尚未入库。
 
 - [#1](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/1) 写清 A01–A10 镜头、四种结算、离线约束与七条验收路线。
 - [#2](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/2) 附验收对照表、仍需人工验收的项目与提交前审查结论，合并提交为 [d768c79](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/d768c7903330667f8cc2edbe1a3ed689aa59a135)。

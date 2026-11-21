@@ -1,0 +1,6 @@
+# 制作动作短片用（网页运行不需要任何 Python 依赖）
+# 在本机实测通过的版本：Pillow 12.3.0、NumPy 2.3.5、imageio-ffmpeg 0.6.x
+Pillow>=10
+NumPy>=1.26
+fontTools>=4.50
+imageio-ffmpeg>=0.5

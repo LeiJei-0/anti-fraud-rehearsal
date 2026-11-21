@@ -80,3 +80,18 @@
 - 按试玩者选定的 A 首屏＋B 回看改三章。结算保留本章画面、结果与原因；按「回看我的选择」打开本局手记。打开核实入口与取得答复分开记录；返回或再打开手记不改变结果。
 - Codex 重新制作九段持机动画：学生在床上已握稳手机，中年与老年角色从桌上拿起。抓握后手机随手腕移动，拇指指腹上滑时带动屏内内容，停在确认前不替玩家付款。另两章的画面按第一章的光影与笔触重绘，场景分别为傍晚和早晨。
 - 三章的动作短片逐段解码；可直接对照 docs/thumb-preview.mp4。项目用本地画像与视频，不依赖在线模型。实际回归见 docs/pc-review.json：1366×768、1920×1080 各 19 条路径，334 项检查通过，涵盖四种结局、回看、键盘焦点和离线播放。
+
+## 2026-11-21 · #6 合并结果补记
+
+- **执行工具**　Qoder。
+- **实际完成**　按 [#3](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/3) 的同样做法，把 [#6](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/6) 的合并结果写回记录：README 过程记录表的状态列由「待合并」改为实际结果。
+- **核对结果**　`merged = true`、`state = closed`、`merged_at = 2026-11-20T16:06:18Z`（北京时间 11-21 00:06:18），合并提交 [`5ed6636`](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/5ed6636e68fefde0a3e27356ec8eb341228f4b15)（merge 方式，保留分支六个提交）。#4、#5、#7 由 `Closes` 自动关闭，`closed_at` 分别为 16:06:20Z、16:06:21Z、16:06:23Z。远端 `refs/heads/main = 5ed6636`（此前 `ff6037b`）、`refs/heads/feat/chapter-1-dorm = 14b673b`，分支未删除、未强推。
+- **变更文件**　`README.md`、`CHANGELOG.md`。
+
+## 2026-11-21 · 公开仓库规范补齐
+
+- **执行工具**　Qoder。
+- **实际完成**　按 GitHub 对公开仓库的社区健康文件建议补齐说明与模板：`LICENSE`（代码 MIT，剧情文本与美术影片 CC BY-NC-SA 4.0，并注明学校与社区反诈宣传可直接复制离线包）、`CONTRIBUTING.md`（一轮开发的顺序、提交信息写法、回归与渲染命令、提交前自查）、`SECURITY.md`（离线与不收集个人信息的边界，以及哪些情况按安全问题私下报告）、`CODE_OF_CONDUCT.md`（采用 Contributor Covenant 1.4，重点写试玩反馈的表述要求）、`.github/ISSUE_TEMPLATE/`（需求与验收标准、试玩反馈两类模板加 `config.yml`）、`.github/PULL_REQUEST_TEMPLATE.md`（沿用 #2 已有的四段式：需求→开发→测试→完成、验收对照、仍需人工试玩、提交前审查）。另加 `.gitattributes` 统一行尾（此前检出为 CRLF，导致压缩包内文件与仓库内容逐字节不同）与 `qa/film-source/requirements.txt`（本机实测 Pillow 12.3.0、NumPy 2.3.5）。README 增加「仓库规范」一节，过程记录表补上 [#8](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/8) 与本轮两行；`项目文档.md` 更正交付状态与影片声音口径。
+- **变更文件**　`LICENSE`、`CONTRIBUTING.md`、`SECURITY.md`、`CODE_OF_CONDUCT.md`、`.gitattributes`、`.gitignore`（新增 `__pycache__/`、`*.pyc`、`review-output/`）、`.github/ISSUE_TEMPLATE/01-requirement.md`、`.github/ISSUE_TEMPLATE/02-playtest-feedback.md`、`.github/ISSUE_TEMPLATE/config.yml`、`.github/PULL_REQUEST_TEMPLATE.md`、`qa/film-source/requirements.txt`、`README.md`、`CHANGELOG.md`、`项目文档.md`。
+- **验证范围**　只改文档与仓库配置，未触碰运行时代码与素材，上一轮 334 项回归结论不受影响。新文件均为本地写入，链接路径逐项存在；GitHub 侧的模板生效需在合并后新建 Issue 时确认。
+- **待完成**　CHANGELOG 与 #8 分支都在文件末尾追加，合并时按日期先后保留两段。`docs/pc-review.json` 仍需随 `2227391` 重跑后入库，且 `clips` 只记宽高与秒数、没有哈希，绑不到具体素材。「59 项专项检查」在仓库里找不到产出脚本，需要补进来或改口径。已实测但尚未修的三处：窗口态或 125%／150% 缩放下手机机身被视口裁掉 25～213 像素且顶栏跟着滚走；`say()` 写入的状态提示被 `body #statusline` 压成 1×1 像素，第一章 16 处反馈在屏幕上不可见，第二、三章没有该元素；`prefers-reduced-motion: reduce` 被入口参数 `play=1` 绕过，三章仍自动播放。另有弹窗打开时按数字键仍会点中背景选项（已实测：打开真实求助后按 1，弹窗被关闭且剧情前进）。真机、现场投屏、实际听感与手势自然度仍待人工。作品尚未部署到 Qoder Sites。
