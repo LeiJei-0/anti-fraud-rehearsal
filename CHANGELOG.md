@@ -111,4 +111,10 @@ Codex 根据试玩反馈重做了三章的九段手部影片。宿舍里从手�
 
 - **核对结果**　[#8](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/8) 由草稿转为可评审后合并，`merged_at = 2026-11-21T05:34:07Z`（北京时间 13:34:07），合并提交 [`285a384`](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/285a3843c2525ae733b8b04588aff3e5f6e75976)，base 为 `5ed6636`，head 为 `2227391`。草稿原本挂着「等待手形反馈后再合并」，试玩反馈中的手形问题已由本人确认解决，因此合入。
 - **合并结果补记**　本轮 CHANGELOG 与 #8 都在文件末尾追加，已按发生先后保留两段（持机近景与手部近景在前，补记与规范补齐在后），两段原文未改写。
-- **分支归档**　`feat/chapter-1-prototype`、`feat/chapter-1-dorm`、`docs/merge-record-1`、`feat/painted-hand-closeups` 的提交已全部在 `main` 中，逐个打上 `archive/*` 标签后删除远端分支；标签指向原分支头，提交对象永久保留，PR 记录不受影响。
+- **分支归档**　`feat/chapter-1-prototype`、`feat/chapter-1-dorm`、`docs/merge-record-1`、`feat/painted-hand-closeups`、`chore/community-standards` 五条分支的提交已全部在 `main` 中，逐个打上对应的 `archive/*` 标签后删除远端分支；标签指向原分支头（`b28280d`、`14b673b`、`7c5f7b0`、`2227391`、`9bf5a68`），提交对象永久保留，PR 记录不受影响。远端现只剩 `main`，未强推。
+
+## 2026-11-21 · #9 合并结果与实测缺陷建档
+
+- **核对结果**　[#9 仓库规范补齐](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/9) 已合并，`merged_at = 2026-11-21T05:36:35Z`（北京时间 13:36:35），合并提交 [`6ac546e`](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/6ac546e09a6999f61bcb8056aef6cb5482a1df00)，base 为 #8 的合并提交 `285a384`。README 过程记录表里那一行的「待合并」按同样习惯补成实际结果。
+- **新建 Issue**　本轮在真实浏览器里实测到、尚未修的五项，逐项建档，正文含复现步骤、实测数字、根因行号与验收标准：[#10 窗口态或缩放下手机机身被视口裁掉 25～213 像素](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/10)、[#11 文字反馈被压成 1×1 像素且第二、三章缺该元素](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/11)、[#12 偏好减少动态效果时三章仍自动播放](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/12)、[#13 弹窗打开时数字键仍点中背景选项](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/13)、[#14 验收证据绑不到具体素材、59 项检查无产出脚本](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/14)。
+- **下一轮**　#10 到 #14 逐条走「先建分支修、复跑回归、再合并」；作品仍需部署到可公开访问的地址；真机、现场投屏与实际听感待人工。
