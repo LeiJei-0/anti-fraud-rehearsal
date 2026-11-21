@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>第二章 · 手形静帧审看</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: #ede9df; color: #25312e;
+      font: 16px/1.5 "Microsoft YaHei", "PingFang SC", sans-serif;
+    }
+    main { width: min(852.890625px, calc(100% - 32px)); margin: 28px auto; }
+    header, nav, .poses { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    header { justify-content: space-between; margin-bottom: 14px; }
+    h1 { margin: 0; font: 600 24px/1.4 "Songti SC", SimSun, serif; }
+    label { display: flex; align-items: center; gap: 6px; font-size: 14px; }
+    button, select {
+      min-height: 44px; border: 1px solid #acae9f; border-radius: 4px;
+      background: transparent; color: inherit; padding: 6px 12px; font: inherit;
+    }
+    button { cursor: pointer; }
+    button[aria-current="step"] { background: #253d35; color: #fff; border-color: #253d35; }
+    button:disabled { opacity: .4; cursor: default; }
+    :focus-visible { outline: 3px solid #96613b; outline-offset: 2px; }
+    figure { margin: 0 auto; width: min(100%, var(--film-width, 852.890625px)); }
+    figure img { display: block; max-width: 100%; width: 100%; aspect-ratio: 16/9; object-fit: contain; background: #262b28; }
+    nav { justify-content: space-between; margin-top: 16px; }
+    .key-hint { color: #555d57; font-size: 13px; margin-top: 8px; }
+    @media (max-width: 550px) { .poses { order: -1; width: 100%; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>手形静帧审看</h1>
+      <label>放映尺寸
+        <select id="width">
+          <option value="852.890625">第二章 · 853 × 480</option>
+          <option value="837.890625">第一章 · 838 × 471</option>
+        </select>
+      </label>
+    </header>
+    <figure>
+      <img id="frame" src="01-入画.png" alt="入画前">
+    </figure>
+    <nav aria-label="选择静帧">
+      <button type="button" id="prev" disabled>上一张</button>
+      <div class="poses">
+        <button type="button" data-file="01-入画.png" aria-current="step">入画前</button>
+        <button type="button" data-file="02-扣边.png">扣边贴桌</button>
+        <button type="button" data-file="03-滑屏.png">滑屏中</button>
+      </div>
+      <button type="button" id="next">下一张</button>
+    </nav>
+    <p class="key-hint">按 1、2、3 切换静帧。</p>
+  </main>
+  <script>
+    const frame = document.querySelector('#frame');
+    const poses = [...document.querySelectorAll('[data-file]')];
+    const prev = document.querySelector('#prev');
+    const next = document.querySelector('#next');
+    let current = 0;
+
+    function show(index) {
+      current = index;
+      frame.src = poses[index].dataset.file;
+      frame.alt = poses[index].textContent;
+      poses.forEach((button, i) => {
+        if (i === index) button.setAttribute('aria-current', 'step');
+        else button.removeAttribute('aria-current');
+      });
+      prev.disabled = index === 0;
+      next.disabled = index === poses.length - 1;
+    }
+
+    poses.forEach((button, i) => button.addEventListener('click', () => show(i)));
+    prev.addEventListener('click', () => show(current - 1));
+    next.addEventListener('click', () => show(current + 1));
+    document.querySelector('#width').addEventListener('change', event => {
+      document.querySelector('figure').style.setProperty('--film-width', event.target.value + 'px');
+    });
+    document.addEventListener('keydown', event => {
+      if (event.ctrlKey || event.metaKey || event.altKey || event.target.tagName === 'SELECT') return;
+      if (/^[123]$/.test(event.key)) {
+        event.preventDefault();
+        show(Number(event.key) - 1);
+      }
+    });
+  </script>
+</body>
+</html>
