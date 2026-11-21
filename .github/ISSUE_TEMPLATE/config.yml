@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 怎么用这个演练
+    url: https://github.com/LeiJei-0/anti-fraud-rehearsal/blob/main/README.md
+    about: 双击 index.html、选身份、左侧看剧情右侧用手机操作，说明都在 README
+  - name: 授权与公益使用
+    url: https://github.com/LeiJei-0/anti-fraud-rehearsal/blob/main/LICENSE
+    about: 代码 MIT，剧情与素材 CC BY-NC-SA 4.0；学校与社区反诈宣传可直接复制离线包

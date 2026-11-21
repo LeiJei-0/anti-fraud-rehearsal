@@ -1,0 +1,29 @@
+本项目分两部分授权。
+
+**代码**（`*.html`、`assets/js/`、`assets/css/`、`qa/` 下的脚本）采用 MIT 许可证。
+
+MIT License
+
+Copyright (c) 2026 肖斯菀（扬州职业技术大学）
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+**剧情文本、分镜、美术与影片**（`assets/art/`、`assets/films/`、`*.md` 中的剧情与分镜内容、`qa/手形审看/`）采用 CC BY-NC-SA 4.0，条款见 <https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans>。使用需署名「肖斯菀／防骗预演」，不得用于商业目的，改编后须以相同许可证发布。
+
+学校、社区、派出所等公益反诈宣传场景可以直接复制整套离线包部署，不需要另行申请；请在页面或物料中保留出处。剧情中的人物、平台、账号与金额均为虚构，如与真实情况雷同属巧合。

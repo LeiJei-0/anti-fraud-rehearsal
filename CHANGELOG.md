@@ -90,3 +90,25 @@ Codex 根据试玩反馈重做了三章的九段手部影片。宿舍里从手�
 ## 2026-11-21 · 大学生手部近景
 
 依据试玩反馈，为第一章单独绘制掌心、机背四指和正面拇指，减淡掌纹与指节褶皱，指甲和指腹保留自然的粉色。重新输出通知、查线索和确认前的三段影片，共 462 帧；与上版逐个比对，十二段影片中仅这三段发生变化。离线播放器专项实测通过 59 项，试玩包内影片与网页文件一致。
+
+## 2026-11-21 · #6 合并结果补记
+
+- **执行工具**　Qoder。
+- **实际完成**　按 [#3](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/3) 的同样做法，把 [#6](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/6) 的合并结果写回记录：README 过程记录表的状态列由「待合并」改为实际结果。
+- **核对结果**　`merged = true`、`state = closed`、`merged_at = 2026-11-20T16:06:18Z`（北京时间 11-21 00:06:18），合并提交 [`5ed6636`](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/5ed6636e68fefde0a3e27356ec8eb341228f4b15)（merge 方式，保留分支六个提交）。#4、#5、#7 由 `Closes` 自动关闭，`closed_at` 分别为 16:06:20Z、16:06:21Z、16:06:23Z。远端 `refs/heads/main = 5ed6636`（此前 `ff6037b`）、`refs/heads/feat/chapter-1-dorm = 14b673b`，分支未删除、未强推。
+- **变更文件**　`README.md`、`CHANGELOG.md`。
+
+## 2026-11-21 · 公开仓库规范补齐
+
+- **执行工具**　Qoder。
+- **实际完成**　按 GitHub 对公开仓库的社区健康文件建议补齐说明与模板：`LICENSE`（代码 MIT，剧情文本与美术影片 CC BY-NC-SA 4.0，并注明学校与社区反诈宣传可直接复制离线包）、`CONTRIBUTING.md`（一轮开发的顺序、提交信息写法、回归与渲染命令、提交前自查）、`SECURITY.md`（离线与不收集个人信息的边界，以及哪些情况按安全问题私下报告）、`CODE_OF_CONDUCT.md`（采用 Contributor Covenant 1.4，重点写试玩反馈的表述要求）、`.github/ISSUE_TEMPLATE/`（需求与验收标准、试玩反馈两类模板加 `config.yml`）、`.github/PULL_REQUEST_TEMPLATE.md`（沿用 #2 已有的四段式：需求→开发→测试→完成、验收对照、仍需人工试玩、提交前审查）。另加 `.gitattributes` 统一行尾（此前检出为 CRLF，导致压缩包内文件与仓库内容逐字节不同）与 `qa/film-source/requirements.txt`（本机实测 Pillow 12.3.0、NumPy 2.3.5）。README 增加「仓库规范」一节，过程记录表补上 [#8](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/8) 与本轮两行；`项目文档.md` 更正交付状态与影片声音口径。
+- **关联**　[#9 仓库规范补齐](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/9)。
+- **变更文件**　`LICENSE`、`CONTRIBUTING.md`、`SECURITY.md`、`CODE_OF_CONDUCT.md`、`.gitattributes`、`.gitignore`（新增 `__pycache__/`、`*.pyc`、`review-output/`）、`.github/ISSUE_TEMPLATE/01-requirement.md`、`.github/ISSUE_TEMPLATE/02-playtest-feedback.md`、`.github/ISSUE_TEMPLATE/config.yml`、`.github/PULL_REQUEST_TEMPLATE.md`、`qa/film-source/requirements.txt`、`README.md`、`CHANGELOG.md`、`项目文档.md`。
+- **验证范围**　只改文档与仓库配置，未触碰运行时代码与素材，上一轮 334 项回归结论不受影响。新文件均为本地写入，链接路径逐项存在；GitHub 侧的模板生效需在合并后新建 Issue 时确认。
+- **待完成**　`docs/pc-review.json` 仍需随 `2227391` 重跑后入库，且 `clips` 只记宽高与秒数、没有哈希，绑不到具体素材（本轮已在 `2227391` 上重跑，334 项全部通过，结果尚未提交进仓库）。「59 项专项检查」在仓库里找不到产出脚本，需要补进来或改口径。已实测但尚未修的三处：窗口态或 125%／150% 缩放下手机机身被视口裁掉 25～213 像素且顶栏跟着滚走；`say()` 写入的状态提示被 `body #statusline` 压成 1×1 像素，第一章 16 处反馈在屏幕上不可见，第二、三章没有该元素；`prefers-reduced-motion: reduce` 被入口参数 `play=1` 绕过，三章仍自动播放。另有弹窗打开时按数字键仍会点中背景选项（已实测：打开真实求助后按 1，弹窗被关闭且剧情前进）。真机、现场投屏与实际听感仍待人工。作品尚未部署到 Qoder Sites。
+
+## 2026-11-21 · #8 合并结果与分支归档
+
+- **核对结果**　[#8](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/8) 由草稿转为可评审后合并，`merged_at = 2026-11-21T05:34:07Z`（北京时间 13:34:07），合并提交 [`285a384`](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/285a3843c2525ae733b8b04588aff3e5f6e75976)，base 为 `5ed6636`，head 为 `2227391`。草稿原本挂着「等待手形反馈后再合并」，试玩反馈中的手形问题已由本人确认解决，因此合入。
+- **合并结果补记**　本轮 CHANGELOG 与 #8 都在文件末尾追加，已按发生先后保留两段（持机近景与手部近景在前，补记与规范补齐在后），两段原文未改写。
+- **分支归档**　`feat/chapter-1-prototype`、`feat/chapter-1-dorm`、`docs/merge-record-1`、`feat/painted-hand-closeups` 的提交已全部在 `main` 中，逐个打上 `archive/*` 标签后删除远端分支；标签指向原分支头，提交对象永久保留，PR 记录不受影响。
