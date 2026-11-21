@@ -4,24 +4,24 @@
     "frames": 174,
     "seconds": 7.25,
     "decoded": true,
-    "bytes": 1102971,
-    "sha256": "544340f8fb13f415f2d51764a1b65ced49356f374f7f32cf9fbaf41710465bf3"
+    "bytes": 1093062,
+    "sha256": "8d54c0a459892ac0a0b2c48b1d68809dee3a7fb890e3b1534eb2bacfd15426ba"
   },
   {
     "file": "1-evidence.mp4",
     "frames": 144,
     "seconds": 6.0,
     "decoded": true,
-    "bytes": 707805,
-    "sha256": "3741d96acd59e3c59dc4217a6da87f436c2cb5e3e99bd70d83876ae20169de5f"
+    "bytes": 694261,
+    "sha256": "eab0db03e899a8076563c1eb472170153267cf222f046016cd3f1beb6bd95d46"
   },
   {
     "file": "1-decision.mp4",
     "frames": 144,
     "seconds": 6.0,
     "decoded": true,
-    "bytes": 780256,
-    "sha256": "c5a64361b1973616a9f4c1a061eaab36d8e32f70faf52e00d1832e2b4efc28f6"
+    "bytes": 772069,
+    "sha256": "62d84cd59bbf76a25075e6b96632589b63a79b8fc243f2b8c1baf023a34ec19b"
   },
   {
     "file": "2-orient.mp4",

@@ -102,6 +102,10 @@ def tint(im, name, chapter):
 
 @lru_cache(None)
 def cel(name, chapter):
+    if chapter == 1 and name.startswith("swipe-"):
+        # Student cels were painted for this pose and share its joint positions.
+        with Image.open(ART/("student-"+name.removeprefix("swipe-")+".png")) as src:
+            return src.convert("RGBA")
     with Image.open(ART/(name+".png")) as src:
         im = src.convert("RGBA")
     if name != "phone-blank":
