@@ -2,6 +2,8 @@
 
 一个可以停下来商量的电脑端反诈互动故事。双击 [index.html](index.html)，点「开始体验」，选择青年人、中年人或老年人。请保留同层 `assets/`；下载 GitHub 压缩包后先完整解压。运行时不用安装依赖、开服务器、连接网络或注册账号。
 
+**在线体验**：<https://fangpian-yuyan-vlotqbwh7fg.qoder.zone> —— 由 Qoder Sites 部署，公开访问，不需要注册或登录。公网包与仓库 `main` 的内容逐字节一致（`git archive` 导出 34 个文件校验）。窗口不是全屏、或浏览器缩放超过 100% 时，右侧手机机身下部会被屏幕裁掉一截，**建议按 F11 全屏**（原因与修复进度见 [#10](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/10)）。在线版和离线包是同一套剧情与判定，任选一种。
+
 | 你选择的身份 | 故事从哪里开始 | 可以亲手做什么 |
 | --- | --- | --- |
 | 青年人 | 宿舍上铺，一条周末兼职通知 | 回消息、看自称辅导员的视频、用原有校园渠道核实 |
@@ -30,6 +32,7 @@
 
 ## 项目资料
 
+- [在线体验](https://fangpian-yuyan-vlotqbwh7fg.qoder.zone)（Qoder Sites 部署，公开访问，无需注册）
 - [整体项目方案](项目文档.md)
 - [三章完整流程与分镜](防骗预演%20三章完整流程与分镜.md)
 - [Qoder 执行任务书](Qoder执行任务书.md)
@@ -55,6 +58,7 @@
 | 三章持机近景重绘与拇指滑屏 | 沿用 #7 的试玩反馈（`b702b8b` · `45b7ef3` · `2227391`） | `feat/painted-hand-closeups` | [#8 三章持机近景重绘及拇指滑屏验证](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/8) | 已合并，合并提交 [`285a384`](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/285a3843c2525ae733b8b04588aff3e5f6e75976)；手形反馈已确认解决 |
 | 仓库规范补齐（文档） | 沿用公开仓库社区健康文件要求 | `chore/community-standards` | [#9 仓库规范补齐](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/9) | 已合并，合并提交 [`6ac546e`](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/6ac546e09a6999f61bcb8056aef6cb5482a1df00) |
 | 合并结果补记与分支归档（文档） | 沿用 #1 的记录习惯 | `docs/merge-record-3` | [#15 合并结果补记](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/15) | 补写 #8 与 #9 的合并结果、分支归档与新建 Issue |
+| 署名补齐与在线体验地址（文档） | 参赛材料需要完整署名与评委可点开的公网地址 | `docs/team-members` · `docs/third-author` · `docs/second-author` · `docs/online-url` | [#16](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/16) · [#17](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/17) · [#18](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/18) · 本 PR | #16 `92d1763`、#17 `049537a`、#18 `54f5864` 已合并；在线地址与全屏提示写入 README 首屏 |
 
 - [#4](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/4) 记录宿舍开场、屏内文字、无配音弹幕、图案入口与直接结算的验收标准，分镜见 [docs/chapter-1-dorm.md](docs/chapter-1-dorm.md)。
 - [80d46a4](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/80d46a4) 是 Qoder 的宿舍改版实现：先复现并留存改前证据（161 处文字越界，含通知卡片内文字超出卡片 25px、手遮住通知 10%～16%），改后同一检测为 0 处；七条路线 98 项断言与四种结算首屏 32 项断言全部通过，并附「宿舍开场 → A04 点先放一放 → 立即安全离开」的连续录像。**手机尺寸三档字号的结果只计入这一版**，后续桌面版另计。
