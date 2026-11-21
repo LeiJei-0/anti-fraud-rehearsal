@@ -117,4 +117,13 @@ Codex 根据试玩反馈重做了三章的九段手部影片。宿舍里从手�
 
 - **核对结果**　[#9 仓库规范补齐](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/9) 已合并，`merged_at = 2026-11-21T05:36:35Z`（北京时间 13:36:35），合并提交 [`6ac546e`](https://github.com/LeiJei-0/anti-fraud-rehearsal/commit/6ac546e09a6999f61bcb8056aef6cb5482a1df00)，base 为 #8 的合并提交 `285a384`。README 过程记录表里那一行的「待合并」按同样习惯补成实际结果。
 - **新建 Issue**　本轮在真实浏览器里实测到、尚未修的五项，逐项建档，正文含复现步骤、实测数字、根因行号与验收标准：[#10 窗口态或缩放下手机机身被视口裁掉 25～213 像素](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/10)、[#11 文字反馈被压成 1×1 像素且第二、三章缺该元素](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/11)、[#12 偏好减少动态效果时三章仍自动播放](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/12)、[#13 弹窗打开时数字键仍点中背景选项](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/13)、[#14 验收证据绑不到具体素材、59 项检查无产出脚本](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/14)。
-- **下一轮**　#10 到 #14 逐条走「先建分支修、复跑回归、再合并」；作品仍需部署到可公开访问的地址；真机、现场投屏与实际听感待人工。
+- **下一轮**　#10 到 #14 逐条走「先建分支修、复跑回归、再合并」；真机、现场投屏与实际听感待人工。
+
+## 2026-11-21 · 公网部署与署名补齐
+
+- **实际完成**　用 Qoder Sites 把站点部署到公网并设为公开访问，地址 <https://fangpian-yuyan-vlotqbwh7fg.qoder.zone>。部署包由 `git archive` 从 `main` HEAD 导出到独立输出目录（4 个 HTML + `assets/`，共 34 个文件、9.6 MB），逐文件与仓库内容比对一致后上传；发布后在真实浏览器复验：三种身份均可进入并自动播完第一段影片（7.25 秒），手机内点击正常推进，控制台无 JS 报错，除本站域名外没有任何外部来源。README 首屏与「项目资料」加入在线体验地址与 F11 全屏提示。
+- **署名补齐**　团队成员表改为署名顺序表并补全三人：第 1 作者 雷杰（南京信息职业技术学院 · 人工智能 · 人工智能2602）、第 2 作者 王以豪（南京晓庄学院 · 数据科学与大数据技术 · 数据科学与大数据技术单招2）、第 3 作者 肖斯菀（扬州职业技术大学 · 大数据与会计 · 会计2602）。经 [#16](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/16) `92d1763`、[#17](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/17) `049537a`、[#18](https://github.com/LeiJei-0/anti-fraud-rehearsal/pull/18) `54f5864` 三次合并分步落地，各分支均先打 `archive/*` 标签再删除。
+- **实测发现**　公网版唯一失败请求是 `/favicon.ico` 404：`chapter.html` 没有声明图标（其余三页都有 `data:,` 占位），浏览器自动去请求站点根图标而部署目录里没有该文件。修复方式为在 `chapter.html` 补一行图标声明，属 [#14](https://github.com/LeiJei-0/anti-fraud-rehearsal/issues/14) 同一类"证据与现场不一致"问题，待与 #10 一起走修复分支。
+- **授权文本同步**　`LICENSE` 两处署名跟着署名队列改掉：MIT 的版权行由单独一位作者改为三位作者按署名顺序并列；CC BY-NC-SA 4.0 的署名要求由「肖斯菀／防骗预演」改为「雷杰、王以豪、肖斯菀／防骗预演」，并注明只署第 1 作者不满足该条款。
+- **变更文件**　`README.md`、`LICENSE`、`CHANGELOG.md`。
+- **待完成**　重新发布一次以带上图标声明修复；#10 至 #13 的修复与回归复跑；参赛帖的队伍人数与分工一节按三人署名改写（本地草稿已同步）。
